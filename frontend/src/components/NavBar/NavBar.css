@@ -1,0 +1,73 @@
+.navbar-container{
+    background-color: transparent;
+    width: 90%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto;
+    padding: 0px 70px;
+}
+
+
+.navbar-logo{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.navbar-logo img{
+    width: 50px;
+}
+
+.navbar-logo p{
+    width: 130px;
+    color: white;
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.navbar-pages{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+
+.navbar-pages a{
+    width: 120px;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-login{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 15px;
+}
+
+.navbar-login a{
+    width: 80px;
+    text-decoration: none;
+    border: 1px solid white;
+    border-radius: 40px;
+    text-align: center;
+    padding: 10px 14px;
+    color: white;
+}
+
+.navbar-login a:nth-child(2){
+    background-color: #7F56D9 !important;
+    color: white !important;
+    border: 1px solid #7F56D9 !important;
+
+}

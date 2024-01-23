@@ -1,0 +1,315 @@
+.home-container{
+    position: relative;
+    background-color: #311c5c;
+    width: 100%;
+}
+
+.home-hero-container{
+    position: relative;
+    width: 90%;
+    height: 80vh;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: auto;
+    top: 80px;
+}
+
+
+.home-hero-wrapper{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 80px;
+}
+
+.home-hero-wrapper>p{
+    color: white;
+    font-size: 50px;
+    font-weight: 800;
+    font-family: 'Montserrat', sans-serif;
+    line-height: 70px;
+}
+
+.home-hero-wrapper>span{
+    color: #B0B0D1;
+    font-size: 21px;
+    font-weight: 400;
+}
+
+.home-hero-container img{
+    width: 400px;
+}
+
+
+.home-hero-search{
+    position: relative;
+    background-color: white;
+    border-radius: 50px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    height: 70px;
+    padding: 5px 12px;
+}
+
+.home-hero-search svg{
+    color: rgb(136, 136, 136);
+    width: 40px;
+    height: 40px;
+}
+
+.home-hero-search input{
+    width: 400px;
+    outline: none;
+    height: 50px;
+    border: none;
+    font-size: 19px;
+    padding: 0px 8px;
+}
+
+.home-hero-search button{
+    background-color: #7F56D9;
+    color: white;
+    outline: none;
+    font-size: 18px;
+    border-radius: 30px;
+    padding: 20px 25px;
+    border: none;
+    cursor: pointer;
+}
+
+
+.home-coursepartners{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 75%;
+    margin: auto !important;
+    height: 200px;
+}
+
+.home-coursepartners p{
+    color: white;
+    font-size: 24px;
+    position: relative;
+    top: 14px;
+    background-color: #311c5c;
+    z-index: 100;
+    padding: 0px 12px;
+}
+
+.home-coursepartners-images{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 76%;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: 34px 60px;
+}
+
+
+
+.home-coursepartners-images img{
+    width: 170px;
+}
+
+.home-popular-course{
+    position: relative;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    width: 80%;
+}
+
+.home-popular-course-header{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.home-popular-course-header p{
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.home-popular-course-header-tabs{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    background-color: #7f56d963;
+    height: 55px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 35px;
+    gap: 10px;
+}
+
+.home-popular-course-header-tabs button{
+    height: 45px;
+    padding: 0px 30px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+}
+
+.home-popular-course-header-tabs-active{
+    background-color: #7F56D9 !important;
+    color: white;
+}
+
+.home-popular-course-wrapper{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-popular-course-card{
+    background-color: #381D74;
+    border: 1px solid #D9ECFF;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 520px;
+    margin-bottom: 60px;
+}
+
+.home-popular-course-card>img{
+    width: 520px;
+    height: 268px;
+}
+
+.home-popular-course-card-section-1{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    padding: 0px 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.home-popular-course-card-section-1-a{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.home-popular-course-card-section-1-a svg{
+    background-color: rgba(218, 218, 247, 0.418); 
+    color: white;
+    padding: 14px 14px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.home-popular-course-card-section-1-a span{
+    color: white;
+}
+
+.home-popular-course-card-section-1 p{
+    background-color: rgba(218, 218, 247, 0.418);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 20px;
+}
+
+
+.home-popular-course-card-section-2{
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 0px 20px;
+}
+
+.home-popular-course-card-section-3{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 480px;
+    margin: auto;
+    padding: 20px 0px;
+    border-top: 1px solid rgb(160, 160, 160);
+    border-bottom: 1px solid rgb(160, 160, 160);
+}
+
+.home-popular-course-card-section-3-a{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.home-popular-course-card-section-3-a img{
+    border-radius: 50%;
+}
+
+.home-popular-course-card-section-3-b{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.home-popular-course-card-section-3-b p{
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.home-popular-course-card-section-3-b span{
+    color: rgb(196, 196, 196);
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.home-popular-course-card-section-3>p{
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+
+.home-popular-course-card-section-4{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px 23px 20px;
+}
+
+
+.home-popular-course-card-section-4 a{
+    color: white;
+    font-size: 17px;
+}

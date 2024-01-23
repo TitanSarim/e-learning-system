@@ -1,0 +1,58 @@
+.admin-sidebar{
+    width: 100%;
+    border-right: 1px solid rgb(209, 209, 209);
+    height: 100vh;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+
+.admin-sidebar-container{
+    position: relative;
+    top: 70px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 50px;
+}
+
+.admin-sidebar-container>p{
+    color: rgb(53, 53, 53);
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.admin-sidebar-tabs{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.admin-sidebar-tabs a{
+    background-color: rgb(231, 231, 231);
+    color: black;
+    font-weight: 500;
+    padding: 13px 40px;
+    text-align: start;
+    text-decoration: none;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 30px;
+    transition: all 500ms;
+}
+
+
+.admin-sidebar-tabs a svg{
+    width: 24px;
+    height: 24px;
+    color: rgb(107, 107, 107);
+}
+
+.admin-sidebar-tabs a:hover{
+    transform: scale(1.01);
+    background-color: rgb(218, 218, 218);
+}
