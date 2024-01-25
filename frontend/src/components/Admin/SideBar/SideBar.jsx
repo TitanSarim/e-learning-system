@@ -16,10 +16,10 @@ const SideBar = () => {
         <p>M-Time</p>
 
         <div className='admin-sidebar-tabs'>
-          <Link><GrHomeRounded/> <p>Dashboard</p></Link>
+          <Link to="/admin/dashboard"><GrHomeRounded/> <p>Dashboard</p></Link>
           <Link><TfiBook/> <p>Courses</p></Link>
           <Link><PiStudent/> <p>Students</p></Link>
-          <Link><CiUser/> <p>Users</p></Link>
+          <Link to='/admin/all-users'><CiUser/> <p>Users</p></Link>
           <Link><TfiStatsUp/> <p>Stats</p></Link>
         </div>
 

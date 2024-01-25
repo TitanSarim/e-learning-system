@@ -142,7 +142,7 @@ const catchAsyncError = require('../middleware/catchAsyncError');
       res.status(200).json({
         success: true,
         message: 'All users retrieved successfully',
-        users,
+        users: users,
       });
     } catch (error) {
       return next(new errorHandler(error, 500));
