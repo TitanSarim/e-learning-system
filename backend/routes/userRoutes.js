@@ -1,6 +1,6 @@
 const express = require('express')
 const {isAuthenticatedUser} = require('../middleware/auth')
-const {createUser, loginUser, updateUser, getAllUsers, getSingleUser, deleteUser, logout} = require('../controllers/userController')
+const {createUser, loginUser, createNewUser, updateUser, getAllUsers, getSingleUser, deleteUser, logout} = require('../controllers/userController')
 
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.route('/loggedIn').post(loginUser, isAuthenticatedUser)
 
 router.route('/logout').get(logout)
 
-router.route("/create/user").post(createUser)
+router.route("/create/user").post(isAuthenticatedUser, createNewUser)
 
 router.route('/update/user/:userId').put(isAuthenticatedUser, updateUser)
 

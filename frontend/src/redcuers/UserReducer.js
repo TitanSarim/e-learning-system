@@ -105,10 +105,26 @@ export const AdminUserReducer = (state = {users: []}, action) =>{
 
 
         case GET_ALL_USERS_ADMIN_REQUEST:
+        case CREATE_NEW_USER_ADMIN_REQUEST:
             return{
                 loading: true,
                 isAuthenticated: false,
             }
+
+        case DELETE_USER_ADMIN_REQUEST:
+            return{
+                ...state,
+                loading: true,
+                isAuthenticated: false,
+            }
+
+        case CREATE_NEW_USER_ADMIN_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isAuthenticated: true,
+                users: state.users,
+            };
 
         case GET_ALL_USERS_ADMIN_SUCCESS:
             return{
@@ -117,8 +133,20 @@ export const AdminUserReducer = (state = {users: []}, action) =>{
                 isAuthenticated: true,
                 users: action.payload,
             }
+        
+        case DELETE_USER_ADMIN_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isAuthenticated: true,
+                isDeleted: true,
+                message: 'User Deleted Successfully',
+                users: state.users.filter((user) => user.id !== action.payload)
+            };
 
         case GET_ALL_USERS_ADMIN_FAIL:
+        case CREATE_NEW_USER_ADMIN_FAIL:
+        case DELETE_USER_ADMIN_FAIL:
             return{
                 ...state,
                 loading: false,

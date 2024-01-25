@@ -7,6 +7,7 @@ import Auth from './components/Auth/Auth';
 import AdminDashboard from './components/Admin/Dashboard/AdminDashboard';
 import StudentProfile from './components/Students/Profile/StudentProfile';
 import AllUsers from './components/Admin/User/AllUsers';
+import CreateUser from './components/Admin/User/CreateUser';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/admin" element={<ProtectedRoutes />}>
             <Route path='/admin/dashboard' element={<AdminDashboard/>}/>
             <Route path='/admin/all-users' element={<AllUsers/>}/>
+            <Route path='/admin/create-users' element={<CreateUser/>}/>
           </Route>
 
           

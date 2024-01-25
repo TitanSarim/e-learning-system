@@ -29,7 +29,7 @@ const NavBar = () => {
 
 
         <div className='navbar-login'>
-          {isAuthenticated && user?.role === 'student' && (
+          {isAuthenticated && user?.role === 'Student' && (
             <Link to='/Student/Profile'>Profile</Link>
           )}
           {isAuthenticated && user?.role === 'admin' && (
