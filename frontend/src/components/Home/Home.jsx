@@ -4,6 +4,10 @@ import './Home.css'
 import NavBar from '../NavBar/NavBar'
 import { IoSearchOutline } from "react-icons/io5";
 import { FaPlay } from "react-icons/fa";
+import { MdArrowOutward } from "react-icons/md";
+import { PiPenNibStraightBold } from "react-icons/pi";
+
+
 import StarRatings  from "react-star-ratings";
 
 import heroImg from '../../assets/Layer 2.png'
@@ -15,6 +19,9 @@ import partners5 from '../../assets/Group.png'
 import cardImg from '../../assets/Mask group.png'
 import fromImg from '../../assets/Ellipse 1202.png'
 import { Link } from 'react-router-dom';
+
+// Temporary
+const categoryName= ["Design", "Development", "Professional Dev." , "Photography", "Data Science", "Marketing", "Bussiness", "Music"]
 
 const Home = () => {
 
@@ -151,9 +158,60 @@ const Home = () => {
                         </div>
                     </div>
                 )}
+                
+            </div>
+
+            <div className='home-popular-course-btn'>
+                <button type='button'>Explore all Courses</button>
             </div>
 
         </div>
+
+        {/* Papular Category */}
+
+        <div className='home-course-category'>
+            <div className='home-course-category-header'>
+                <p>Most Popular <span>Category</span>  </p>
+            </div>
+
+            <div className='home-course-category-list'>
+                {categoryName.map((item)=>(
+                    <div className='home-course-category-card'>
+                         <div className='home-course-category-content'>
+                            <PiPenNibStraightBold size={20}/>
+                            <p>{item}</p>
+                        </div>
+                     <button className='home-course-category-btn'><MdArrowOutward /></button>
+                    </div>
+                ))}
+                
+            </div>
+           
+        </div>
+
+         {/*  Differnce Section */}
+
+         <div>
+
+            <div>
+                <div>
+                    <h2>Headfing</h2>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo, praesentium. <span>Lorem ipsum dolor sit amet.</span></p>
+                    <button>Learn more</button>
+                </div>
+            </div>
+
+            <div>
+               heroImg
+            </div>
+
+
+            <div>
+                compare
+            </div>
+         </div>
+
+
         
     </div>
   )
