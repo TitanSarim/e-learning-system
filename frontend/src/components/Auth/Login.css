@@ -159,6 +159,12 @@
 }
 
 
+.auth-container-wrapper strong{
+    color: tomato;
+    font-size: 15px;
+    font-weight: 400 !important;
+}
+
 .auth-container-wrapper>button{
     background-color: rgb(42, 36, 95);
     color: white;
@@ -267,6 +273,13 @@
 .auth-login-email>p>span, .auth-login-password>p>span{
     color: rgb(255, 238, 0) !important;
     font-weight: 500;
+}
+
+
+.auth-login-container strong{
+    color: tomato;
+    font-weight: 400 !important;
+    font-size: 16px;
 }
 
 .auth-login-container>button{

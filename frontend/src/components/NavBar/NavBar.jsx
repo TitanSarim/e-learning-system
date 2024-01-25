@@ -4,8 +4,14 @@ import './NavBar.css'
 
 import Logo1 from '../../assets/icons8-book.gif'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const NavBar = () => {
+
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+
+  console.log("isAuthenticated", isAuthenticated)
+
   return (
     <div className='navbar-container'>
 
@@ -23,7 +29,15 @@ const NavBar = () => {
 
 
         <div className='navbar-login'>
-            <Link to='/login'>Join Us</Link>
+          {isAuthenticated && user?.role === 'student' && (
+            <Link to='/Student/Profile'>Profile</Link>
+          )}
+          {isAuthenticated && user?.role === 'admin' && (
+            <Link to='/admin/dashboard'>Admin</Link>
+          )}
+          {!isAuthenticated && (
+            <Link to='/login'>Login</Link>
+          )}
         </div>
 
     </div>
