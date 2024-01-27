@@ -96,6 +96,8 @@ export const userLogOut = () => async (dispatch) => {
 
 }
 
+
+
 export const UpdateUser = (formData) => async (dispatch) =>{
 
     try {
@@ -128,6 +130,47 @@ export const AdminGetUsers = () => async (dispatch) =>{
         
     } catch (error) {
         dispatch({type: GET_ALL_USERS_ADMIN_FAIL, payload: error.response.data.message});
+    }
+
+}
+
+export const AdmincreateNewUser = (formData) => async (dispatch) => {
+
+    try {
+        dispatch({type: CREATE_NEW_USER_ADMIN_REQUEST});
+        
+        const config = { headers: { "Content-Type": "application/json" } };
+
+        const {data} = await axios.post(`/api/v1/create/user`, 
+            formData,
+            config
+        )
+
+        dispatch({ type: CREATE_NEW_USER_ADMIN_SUCCESS, payload: [data] });
+        
+    } catch (error) {
+        console.log(error)
+        dispatch({type: CREATE_NEW_USER_ADMIN_FAIL, payload: error.response?.data?.message});
+    }
+
+}
+
+export const adminDeleteUser = (userId) => async (dispatch) => {
+
+    try {
+        dispatch({type: DELETE_USER_ADMIN_REQUEST});
+        
+        const config = { headers: { "Content-Type": "application/json" } };
+
+        const {data} = await axios.delete(`/api/v1/delete/user/${userId}`, 
+            config
+        )
+
+        dispatch({ type: DELETE_USER_ADMIN_SUCCESS, payload: userId});
+        
+    } catch (error) {
+        console.log(error)
+        dispatch({type: DELETE_USER_ADMIN_FAIL, payload: error.response?.data?.message});
     }
 
 }
