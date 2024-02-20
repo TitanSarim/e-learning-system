@@ -9,6 +9,7 @@ import StudentProfile from './components/Students/Profile/StudentProfile';
 import AllUsers from './components/Admin/User/AllUsers';
 import CreateUser from './components/Admin/User/CreateUser';
 import UpdateUser from './components/Admin/User/UpdateUser';
+import ClassRoom from './components/ClassRoom/ClassRoom';
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
 
           
           <Route path="/login" element={<Auth />}/>
+          
+          {/* Route Path is Temporary */}
+          <Route path="/class" element={<ClassRoom />}/> 
 
         </Routes>
 

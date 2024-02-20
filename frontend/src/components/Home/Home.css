@@ -313,3 +313,453 @@
     color: white;
     font-size: 17px;
 }
+
+.home-popular-course-btn button{
+    width: 273px;
+    height: 60px;
+    padding: 16px 28px;
+    border-radius: 47px;
+    border: none;
+    background: #7F56D9;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    color: #FFF;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+    cursor: pointer;
+}
+
+/* home course category */
+
+.home-course-category{
+    position: relative;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    width: 80%;
+   
+}
+
+.home-course-category-header p{
+    color: #FFF;
+    font-size: 65px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 70px; /* 100% */
+    letter-spacing: -0.5px;
+}
+
+.home-course-category-header span{
+    color: #BEA0FF;
+}
+
+.home-course-category-list{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+      column-gap: 1rem;
+    row-gap: 2rem;
+}
+
+.home-course-category-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    width: 300px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #524870;
+
+}
+
+.home-course-category-content{
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    color: white;
+}
+
+.home-course-category-content p {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 100% */
+}
+
+.home-course-category-btn{
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: #7F56D9;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+/* Differnece Section */
+
+.home-difference-section{
+    display: flex;
+    gap: 6rem;
+    width: 80%;
+    margin: 40px auto;
+    padding: 5rem 2rem;
+}
+
+.home-difference-section1-content{
+    display: flex;
+    flex-direction: column;  
+    width: 450px;
+    height: 128px;
+    gap: 2rem;
+    
+
+}
+
+.home-difference-section1-content h2{
+    color: #FFF;
+    font-size: 70px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 80px; /* 114.286% */
+    letter-spacing: -0.5px;
+}
+
+.home-difference-section1-content h2 span{
+    color: #BDA0FF;
+
+}
+
+.home-difference-section1-content p{
+    color: #B0B0D1;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 40px;
+}
+
+.home-difference-section1-content button{
+    border-radius: 47px;
+    border: none;
+    background: #7F56D9;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    width: 185px;
+    height: 65px;
+    padding: 16px 28px;
+    cursor: pointer;
+}
+
+.home-difference-section1-content img{
+    width: 50%;
+   
+}
+
+.home-difference-section2 img{
+  width: 70%;
+}
+
+.home-difference-section3{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.home-difference-section3-content{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem
+}
+
+
+.home-difference-section3-content-a{
+    display: inline-flex;
+    font-size: 36px;
+    color: white;
+    padding: 20px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 1000px;
+    background: linear-gradient(180deg, #A582F7 0%, #7747EC 100%);
+}
+
+.home-difference-section3-content-b p:first-child{
+    color: #FFF;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: 0.24px;
+}
+
+.home-difference-section3-content-b p:last-child{
+    color: #B0B0D1;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+
+/* Testimonial */
+
+.Testimonials-section{
+     width: 80%;
+    margin: 40px auto;
+    padding: 5rem 2rem;
+}
+
+.Testimonials-section-header p{
+    text-align: center;
+    color: #FFF;
+    font-size: 70px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 70px; /* 100% */
+    letter-spacing: -0.5px;
+}
+
+.Testimonials-section-a{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5rem 2rem;
+
+}
+
+.home-testimonial-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    width: 800px !important;
+    height: 230px;
+    border-radius: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.20);
+    background: #381D74;
+    padding: 30px;
+}
+
+.home-testimonial-card-section-a{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home-testimonial-card-section-a-content{
+    display: flex;
+    gap: 1.5rem;
+}
+
+
+
+.home-testimonial-card-section-a-content-a p:first-child{
+    color: #D9ECFF;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px; 
+}
+
+.home-testimonial-card-section-a-content-a p:last-child{
+    color: #D9ECFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; 
+
+}
+
+.home-testimonial-card-rule{
+    border: 0.5px solid rgba(218, 218, 247, 0.32);
+}
+
+.home-testimonial-card-section-b p{
+    color: #B0B0D1;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px; 
+}
+
+/* Footer */
+
+.footer-section-section-a{
+    display: flex;
+    justify-content: space-around;
+    gap: 5rem;
+    align-items: center;
+    width: 70%;
+    margin: 40px auto;
+
+}
+
+.footer-section-section-a-content h2{
+    color: #FFF;
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 80px; /* 114.286% */
+}
+
+.footer-section-section-a-content h2 span{
+    color: #BDA0FF;
+}
+
+.footer-section-section-a-content p{
+    color: #FFF;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+    padding-top: 20px;
+}
+
+.footer-section-section-a-button{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+} 
+
+.footer-section-section-a-button button{
+    width: 320px;
+    height: 65px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 48px;
+    background: #FF5156;
+    cursor: pointer;
+}
+
+.footer-section-section-a-button button:last-child{
+    background: #7F56D9;
+}
+
+.footer-section-b{
+    background: linear-gradient(171deg, rgba(85, 59, 145, 0.30) 6.62%, rgba(85, 59, 145, 0.00) 134.88%);
+}
+
+.footer-section-b-grid{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    width: 80%;
+    margin: 40px auto;
+    padding: 40px 40px;
+    column-gap: 7rem;
+    align-items: center;
+}
+
+.footer-section-b-a{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.footer-section-b-a p{
+    color: #B0B0D1;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px; 
+}
+
+.footer-section-b-b{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}    
+
+
+.footer-section-b-b p{
+    color:#FFF;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+.footer-section-b-b-links{
+
+    display: grid;
+    grid-template-columns: 60px 60px;
+    gap: 2rem;
+}
+
+.footer-section-b-b-links p{
+    color: #B0B0D1;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px; 
+}
+
+.footer-section-b-c{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.footer-section-b-c p{
+     color:#FFF;    
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+.footer-section-b-c-links{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.footer-section-b-c-links p{
+    color: #B0B0D1;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+
+}
+
+.footer-section-b-d p{
+    color: #B0B0D1;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 25px; 
+}
+
+.footer-section-3 {
+    width: 80%;
+    margin: 30px auto;
+}
+
+.footer-section-3-icons-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-section-3-icons-section p{
+    color: #B0B0D1;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px; 
+}
+
+.footer-section-3-icons button{
+    color:  #B0B0D1;
+    border: none;
+    background: none;
+    margin: 20px;
+    cursor: pointer;
+}
