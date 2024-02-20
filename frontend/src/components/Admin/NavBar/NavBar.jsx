@@ -15,8 +15,11 @@ const NavBar = () => {
     <div className='admin-navbar'>
 
         <div>
-            <img src={img1} alt='user image'/>
-            <FiLogOut size={28} onClick={handleLogOut}/>
+            <img src={img1} alt='user'/>
+            <button onClick={handleLogOut}>
+              <FiLogOut size={28}/>
+            </button>
+            
         </div>
     </div>
   )

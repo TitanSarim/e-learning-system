@@ -106,7 +106,7 @@ const AllUsers = () => {
                                 <td>{user.status}</td>
                                 <td>{moment(user.updatedAt).format('lll')}</td>
                                 <td className='admin-user-table-actions'>
-                                    <Link><BsPen/></Link>
+                                    <Link to={`/admin/update-users/${user.id}`}><BsPen/></Link>
                                     <button onClick={() => hanldeDeleteModelOpen(user.id)}><AiOutlineDelete/></button>
                                 </td>
                             </tr>

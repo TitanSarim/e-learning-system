@@ -26,14 +26,19 @@
     width: 60px;
 }
 
-.admin-navbar>div>svg{
+.admin-navbar>div>button{
     background-color: rgb(216, 216, 216);
     padding: 9px 12px;
     border-radius: 8px;
     cursor: pointer;
     transition: all 500ms;
+    border: none;
+    outline: none;
+}
+.admin-navbar>div>button>svg{
+
 }
 
-.admin-navbar>div>svg:hover{
+.admin-navbar>div>button:hover{
     background-color: rgb(180, 180, 180);
 }

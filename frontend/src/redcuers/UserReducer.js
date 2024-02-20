@@ -111,6 +111,7 @@ export const AdminUserReducer = (state = {users: []}, action) =>{
                 isAuthenticated: false,
             }
 
+        case UPDATE_USER_ADMIN_REQUEST:
         case DELETE_USER_ADMIN_REQUEST:
             return{
                 ...state,
@@ -119,6 +120,7 @@ export const AdminUserReducer = (state = {users: []}, action) =>{
             }
 
         case CREATE_NEW_USER_ADMIN_SUCCESS:
+        case UPDATE_USER_ADMIN_SUCCESS:
             return {
                 ...state,
                 loading: false,
@@ -146,6 +148,7 @@ export const AdminUserReducer = (state = {users: []}, action) =>{
 
         case GET_ALL_USERS_ADMIN_FAIL:
         case CREATE_NEW_USER_ADMIN_FAIL:
+        case UPDATE_USER_ADMIN_FAIL:
         case DELETE_USER_ADMIN_FAIL:
             return{
                 ...state,

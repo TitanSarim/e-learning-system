@@ -15,7 +15,7 @@ const CreateUser = () => {
 
     const [username, setUserName] = useState('')
     const [email, setEmail] = useState('')
-    const [age, setAge] = useState()
+    const [age, setAge] = useState('')
     const [gender, setGender] = useState('Male')
     const [role, setRole] = useState('Student')
     const [status, setStatus] = useState('Activate')
@@ -55,16 +55,20 @@ const CreateUser = () => {
             email: email,
             username: username,
             role: role,
-            age: age,
+            age: parseInt(age),
             gender: gender,
             password: password,
             status: status
           }
-
-          console.log("FormData", FormData)
           
           dispatch(AdmincreateNewUser(FormData));
           toast.success('User Created')
+
+            setUserName('')
+            setEmail('')
+            setAge('')
+            setPassword('')
+            setConfirmPassword('')
     }
 
     useEffect(() => {
@@ -93,22 +97,22 @@ const CreateUser = () => {
                     <div className='admin-createuser-form-username-email'>
                         <div>
                             <p>Username <span>*</span></p>
-                            <input type='text' placeholder='Username' onChange={(e) => setUserName(e.target.value)}/>
+                            <input type='text' placeholder='Username' value={username} onChange={(e) => setUserName(e.target.value)}/>
                         </div>
                         <div>
                             <p>Email <span>*</span></p>
-                            <input type='email' placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
+                            <input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                     </div>
 
                     <div className='admin-createuser-form-gender-age'>
                         <div>
                             <p>Age <span>*</span></p>
-                            <input type='number' placeholder='Age' onChange={(e) => setAge(e.target.value)}/>
+                            <input type='number' placeholder='Age' value={age} onChange={(e) => setAge(e.target.value)}/>
                         </div>
                         <div>
                             <p>Gender <span>*</span></p>
-                            <select onChange={(e) => setGender(e.target.value)}>
+                            <select value={gender} onChange={(e) => setGender(e.target.value)}>
                                 <option disabled>Select</option>
                                 <option>Male</option>
                                 <option>Female</option>
@@ -119,7 +123,7 @@ const CreateUser = () => {
                     <div className='admin-createuser-form-role-status'>
                         <div>
                             <p>Role <span>*</span></p>
-                            <select onChange={(e) => setRole(e.target.value)}>
+                            <select value={role} onChange={(e) => setRole(e.target.value)}>
                                 <option disabled>Select</option>
                                 <option>Student</option>
                                 <option>Job Seeker</option>
@@ -129,7 +133,7 @@ const CreateUser = () => {
                         </div>
                         <div>
                             <p>Status <span>*</span></p>
-                            <select onChange={(e) => setStatus(e.target.value)}>
+                            <select value={status} onChange={(e) => setStatus(e.target.value)}>
                                 <option disabled>Select</option>
                                 <option>Activate</option>
                                 <option>Blocked</option>
@@ -140,11 +144,11 @@ const CreateUser = () => {
                     <div className='admin-createuser-form-passwords'>
                         <div>
                             <p>Password <span>*</span></p>
-                            <input type='text' placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
+                            <input value={password} type='text' placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div>
                             <p>Confirm Password <span>*</span></p>
-                            <input type='text' placeholder='Confirm Password' onChange={(e) => setConfirmPassword(e.target.value)}/>
+                            <input value={confirmPassword} type='text' placeholder='Confirm Password' onChange={(e) => setConfirmPassword(e.target.value)}/>
                         </div>
                     </div>
                     <strong>{isRegisteFormEmpty}</strong>

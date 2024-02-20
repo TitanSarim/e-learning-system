@@ -155,6 +155,27 @@ export const AdmincreateNewUser = (formData) => async (dispatch) => {
 
 }
 
+export const AdminUpdateNewUser = (formData, id) => async (dispatch) => {
+
+    try {
+        dispatch({type: UPDATE_USER_ADMIN_REQUEST});
+        
+        const config = { headers: { "Content-Type": "application/json" } };
+
+        const {data} = await axios.put(`/api/v1/update/user/${id}`, 
+            formData,
+            config
+        )
+
+        dispatch({ type: UPDATE_USER_ADMIN_SUCCESS, payload: [data] });
+        
+    } catch (error) {
+        console.log(error)
+        dispatch({type: UPDATE_USER_ADMIN_FAIL, payload: error.response?.data?.message});
+    }
+
+}
+
 export const adminDeleteUser = (userId) => async (dispatch) => {
 
     try {
