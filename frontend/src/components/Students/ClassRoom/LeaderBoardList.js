@@ -3,7 +3,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 
-import Photo from "../../assets/Photo.png"
+import Photo from "../../../assets/Photo.png"
 
 
 

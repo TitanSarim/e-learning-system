@@ -1,5 +1,5 @@
 import React from 'react'
-import NavBar from '../NavBar/NavBar'
+import NavBar from '../../NavBar/NavBar'
 import "./classRoom.css"
 import LeaderBoardList from './LeaderBoardList'
 import VideoSection from './VideoSection'

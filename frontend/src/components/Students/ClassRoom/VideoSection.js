@@ -1,6 +1,6 @@
 import React from 'react'
-import videoImage from "../../assets/VideoPlay.png"
-import userImage from "../../assets/profile.png"
+import videoImage from "../../../assets/VideoPlay.png"
+import userImage from "../../../assets/profile.png"
 import { IoEyeOutline } from "react-icons/io5";
 
 

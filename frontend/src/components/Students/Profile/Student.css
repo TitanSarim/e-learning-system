@@ -1,0 +1,284 @@
+.student-profile{
+    position: relative;
+    width: 100%;
+    height: max-content;
+    background-color: #1B1D29;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+
+.profile-profile-rightbar{
+    width: 400px;
+    background-color: #141622;
+    height: 201vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 40px;
+    padding-top: 50px;
+    padding-bottom: 60px;
+}
+
+.profile-profile-rightbar-heading{
+    color: white;
+    font-size: 19px;
+    font-weight: 500;
+    position: relative;
+    left: 30px;
+    margin-bottom: 0% !important;
+}
+
+.profile-profile-rightbar-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 20px;
+    gap: 20px;
+    text-align: center;
+}
+
+.profile-profile-rightbar-container>span{
+    position: relative;
+    border: 6px solid rgba(71, 71, 71, 0.644);
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.profile-profile-rightbar-container>span>img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit:fill;
+    position: relative;
+    top: 1px;
+}
+
+.profile-profile-rightbar-container>div>p{
+    color: white ;
+    font-size: 17px;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.profile-profile-rightbar-container>div>span{
+    color: rgb(148, 148, 148);
+    font-size: 16px;
+    text-transform: capitalize;
+}
+
+.profile-profile-rightbar-setting{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-profile-rightbar-setting button{
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid rgb(128, 128, 128);
+    padding: 12px 13px 12px 13px;
+}
+
+.profile-profile-rightbar-setting button svg{
+    color: rgb(128, 128, 128);
+}
+
+
+.profile-profile-rightbar-stats{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.profile-profile-rightbar-stats>p{
+    color: white;
+    font-weight: 500;
+    text-transform: capitalize;
+    position: relative;
+    left: -12px;
+}
+
+
+.profile-profile-rightbar-stats{
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    height: 100px;
+    padding: 0px 20px;
+}
+.profile-profile-rightbar-aboutme{
+    padding: 0px 20px;
+    color: rgb(199, 199, 199);
+    text-align: center;
+}
+
+.profile-profile-rightbar-logout{
+    position: relative;
+    outline: none;
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    margin: auto;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    cursor: pointer;
+    color: tomato;
+    font-size: 17px;
+    gap: 8px;
+    border: 1px solid tomato;
+    padding: 8px 12px;
+    border-radius: 4px;
+    
+}
+
+.profile-profile-rightbar-logout svg{
+    position: relative;
+    top: 1px;
+}
+
+
+.profile-courses-list{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 30px;
+    margin: 70px 100px;
+    width: 68%;
+}
+
+.student-courses-banner{
+    position: relative;
+    height: 230px;
+    width: 94%;
+    border-radius: 12px;
+    background-color: #141622;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 40px 40px;
+}
+
+
+.student-courses-banner>p{
+    color: rgba(218, 218, 218, 0.74);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.student-courses-banner>span{
+    color: white;
+    font-size: 36px;
+    width: 50%;
+    font-weight: 500;
+}
+
+
+.student-courses-banner>a{
+    background-color: rgba(0, 143, 251, 0.85);
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 500ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.student-courses-banner>a:hover{
+    transform: scale(1.02);
+    background-color: rgba(0, 142, 251, 0.945);
+}
+
+
+.student-courses-banner>a>svg{
+    color: white;
+    background-color: black;
+    padding: 5px 5px 5px 7px;
+    border-radius: 50%;
+    position: relative;
+    left: 10px;
+}
+
+.student-profile-no-course{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    gap: 20px;
+}
+
+.student-profile-no-course>p{
+    color: rgb(231, 231, 231);
+    font-size: 22px;
+}
+
+.student-profile-no-course>a{
+    background-color: rgba(0, 143, 251, 0.85);
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 500ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.student-profile-no-course>a:hover{
+    transform: scale(1.02);
+    background-color: rgba(0, 142, 251, 0.945);
+}
+
+
+.student-profile-no-course>a>svg{
+    color: white;
+    background-color: black;
+    padding: 5px 5px 5px 7px;
+    border-radius: 50%;
+    position: relative;
+    left: 10px;
+}
+
+
+.student-profile-add-new-courses{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+
+}

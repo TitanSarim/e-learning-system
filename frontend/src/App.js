@@ -9,7 +9,9 @@ import StudentProfile from './components/Students/Profile/StudentProfile';
 import AllUsers from './components/Admin/User/AllUsers';
 import CreateUser from './components/Admin/User/CreateUser';
 import UpdateUser from './components/Admin/User/UpdateUser';
-import ClassRoom from './components/ClassRoom/ClassRoom';
+import ClassRoom from './components/Students/ClassRoom/ClassRoom';
+import AllCourses from './components/Admin/Courses/AllCourses';
+import CreateCourse from './components/Admin/Courses/CreateCourse';
 
 function App() {
   return (
@@ -29,6 +31,9 @@ function App() {
             <Route path='/admin/all-users' element={<AllUsers/>}/>
             <Route path='/admin/create-users' element={<CreateUser/>}/>
             <Route path='/admin/update-users/:id' element={<UpdateUser />} />
+
+            <Route path='/admin/all-courses' element={<AllCourses/>}/>
+            <Route path='/admin/create-course' element={<CreateCourse />}/>
           </Route>
 
           

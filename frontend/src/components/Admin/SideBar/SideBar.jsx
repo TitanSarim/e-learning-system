@@ -17,7 +17,7 @@ const SideBar = () => {
 
         <div className='admin-sidebar-tabs'>
           <Link to="/admin/dashboard"><GrHomeRounded/> <p>Dashboard</p></Link>
-          <Link><TfiBook/> <p>Courses</p></Link>
+          <Link to={'/admin/all-courses'}><TfiBook/> <p>Courses</p></Link>
           <Link><PiStudent/> <p>Students</p></Link>
           <Link to='/admin/all-users'><CiUser/> <p>Users</p></Link>
           <Link><TfiStatsUp/> <p>Revenue</p></Link>

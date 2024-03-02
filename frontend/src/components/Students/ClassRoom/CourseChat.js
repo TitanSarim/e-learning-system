@@ -9,10 +9,7 @@ import { FaRegSmile } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 
 
-
-
-
-import courseImage from "../../../src/assets/courseImage.png"
+import courseImage from "../../../../src/assets/courseImage.png"
 
 
 const course = [
