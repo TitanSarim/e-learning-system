@@ -19,7 +19,6 @@ const CreateCourse = () => {
     const [courseCategory, setCourseCategory] = useState('Design');
     const [tags, setTags] = useState('');
     const [weeks, setWeeks] = useState(1);
-    const [selectedVid, setSelectedVid] = useState();
     const [seqByWeek, setSeqByWeek] = useState();
     const [courseDesc, setCourseDesc] = useState('')
     const [thumbnailFile, setThumbnailFile] = useState(null);
@@ -33,11 +32,23 @@ const CreateCourse = () => {
     };
 
 
-    const handleFileInputChange = (weekIndex, divId) => (e) =>{
-        const video = e.target.files[0]
-        console.log("weekIndex", weekIndex)
-        console.log("divId", divId)
-        console.log("SelectedVid", video)
+    function handleFileInputChange (weekIndex, divId) {
+
+        console.log("weekIndex",weekIndex)
+        console.log("divId",divId)
+
+        // const videoFile = e.target.files[0];
+
+        // setVideoDivsArray((prevVideoDivsArray) =>
+        //     prevVideoDivsArray.map((weekDivs, index) =>
+        //         index === weekIndex
+        //             ? weekDivs.map((div) =>
+        //                 div.id === divId ? { ...div, videoFile: videoFile } : div
+        //             )
+        //             : [...weekDivs]
+        //     )
+        // );
+      
     };
 
     const handleSeqByWeekChange = (weekIndex, e) => {
@@ -222,8 +233,7 @@ const CreateCourse = () => {
                                                             id={`file-input-${div.id}`}
                                                             type='file'
                                                             accept='.mov, .mp4'
-                                                            onChange={handleFileInputChange(weekIndex, div.id)}
-                                                            
+                                                            onChange={handleFileInputChange(weekIndex, div.id)}                                                     
                                                         />
                                                     </div>
                                                 </div>
