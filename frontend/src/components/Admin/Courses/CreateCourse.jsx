@@ -22,32 +22,41 @@ const CreateCourse = () => {
     const [seqByWeek, setSeqByWeek] = useState();
     const [courseDesc, setCourseDesc] = useState('')
     const [thumbnailFile, setThumbnailFile] = useState(null);
-    const [videoDivsArray, setVideoDivsArray] = useState(
-        Array.from({ length: weeks }, () => [{ id: 1, videoDesc: '', videoFile: null }])
-      );
 
+    const createEmptyWeek = () => ({
+        weekTitle: '',
+        videos: [{ id: 1, videoDesc: '', videoFile: null }],
+      });
+    
+    const [videoDivsArray, setVideoDivsArray] = useState(
+        Array.from({ length: weeks }, (_, weekIndex) => createEmptyWeek())
+    );
 
     const handleCourseEditorChange = (value) => {
         setCourseDesc(value);
     };
 
 
-    function handleFileInputChange (weekIndex, divId) {
+    const handleFileInputChange = (weekIndex, divId, event) => {
+        const vidFile = event.target.files[0]
 
         console.log("weekIndex",weekIndex)
         console.log("divId",divId)
+        console.log("vidFile",vidFile)
 
-        // const videoFile = e.target.files[0];
 
-        // setVideoDivsArray((prevVideoDivsArray) =>
-        //     prevVideoDivsArray.map((weekDivs, index) =>
-        //         index === weekIndex
-        //             ? weekDivs.map((div) =>
-        //                 div.id === divId ? { ...div, videoFile: videoFile } : div
-        //             )
-        //             : [...weekDivs]
-        //     )
-        // );
+        setVideoDivsArray((prevVideoDivsArray) =>
+            prevVideoDivsArray.map((week, wIndex) =>
+                wIndex === weekIndex
+                    ? {
+                        ...week,
+                        videos: week.videos.map((video) =>
+                            video.id === divId ? { ...video, videoFile: vidFile } : video
+                        ),
+                    }
+                    : week
+            )
+        );
       
     };
 
@@ -57,48 +66,65 @@ const CreateCourse = () => {
         console.log("Dynamic weekIndex:", weekIndex);
     };
 
-    const handleWeekTitleChange = (weekIndex, value) => {
-        // Handle Week Title input change
+     const handleWeekTitleChange = (weekIndex, e) => {
+
+        const title = e.target.value;
+        setVideoDivsArray((prevVideoDivsArray) =>
+          prevVideoDivsArray.map((week, index) =>
+            index === weekIndex ? { ...week, weekTitle: title } : week
+          )
+        );
     };
 
 
-    const handleVideoEditorChange = (weekIndex, id, value) => {
+     const handleVideoEditorChange = (weekIndex, divId, value) => {
         setVideoDivsArray((prevVideoDivsArray) =>
-          prevVideoDivsArray.map((weekDivs, index) =>
-            index === weekIndex
-              ? weekDivs.map((div) => (div.id === id ? { ...div, videoDesc: value } : div))
-              : weekDivs
-          )
+            prevVideoDivsArray.map((week, wIndex) =>
+                wIndex === weekIndex
+                    ? {
+                        ...week,
+                        videos: week.videos.map((video) =>
+                            video.id === divId ? { ...video, videoDesc: value } : video
+                        ),
+                    }
+                    : week
+            )
         );
       };
     
       const handleAddVideo = (weekIndex) => {
         setVideoDivsArray((prevVideoDivsArray) => {
-            const newId = Math.max(...prevVideoDivsArray[weekIndex].map((div) => div.id), 0) + 1;
-            const updatedWeeks = [...prevVideoDivsArray];
-            updatedWeeks[weekIndex] = [...updatedWeeks[weekIndex], { id: newId, videoDesc: '', videoFile: null }];
-            return updatedWeeks;
-        });
+            const newId =
+              Math.max(
+                ...prevVideoDivsArray[weekIndex].videos.map((video) => video.id),
+                0
+              ) + 1;
+      
+            return prevVideoDivsArray.map((week, wIndex) =>
+              wIndex === weekIndex
+                ? {
+                    ...week,
+                    videos: [...week.videos, { id: newId, videoDesc: '', videoFile: null }],
+                  }
+                : week
+            );
+          });
       };
       
-      const handleDeleteVideo = (weekIndex, id) => {
-        setVideoDivsArray((prevVideoDivsArray) => {
-          const updatedWeeks = prevVideoDivsArray.map((weekDivs, index) =>
-            index === weekIndex ? weekDivs.filter((div) => div.id !== id) : weekDivs
-          );
-      
-          if (updatedWeeks[weekIndex].length === 0) {
-            return prevVideoDivsArray;
-          }
-      
-          return updatedWeeks;
-        });
+      const handleDeleteVideo = (weekIndex, divId) => {
+        setVideoDivsArray((prevVideoDivsArray) =>
+            prevVideoDivsArray.map((week, wIndex) =>
+                wIndex === weekIndex
+                ? { ...week, videos: week.videos.filter((video) => video.id !== divId) }
+                : week
+            )
+        );
       };
     
       const handleWeeksChange = (event) => {
         const selectedWeeks = parseInt(event.target.value, 10);
         setWeeks(selectedWeeks);
-        setVideoDivsArray(Array.from({ length: selectedWeeks }, () => [{ id: 1, videoDesc: '', videoFile: null }]));
+        setVideoDivsArray(Array.from({ length: selectedWeeks }, (_, weekIndex) => createEmptyWeek()));
       };
 
       const handleSubmit = () => {
@@ -211,29 +237,29 @@ const CreateCourse = () => {
 
                                     <div className='admin-create-course-adding-videos-input'>
                                         <p>Week Title <span>*</span></p>
-                                        <input type="text" placeholder='Title for week' onChange={(e) => handleWeekTitleChange(weekIndex, e.target.value)}/>
+                                        <input type="text" placeholder='Title for week' onChange={(e) => handleWeekTitleChange(weekIndex, e)}/>
                                     </div>
                                 </div>
             
 
                                 <>
-                                    {videoDivsArray[weekIndex]?.map((div) => {
+                                    {videoDivsArray[weekIndex]?.videos.map((video) => {
 
                                         
                                         return(
-                                        <div key={div.id} className='admin-create-course-adding-videos-wrapper'>
+                                        <div key={video.id} className='admin-create-course-adding-videos-wrapper'>
                                             <div className='admin-create-course-adding-video'>
                                                 <div className='admin-create-course-adding-videos-file-video'>
                                                     <p>Upload video <span>*</span></p>
                                                     <div>
-                                                        <label htmlFor={`file-input-${div.id}`}>
+                                                        {/* <label htmlFor={`file-input-${div.id}`}>
                                                             <BsCloudUpload size={26} />
-                                                        </label>
+                                                        </label> */}
                                                         <input
-                                                            id={`file-input-${div.id}`}
+                                                            // id={`file-input-${div.id}`}
                                                             type='file'
                                                             accept='.mov, .mp4'
-                                                            onChange={handleFileInputChange(weekIndex, div.id)}                                                     
+                                                            onChange={(event) => handleFileInputChange(weekIndex, video.id, event)}                                               
                                                         />
                                                     </div>
                                                 </div>
@@ -242,7 +268,7 @@ const CreateCourse = () => {
                                                     <button onClick={() => handleAddVideo(weekIndex)}>
                                                         <IoAdd size={26} />
                                                     </button>
-                                                    <button onClick={() => handleDeleteVideo(weekIndex, div.id)}>
+                                                    <button onClick={() => handleDeleteVideo(weekIndex, video.id)}>
                                                         <CiCircleRemove size={26} />
                                                     </button>
                                                 </div>
@@ -250,9 +276,9 @@ const CreateCourse = () => {
                                             <div className='admin-create-course-adding-videos-text-area'>
                                                 <p>Add video description <span>*</span></p>
                                                 <ReactQuill
-                                                theme="snow"
-                                                value={div.videoDesc}
-                                                onChange={(value) => handleVideoEditorChange(weekIndex, div.id, value)}
+                                                    theme="snow"
+                                                    value={video.videoDesc}
+                                                    onChange={(value) => handleVideoEditorChange(weekIndex, video.id, value)}
                                                 />
                                             </div>
                                         </div>

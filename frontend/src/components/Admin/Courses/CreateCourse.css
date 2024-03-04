@@ -416,5 +416,5 @@
 }
 
 .admin-create-course-adding-videos-file-video>div>input{
-    display: none;
+    /* display: none; */
 }
