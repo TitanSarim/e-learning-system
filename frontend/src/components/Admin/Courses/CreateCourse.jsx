@@ -7,6 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import { IoAdd } from "react-icons/io5";
 import { CiCircleRemove } from "react-icons/ci";
 import { BsCloudUpload } from "react-icons/bs";
+import { toast } from 'react-toastify';
 
 
 import './CreateCourse.css'
@@ -32,10 +33,59 @@ const CreateCourse = () => {
         Array.from({ length: weeks }, (_, weekIndex) => createEmptyWeek())
     );
 
+    const handleWeeksChange = (event) => {
+        const selectedWeeks = parseInt(event.target.value, 10);
+        setWeeks(selectedWeeks);
+        setVideoDivsArray(Array.from({ length: selectedWeeks }, (_, weekIndex) => createEmptyWeek()));
+    };
+
     const handleCourseEditorChange = (value) => {
         setCourseDesc(value);
     };
 
+    const handleSeqByWeekChange = (weekIndex, e) => {
+        
+        setSeqByWeek(weekIndex)
+        console.log("Dynamic weekIndex:", weekIndex);
+    };
+
+    const handleThumbnailChange = (e) => {
+        const selectedFile = e.target.files[0];
+
+        if (selectedFile) {
+            const image = new Image();
+
+            image.onload = () => {
+                const { naturalWidth, naturalHeight } = image;
+
+                console.log("naturalWidth", naturalWidth, 'h', naturalHeight)
+
+                // Check if dimensions are within the specified ranges
+                if (
+                    (naturalWidth >= 640 && naturalWidth <= 700) &&
+                    (naturalHeight >= 280 && naturalHeight <= 330)
+                ) {
+                    setThumbnailFile(selectedFile);
+                    toast.success('Image selected')
+                } else {
+                    toast.error('Image dimensions must be between 280-330px width and 640-700px height');
+                    setThumbnailFile(null)
+                }
+            };
+
+            image.src = URL.createObjectURL(selectedFile);
+        }
+    };
+
+    const handleWeekTitleChange = (weekIndex, e) => {
+
+        const title = e.target.value;
+        setVideoDivsArray((prevVideoDivsArray) =>
+          prevVideoDivsArray.map((week, index) =>
+            index === weekIndex ? { ...week, weekTitle: title } : week
+          )
+        );
+    };
 
     const handleFileInputChange = (weekIndex, divId, event) => {
         const vidFile = event.target.files[0]
@@ -60,24 +110,7 @@ const CreateCourse = () => {
       
     };
 
-    const handleSeqByWeekChange = (weekIndex, e) => {
-        
-        setSeqByWeek(weekIndex)
-        console.log("Dynamic weekIndex:", weekIndex);
-    };
-
-     const handleWeekTitleChange = (weekIndex, e) => {
-
-        const title = e.target.value;
-        setVideoDivsArray((prevVideoDivsArray) =>
-          prevVideoDivsArray.map((week, index) =>
-            index === weekIndex ? { ...week, weekTitle: title } : week
-          )
-        );
-    };
-
-
-     const handleVideoEditorChange = (weekIndex, divId, value) => {
+    const handleVideoEditorChange = (weekIndex, divId, value) => {
         setVideoDivsArray((prevVideoDivsArray) =>
             prevVideoDivsArray.map((week, wIndex) =>
                 wIndex === weekIndex
@@ -90,9 +123,9 @@ const CreateCourse = () => {
                     : week
             )
         );
-      };
+    };
     
-      const handleAddVideo = (weekIndex) => {
+    const handleAddVideo = (weekIndex) => {
         setVideoDivsArray((prevVideoDivsArray) => {
             const newId =
               Math.max(
@@ -109,9 +142,9 @@ const CreateCourse = () => {
                 : week
             );
           });
-      };
+    };
       
-      const handleDeleteVideo = (weekIndex, divId) => {
+    const handleDeleteVideo = (weekIndex, divId) => {
         setVideoDivsArray((prevVideoDivsArray) =>
             prevVideoDivsArray.map((week, wIndex) =>
                 wIndex === weekIndex
@@ -119,13 +152,11 @@ const CreateCourse = () => {
                 : week
             )
         );
-      };
+    };
     
-      const handleWeeksChange = (event) => {
-        const selectedWeeks = parseInt(event.target.value, 10);
-        setWeeks(selectedWeeks);
-        setVideoDivsArray(Array.from({ length: selectedWeeks }, (_, weekIndex) => createEmptyWeek()));
-      };
+    const getExtension = (fileName) => {
+        return fileName?.split('.').pop().toUpperCase();
+    };
 
       const handleSubmit = () => {
         
@@ -211,10 +242,17 @@ const CreateCourse = () => {
                     <div className='admin-create-course-file-image'>
                         <p>Cource Thumbnail <span>*</span></p>
                         <div>
-                            <label for="file-input-thumbnail">
-                                <BsCloudUpload size={26} />
-                            </label>
-                            <input type='file' id="file-input-thumbnail" accept='image/*' onChange={(e) => setThumbnailFile(e.target.files[0])}/>
+                            <span>
+                                <label for="file-input-thumbnail">
+                                    <BsCloudUpload size={26} />
+                                </label>
+                                <input type='file' id="file-input-thumbnail" accept='image/*'  onChange={handleThumbnailChange}/>
+                            </span>
+                            {!thumbnailFile ? 
+                                <p>No File <span>Image height greater then 280px and smaller then 330px, image width greater then 640px and smaller then 700px</span> </p> 
+                                : 
+                                <img src={URL.createObjectURL(thumbnailFile)} alt='Thumbnail'/>
+                            }
                         </div>
                     </div>
                     
@@ -252,16 +290,20 @@ const CreateCourse = () => {
                                                 <div className='admin-create-course-adding-videos-file-video'>
                                                     <p>Upload video <span>*</span></p>
                                                     <div>
-                                                        {/* <label htmlFor={`file-input-${div.id}`}>
-                                                            <BsCloudUpload size={26} />
-                                                        </label> */}
                                                         <input
-                                                            // id={`file-input-${div.id}`}
                                                             type='file'
                                                             accept='.mov, .mp4'
                                                             onChange={(event) => handleFileInputChange(weekIndex, video.id, event)}                                               
                                                         />
+                                                        {!video.videoFile ? 
+                                                        
+                                                        <p>No File</p> 
+                                                        :
+                                                        <p><span>{video.videoFile?.name.substring(0, 3)}...</span> <span>{getExtension(video.videoFile?.name)}</span></p>
+                                                        }
+                                                        
                                                     </div>
+                                                   
                                                 </div>
                                                 <div className='admin-create-course-adding-videos-btn'>
                                                     <p>Add another video</p>
@@ -290,9 +332,9 @@ const CreateCourse = () => {
                         )
                     })}
 
-                    <div>
+                    <div className='admin-create-course-submit-btn'>
                         <button onClick={handleSubmit}> 
-                            click
+                            Create Course
                         </button>
                     </div>
 

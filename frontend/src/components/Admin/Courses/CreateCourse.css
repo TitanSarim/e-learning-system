@@ -7,7 +7,7 @@
     width: 75%;
     height: auto;
     max-height: 1841px;
-    min-height: 1300px;
+    min-height: 1450px;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
@@ -178,12 +178,38 @@
 .admin-create-course-file-image>div{
     position: relative;
     display: flex;
+    flex-direction: row;
     align-items: flex-start;
-    justify-content: flex-start;
     width: 90%;
+    gap: 20px;
 }
 
-.admin-create-course-file-image>div>label{
+.admin-create-course-file-image>div>p{
+    border: 1px solid rgb(250, 130, 130);
+    border-radius: 6px;
+    width: 100%;
+    font-size: 13px;
+    text-align: center;
+    padding: 8px 0px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-create-course-file-image>div>img{
+    width: 80px;
+    height: 45px;
+}
+
+.admin-create-course-file-image>div>span{
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 20%;
+}
+
+.admin-create-course-file-image>div>span>label{
     border: 2px dotted rgb(14, 18, 37);
     padding: 5px 60px;
     cursor: pointer;
@@ -193,12 +219,12 @@
     border-radius: 12px;
 }
 
-.admin-create-course-file-image>div>label>svg{
+.admin-create-course-file-image>div>span>label>svg{
     position: relative;
     top: 2px;
 }
 
-.admin-create-course-file-image>div>input{
+.admin-create-course-file-image>div>span>input{
     display: none;
 }
 
@@ -399,22 +425,59 @@
     color: tomato;
 }
 
+/* input::file-selector-button */
+
 .admin-create-course-adding-videos-file-video>div{
-    border: 2px dotted rgb(14, 18, 37);  
-    border-radius: 12px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+.admin-create-course-adding-videos-file-video>div>input{
+   color: transparent;
 }
 
-.admin-create-course-adding-videos-file-video>div>label{
+.admin-create-course-adding-videos-file-video>div>input::-webkit-file-upload-button{
+    
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 15px 25px;
+    font-size: 16px;
+}
+
+.admin-create-course-adding-videos-file-video>div>p{
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 6px;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    cursor: pointer;
-    padding: 10px 8px;
+    padding: 6px 10px;
+    width: 80px;
 }
 
-.admin-create-course-adding-videos-file-video>div>input{
-    /* display: none; */
+
+.admin-create-course-submit-btn{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-create-course-submit-btn button{
+    background-color: rgb(14, 18, 37);
+    color: white;
+    font-size: 17px;
+    border: none;
+    outline: line;
+    margin: 20px 0px;
+    padding: 12px 25px;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: all 500ms;
+}
+
+.admin-create-course-submit-btn button:hover{
+    transform: scale(1.01);
 }
