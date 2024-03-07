@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SideBar from '../SideBar/SideBar'
 import NavBar from '../NavBar/NavBar'
 import { Link } from 'react-router-dom'
@@ -8,12 +8,17 @@ import { IoAdd } from "react-icons/io5";
 import { CiCircleRemove } from "react-icons/ci";
 import { BsCloudUpload } from "react-icons/bs";
 import { toast } from 'react-toastify';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {adminCreateCourse, clearErrors} from '../../../actions/CoursesAction' 
 
 import './CreateCourse.css'
 
 
 const CreateCourse = () => {
+
+    const dispatch = useDispatch()
+
+    const {error} = useSelector((state)=>state.adminCourses);
 
 
     const [courseTitle, setCourseTitle] = useState('');
@@ -158,8 +163,8 @@ const CreateCourse = () => {
         return fileName?.split('.').pop().toUpperCase();
     };
 
-      const handleSubmit = () => {
-        
+    const handleSubmit = () => {
+    
         const formData = {
             courseTitle,
             courseCategory,
@@ -171,7 +176,16 @@ const CreateCourse = () => {
         }
 
         console.log("formData", formData)
-      }
+        
+        dispatch(adminCreateCourse(formData))
+    }
+
+    useEffect(() => {
+        if(error){
+            toast.error(error);
+            dispatch(clearErrors());
+        }
+    })
 
   return (
     <div className='admin-container'>

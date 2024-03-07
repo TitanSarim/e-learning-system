@@ -5,12 +5,14 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import {userReducer, AdminUserReducer} from './redcuers/UserReducer'
-
+import {AdminCourseReducer} from './redcuers/CourseReducer'
 
 const reducer = combineReducers({
 
     user: userReducer,
     adminUsers: AdminUserReducer,
+
+    adminCourses: AdminCourseReducer,
 
 });
 
