@@ -20,10 +20,10 @@ export const adminCreateCourse = (formData) => async (dispatch) => {
             config
         )
 
-        dispatch({type: CREATE_COURSES_SUCCESS, payload: data.courses});
+        dispatch({type: CREATE_COURSES_SUCCESS, payload: data?.courses});
         
     } catch (error) {
-        dispatch({type: CREATE_COURSES_FAIL, payload: error.response.data.message});
+        dispatch({type: CREATE_COURSES_FAIL, payload: error.response.data?.message});
     }
 
 }

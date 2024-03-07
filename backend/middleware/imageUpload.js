@@ -4,7 +4,6 @@ const path = require('path');
 
 
 const resolveBlobName = (req, file) => {
-    console.log("file", file)
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     return `${file.fieldname}_${uniqueSuffix}${path.extname(file.originalname)}`;
 };

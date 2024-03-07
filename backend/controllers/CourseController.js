@@ -11,13 +11,11 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
 
     try {
         
-        const {courseTitle, courseCategory, courseDesc, tags, weeks} = req.body;
+        const {courseTitle, courseCategory, courseDesc, tags, weeks, videoDivsArray} = req.body;
 
-        const images = req.file.fieldname
+        const images = req.file.url
 
-        console.log("images", images)
-
-        console.log("courseTitle", courseTitle)
+        console.log("videoDivsArray", videoDivsArray)
 
     } catch (error) {
         return next(new errorHandler(error, 500));
