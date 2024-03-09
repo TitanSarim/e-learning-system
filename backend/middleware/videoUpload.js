@@ -1,28 +1,34 @@
-const aws = require('aws-sdk')
-const multer = require('multer')
-const multerS3 = require('multer-s3');
-
-const s3Config = new aws.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SCRET_KEY,
-    Bucket: process.env.AWS_S3_BUCKET_NAME
-});
-
-const avatarS3Config = multerS3({
-    s3: s3Config,
-    bucket: process.env.AWS_S3_BUCKET_NAME,
-    acl: 'public-read',
-    metadata: function (req, file, cb) {
-        cb(null, { fieldName: file.fieldname });
-    },
-    key: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, "elearningplatform/courses/videos/" + file.fieldname + '_' + uniqueSuffix + path.extname(file.originalname))
-    }
-});
+const multer = require('multer');
+const {MulterAzureStorage } = require('multer-azure-blob-storage');
+const path = require('path');
 
 
+const resolveBlobName = (req, file) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    return `${file.fieldname}_${uniqueSuffix}${path.extname(file.originalname)}`;
+};
 
-exports.imageUpload = multer({
-    storage: avatarS3Config,
+const resolveMetadata = (req, file) => {
+    return { fieldName: file.fieldname };
+};
+
+const resolveContentSettings = (req, file) => {
+    return { contentType: file.mimetype };
+};
+
+const azureStorageConfig = {
+    connectionString: `DefaultEndpointsProtocol=${process.env.AZURE_STORAGE_DEFAULT_ENDPOINTS_PROTOCOL};AccountName=${process.env.AZURE_STORAGE_ACCOUNT_NAME};AccountKey=${process.env.AZURE_STORAGE_ACCOUNT_KEY};EndpointSuffix=${process.env.AZURE_STORAGE_ENDPOINT_SUFFIX}`,
+    accountName: process.env.AZURE_STORAGE_ACCOUNT_NAME,
+    containerName: process.env.AZURE_STORAGE_VIDEO_CONTAINER_NAME,
+    containerAccessLevel: 'blob',
+    blobName: resolveBlobName,
+    metadata: resolveMetadata,
+    contentSettings: resolveContentSettings,
+    urlExpirationTime: 60,
+};
+
+
+exports.filesUpload = multer({
+    storage: azureStorageConfig,
+    limits: { fileSize: 10000 * 1024 * 1024 * 1024 * 1024 },
 })
