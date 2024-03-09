@@ -1,5 +1,12 @@
 import { BlobServiceClient } from '@azure/storage-blob';
+import md5 from 'js-md5';
 
+const calculateMD5 = (data) => {
+    const arrayBuffer = new TextEncoder().encode(data);
+    const hashArray = md5.arrayBuffer(arrayBuffer);
+    const hashBase64 = btoa(String.fromCharCode(...new Uint8Array(hashArray)));
+    return hashBase64;
+  };
 
 export const VideoUploadToAzureContainer = async (file) => {
     const storageAccountName = "elearningplateform";
@@ -12,7 +19,23 @@ export const VideoUploadToAzureContainer = async (file) => {
 
     const options = { blobHTTPHeaders: { blobContentType: file.type } };
 
-    await blobClient.uploadBrowserData(file, options);
+    const chunkSize = 2 * 1024 * 1024; // 2MB chunks
+    const totalChunks = Math.ceil(file.size / chunkSize);
+    console.log("totalChunks", totalChunks)
+
+    for (let i = 0; i < totalChunks; i++) {
+        const start = i * chunkSize;
+        const end = Math.min((i + 1) * chunkSize, file.size);
+        const chunk = file.slice(start, end);
+
+        const base64Md5 = calculateMD5(await chunk.arrayBuffer());
+
+        await blobClient.stageBlock(btoa(String(i).padStart(6, '0')), chunk, chunk.size, { contentMD5: base64Md5 });
+    }
+
+    const blockList = Array.from({ length: totalChunks }, (_, i) => btoa(String(i).padStart(6, '0')));
+    console.log("blockList", blockList)
+    await blobClient.commitBlockList(blockList);
 
     return blobClient.url;
 };
