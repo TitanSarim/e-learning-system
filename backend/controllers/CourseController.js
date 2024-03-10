@@ -1,25 +1,49 @@
-const { User } = require('../models'); // Adjust the path based on your project structure
+const { Course } = require('../models'); // Adjust the path based on your project structure
 const bcrypt = require('bcryptjs');
 const generatedToken = require("../utils/jwtToken")
 const setTokenCookie = require("../utils/sendToken")
 const errorHandler = require('../utils/errorHandler');
 const catchAsyncError = require('../middleware/catchAsyncError');
-
+const {generateSlug} = require('../middleware/GenerateSlug');
 
 const createCourse  = catchAsyncError(async (req, res, next) => {
 
 
     try {
         
-        const {courseTitle, courseCategory, courseDesc, tags, weeks, videoDivsArray} = req.body;
+        const userId = req.user.userid
 
-        // const images = req.file.url
-        const videos = req.files;
+        const {courseTitle, courseCategory, courseDesc, tags, weeks, thumbnailUrl, videoUrls} = req.body;
 
-        console.log("courseTitle",courseTitle)
-        console.log("videos", videos)
-        const array = JSON.stringify(videoDivsArray)
-        console.log("videoDivsArray", array)
+        const slug = generateSlug(courseTitle, userId)
+
+        const Admincourses  = await Course.create({
+            slug: slug,
+            course_title: courseTitle,
+            category: courseCategory,
+            tags: tags,
+            timeline: weeks,
+            course_desc: {desc: courseDesc},
+            course_thumbnail: {
+                url: thumbnailUrl,
+            },
+            course_content: {
+                data: videoUrls
+            },
+            views: "0",
+            price: "0",
+            inrolled_by: { id: ["1", "2"]},
+            teacher_name: "Sarim",
+            comments: "0",
+            reviews: "0"
+        })
+
+        console.log("course", Admincourses)
+        res.status(201).json({
+            success: true,
+            message: 'Course created successfully',
+            Admincourses: Admincourses,
+          });
 
     } catch (error) {
         return next(new errorHandler(error, 500));

@@ -6,7 +6,7 @@ import {
     CLEAR_ERRORS,
 } from '../constants/CoursesConstants' 
 
-export const AdminCourseReducer = (state = {courses: []}, action) =>{
+export const AdminCourseReducer = (state = {Admincourses: []}, action) =>{
 
     switch(action.type){
 
@@ -23,7 +23,7 @@ export const AdminCourseReducer = (state = {courses: []}, action) =>{
                 ...state,
                 loading: false,
                 isAuthenticated: true,
-                courses: state.courses,
+                Admincourses: state.Admincourses,
             };
 
 
@@ -32,7 +32,7 @@ export const AdminCourseReducer = (state = {courses: []}, action) =>{
                 ...state,
                 loading: false,
                 isAuthenticated: false,
-                courses: null,
+                Admincourses: null,
                 error: action.payload,
             };
 

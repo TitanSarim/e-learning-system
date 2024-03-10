@@ -7,7 +7,7 @@ const {filesUpload} = require('../middleware/videoUpload')
 const router = express.Router();
 
 
-router.route("/createCourse").post(createCourse, isAuthenticatedUser)
+router.route("/createCourse").post(isAuthenticatedUser, createCourse)
 
 module.exports = router
 

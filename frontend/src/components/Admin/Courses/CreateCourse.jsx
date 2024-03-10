@@ -20,6 +20,7 @@ const CreateCourse = () => {
 
     const {error} = useSelector((state)=>state.adminCourses);
 
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     const [courseTitle, setCourseTitle] = useState('');
     const [courseCategory, setCourseCategory] = useState('Design');
@@ -33,6 +34,9 @@ const CreateCourse = () => {
         weekTitle: '',
         videos: [{ id: 1, videoDesc: '', videoFile: null }],
       });
+
+
+      console.log('uploadProgress', uploadProgress)
     
     const [videoDivsArray, setVideoDivsArray] = useState(
         Array.from({ length: weeks }, (_, weekIndex) => createEmptyWeek())
@@ -176,8 +180,12 @@ const CreateCourse = () => {
         }
 
         console.log("formData", formData)
+
+        const onVideoUploadProgress = (progress) => {
+            setUploadProgress(progress);
+        };
         
-        dispatch(adminCreateCourse(formData))
+        dispatch(adminCreateCourse(formData, onVideoUploadProgress))
     }
 
     useEffect(() => {
