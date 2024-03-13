@@ -11,6 +11,8 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import {adminCreateCourse, clearErrors} from '../../../actions/CoursesAction' 
 import ProgressLoader from '../../Utils/ProgressLoader';
+import { MdErrorOutline } from "react-icons/md";
+import { RiArrowRightSLine } from "react-icons/ri";
 
 import './CreateCourse.css'
 
@@ -209,7 +211,6 @@ const CreateCourse = () => {
         return fileName?.split('.').pop().toUpperCase();
     };
 
-    console.log("videoDivsArrayAuthError", videoDivsArrayAuthError)
     const handleSubmit = () => {
 
         if (!courseTitle) {
@@ -224,41 +225,31 @@ const CreateCourse = () => {
         }else if (!thumbnailFile) {
             setThumbnailFileAuthError({ value: "Thumbnail is required", error: true });
             return
-        } 
+        }
         
+
         const hasEmptyFields = videoDivsArray.some((week, weekIndex) =>
             week.videos.some((video, videoIndex) => {
+                const errors = [];
                 if (!week.weekTitle) {
-                    if (Array.isArray(videoDivsArrayAuthError) && !videoDivsArrayAuthError?.some((errorData) => errorData.weekIndex === weekIndex && errorData.videoIndex === videoIndex && errorData.error === 'Title is required')) {
-                        setVideoDivsArrayAuthError((prevErrors) => [
-                            ...prevErrors,
-                            { weekIndex, videoIndex, error: 'Title is required' },
-                        ]);
-                        setVideoDivsArrayError(true);
-                    }
-                    return true;
+                    errors.push({ weekIndex, videoIndex, error: 'Title is required' });
                 }
                 if (!video.videoFile) {
-                    if (Array.isArray(videoDivsArrayAuthError) && !videoDivsArrayAuthError?.some((errorData) => errorData.weekIndex === weekIndex && errorData.videoIndex === videoIndex && errorData.error === 'Video file is required')) {
-                        setVideoDivsArrayAuthError((prevErrors) => [
-                            ...prevErrors,
-                            { weekIndex, videoIndex, error: 'Video file is required' },
-                        ]);
-                        setVideoDivsArrayError(true);
-                    }
-                    return true;
+                    errors.push({ weekIndex, videoIndex, error: 'Video file is required' });
                 }
                 if (!video.videoDesc) {
-                    if (Array.isArray(videoDivsArrayAuthError) && !videoDivsArrayAuthError?.some((errorData) => errorData.weekIndex === weekIndex && errorData.videoIndex === videoIndex && errorData.error === 'Video description is required')) {
-                        setVideoDivsArrayAuthError((prevErrors) => [
-                            ...prevErrors,
-                            { weekIndex, videoIndex, error: 'Video description is required' },
-                        ]);
-                        setVideoDivsArrayError(true);
-                    }
-                    return true;
+                    errors.push({ weekIndex, videoIndex, error: 'Video description is required' });
                 }
-                return false;
+
+                if (errors.length > 0) {
+                    setVideoDivsArrayAuthError((prevErrors) => {
+                        return Array.isArray(prevErrors) ? [...prevErrors, ...errors] : [...errors];
+                    });
+                    setVideoDivsArrayError(true);
+                    return true; 
+                }
+
+                return false; 
             })
         );
 
@@ -473,23 +464,28 @@ const CreateCourse = () => {
 
                         { courseTitleAuthError.error === true || tagsAuthError.error === true || courseDescAuthError.error === true || thumbnailFileAuthError.error === true ? 
                             (
-                               <div>
-                                    <p>{courseTitleAuthError?.value}</p>
-                                    <p>{tagsAuthError?.value}</p>
-                                    <p>{courseDescAuthError?.value}</p>
-                                    <p>{thumbnailFileAuthError?.value}</p>
+                               <div className='admin-create-course-errors'>
+                                    {courseTitleAuthError.error === true ?  (<p><MdErrorOutline size={24}/> {courseTitleAuthError?.value}</p>) : ""}
+                                    {tagsAuthError.error === true ? (<p><MdErrorOutline size={24}/> {tagsAuthError?.value}</p>) : ""}
+                                    {courseDescAuthError.error === true ? (<p><MdErrorOutline size={24}/> {courseDescAuthError?.value}</p>) : ""}
+                                    {thumbnailFileAuthError.error === true ? (<p><MdErrorOutline size={24}/> {thumbnailFileAuthError?.value}</p>):""}
                                </div> 
                             ) : ""}
 
                         {videoDivsArrayError === true ? 
                             <>
-                            {videoDivsArrayAuthError?.map((errorData, index) => (
-                                <div key={index}>
-                                    <p>Week {errorData.weekIndex}</p>
-                                    <p>Video {errorData.videoIndex}</p>
-                                    <p>Error: {errorData.error}</p>
-                                </div>
-                            ))}
+                                {videoDivsArrayError && Array.isArray(videoDivsArrayAuthError) && videoDivsArrayAuthError.length > 0 && (
+                                    <div className='admin-create-course-adding-videos-errors-container'>
+                                        {videoDivsArrayAuthError.map((errorData, index) => (
+                                            <div key={index} className='admin-create-course-adding-videos-errors'>
+                                                <MdErrorOutline size={24}/>
+                                                <p>Error at week {errorData.weekIndex+1} <RiArrowRightSLine size={25}/></p>
+                                                <p>video {errorData.videoIndex+1} <RiArrowRightSLine size={25}/> </p>
+                                                <p>error: {errorData.error}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </>
                             : ""
                         }

@@ -482,6 +482,48 @@
     transform: scale(1.01);
 }
 
+/* error container */
+.admin-create-course-adding-videos-errors-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-create-course-adding-videos-errors{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid tomato;
+    border-radius: 12px;
+    padding: 8px 12px;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    color: #a52424;
+}
+
+.admin-create-course-adding-videos-errors p{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.admin-create-course-errors p{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid tomato;
+    border-radius: 12px;
+    padding: 8px 12px;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    color: #a52424;
+}
+
+
 /* progress loader */
 .admin-allcourses-container-progress-loader{
     position: relative;
@@ -496,6 +538,7 @@
     margin: auto;
     border-radius: 12px;
 }
+
 
 .admin-allcourses-container-progress-loader-progressbar{
     height: 15px;
