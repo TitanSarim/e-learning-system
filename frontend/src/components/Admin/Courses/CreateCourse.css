@@ -7,7 +7,7 @@
     width: 75%;
     height: auto;
     max-height: 1841px;
-    min-height: 1450px;
+    min-height: 1600px;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
@@ -15,7 +15,7 @@
     padding: 30px 30px 30px 30px;
     border-radius: 12px;
     box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
-    margin-bottom: 40px;
+    margin-bottom: 90px;
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -80,16 +80,45 @@
     outline: none;
 }
 
-.admin-create-course-input-title>span{
+.admin-create-course-input-title>div{
     font-size: 15px;
     position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-end;
     justify-content: flex-end;
     width: 91%;
+    gap: 20px;
+}
+.admin-create-course-input-title>div>span{
+    color: tomato;
+    font-weight: 500;
+    font-size: 19px;
+}
+.admin-create-course-input-title-excellent{
+    color: rgb(37, 156, 83);
+    font-weight: 500;
+    font-size: 20px;
 }
 
+.admin-create-course-input-title-short{
+    color: tomato;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+
+.admin-create-course-input-title-good-ln{
+    color: rgb(37, 156, 83);
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.admin-create-course-input-title-short-ln{
+    color: tomato;
+    font-size: 18px;
+    font-weight: 500;
+}
 
 .admin-create-course-input-containers{
     position: relative;
@@ -100,12 +129,20 @@
     justify-content: space-between;
 }
 
-.admin-create-course-select, .admin-create-course-input{
+.admin-create-course-input{
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 2px;
     width: 30%;
+}
+
+.admin-create-course-select{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 18%;
 }
 
 .admin-create-course-select>p, .admin-create-course-input>p{
@@ -457,6 +494,50 @@
     width: 80px;
 }
 
+.admin-create-course-adding-videos-title{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.admin-create-course-adding-videos-title>p{
+    font-size: 16px;
+    color: rgb(14, 18, 37);
+    font-weight: 500;
+}
+
+.admin-create-course-adding-videos-title>p>span{
+    color: tomato;
+}
+
+
+.admin-create-course-adding-videos-title>div{
+    width: 100%;
+}
+
+.admin-create-course-adding-videos-title>div>p{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 3px 0px;
+    font-size: 19px;
+    color: rgb(23, 44, 53);
+}
+
+.admin-create-course-adding-videos-title>div>input{
+    height: 35px;
+    padding: 4px 6px;
+    font-size: 16px;
+    color: rgb(14, 18, 37);
+    outline: none;
+    width: 100%;
+}
 
 .admin-create-course-submit-btn{
     width: 100%;

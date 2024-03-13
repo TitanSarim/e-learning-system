@@ -12,12 +12,13 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
     try {
         
         const userId = req.user.userid
-
-        const {courseTitle, courseCategory, courseDesc, tags, weeks, thumbnailUrl, videoUrls} = req.body;
+        const teacherName = req.user.username
+        const {courseTitle, courseCategory, courseDesc, price, tags, weeks, thumbnailUrl, videoUrls} = req.body;
 
         const slug = generateSlug(courseTitle, userId)
 
         const Admincourses  = await Course.create({
+            teacherId: userId,
             slug: slug,
             course_title: courseTitle,
             category: courseCategory,
@@ -31,9 +32,9 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
                 data: videoUrls
             },
             views: "0",
-            price: "0",
+            price: price,
             inrolled_by: { id: ["1", "2"]},
-            teacher_name: "Sarim",
+            teacher_name: teacherName,
             comments: "0",
             reviews: "0"
         })

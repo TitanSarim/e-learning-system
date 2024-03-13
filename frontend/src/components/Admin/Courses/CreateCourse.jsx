@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SideBar from '../SideBar/SideBar'
 import NavBar from '../NavBar/NavBar'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { IoAdd } from "react-icons/io5";
@@ -20,6 +20,7 @@ import './CreateCourse.css'
 const CreateCourse = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const {error, loading, isSuccess} = useSelector((state)=>state.adminCourses);
 
@@ -28,6 +29,7 @@ const CreateCourse = () => {
     const [courseTitle, setCourseTitle] = useState('');
     const [courseCategory, setCourseCategory] = useState('Design');
     const [tags, setTags] = useState('');
+    const [price, setPrice] = useState('');
     const [weeks, setWeeks] = useState(1);
     const [seqByWeek, setSeqByWeek] = useState();
     const [courseDesc, setCourseDesc] = useState('')
@@ -35,15 +37,18 @@ const CreateCourse = () => {
 
     const createEmptyWeek = () => ({
         weekTitle: '',
-        videos: [{ id: 1, videoDesc: '', videoFile: null }],
+        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null }],
       });
     
     const [videoDivsArray, setVideoDivsArray] = useState(
         Array.from({ length: weeks }, (_, weekIndex) => createEmptyWeek())
     );
 
+    const [errorTitleMessage, setTitleErrorMessage] = useState('');
+    const [titleHasSpecialChar, setTitleHasSpecialChar] = useState('');
     const [courseTitleAuthError, setCourseTitleAuthError] = useState({ value: '', error: false });
     const [tagsAuthError, setTagsAuthError] = useState({ value: '', error: false });
+    const [priceAuthError, setPriceAuthError] = useState({ value: '', error: false });
     const [courseDescAuthError, setCourseDescAuthError] = useState({ value: '', error: false });
     const [thumbnailFileAuthError, setThumbnailFileAuthError] = useState({ value: null, error: false });
     const [videoDivsArrayError, setVideoDivsArrayError] = useState(false);
@@ -51,12 +56,40 @@ const CreateCourse = () => {
 
 
     const handleCourseTitle = (e) => {
-        const title = e.target.value
+        const title = e.target.value.slice(0, 75);         
         setCourseTitle(title)
 
-        if(courseTitle){
+
+        if (title.length > 75) {
+            setTitleErrorMessage('Title cannot exceed 75 characters');
+            return;
+        }
+
+        if (title) {
+            setTitleErrorMessage('');
             setCourseTitleAuthError({ value: "", error: false});
         }
+
+
+        const titleLength = title.length;
+
+        const specialCharsRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        const hasSpecialChars = specialCharsRegex.test(title);
+
+        if(hasSpecialChars){
+            setTitleHasSpecialChar("Special characters are not allowed")
+        }else if(!hasSpecialChars){
+            setTitleHasSpecialChar("")
+        }       
+        
+        if (titleLength < 40) {
+            setTitleErrorMessage('Short Title');
+        } else if (titleLength > 60) {
+            setTitleErrorMessage('Long Title');
+        } else {
+            setTitleErrorMessage('Excellent');
+        }
+
     }
 
     const handleCourseTags = (e) => {
@@ -73,6 +106,15 @@ const CreateCourse = () => {
         setWeeks(selectedWeeks);
         setVideoDivsArray(Array.from({ length: selectedWeeks }, (_, weekIndex) => createEmptyWeek()));
     };
+
+    const handlePriceChange = (e) => {
+        const price = e.target.value
+        setPrice(price)
+
+        if(price){
+            setPriceAuthError({ value: "", error: false});
+        }
+    }
 
     const handleCourseEditorChange = (value) => {
         setCourseDesc(value);
@@ -158,6 +200,34 @@ const CreateCourse = () => {
       
     };
 
+    const handleVideoTitleChange = (weekIndex, divId, e) => {
+
+        const videoTitle = e.target.value;
+
+        if (videoTitle.length > 75) {
+            // setTitleErrorMessage('Title cannot exceed 75 characters');
+            return;
+        }
+
+        setVideoDivsArray((prevVideoDivsArray) =>
+            prevVideoDivsArray.map((week, wIndex) =>
+                wIndex === weekIndex
+                    ? {
+                        ...week,
+                        videos: week.videos.map((video) =>
+                            video.id === divId ? { ...video, videoTitle: videoTitle } : video
+                        ),
+                    }
+                    : week
+            )
+        );
+
+        setVideoDivsArrayAuthError((prevErrors) => ({
+            ...prevErrors,
+            error: false,
+        }));
+    };
+
     const handleVideoEditorChange = (weekIndex, divId, value) => {
         setVideoDivsArray((prevVideoDivsArray) =>
             prevVideoDivsArray.map((week, wIndex) =>
@@ -190,7 +260,7 @@ const CreateCourse = () => {
               wIndex === weekIndex
                 ? {
                     ...week,
-                    videos: [...week.videos, { id: newId, videoDesc: '', videoFile: null }],
+                    videos: [...week.videos, { id: newId, videoDesc: '', videoTitle: '', videoFile: null }],
                   }
                 : week
             );
@@ -225,6 +295,12 @@ const CreateCourse = () => {
         }else if (!thumbnailFile) {
             setThumbnailFileAuthError({ value: "Thumbnail is required", error: true });
             return
+        }else if(titleHasSpecialChar){
+            setCourseTitleAuthError({ value: "Special Characters are not allowed", error: true });
+            return
+        }else if(!price){
+            setPriceAuthError({ value: "Price is required", error: true });
+            return
         }
         
 
@@ -236,6 +312,8 @@ const CreateCourse = () => {
                 }
                 if (!video.videoFile) {
                     errors.push({ weekIndex, videoIndex, error: 'Video file is required' });
+                }if(!video.videoTitle){
+                    errors.push({ weekIndex, videoIndex, error: 'Video title is required' });
                 }
                 if (!video.videoDesc) {
                     errors.push({ weekIndex, videoIndex, error: 'Video description is required' });
@@ -261,9 +339,10 @@ const CreateCourse = () => {
         const formData = {
             courseTitle,
             courseCategory,
+            courseDesc,
+            price,
             tags,
             weeks,
-            courseDesc,
             thumbnailFile,
             videoDivsArray,
         }
@@ -278,14 +357,13 @@ const CreateCourse = () => {
         dispatch(adminCreateCourse(formData, onVideoUploadProgress, ))
 
         if(isSuccess === true){
-           
+            // window.location.reload()
+            // navigate("/admin/all-courses")
+            toast.success("Course Created")
         }
     }
 
     useEffect(() => {
-        if(isSuccess){
-            toast.success("Course Created")
-        }
         if(error){
             toast.error(error);
             dispatch(clearErrors());
@@ -324,7 +402,11 @@ const CreateCourse = () => {
                         <div className='admin-create-course-input-title'>
                             <p>Course Title <span>*</span></p>
                             <input type='text' placeholder='Course Title' value={courseTitle} onChange={(e) => handleCourseTitle(e)}/>
-                            <span>0/60</span>
+                            <div>
+                                {titleHasSpecialChar ? (<span>{titleHasSpecialChar}</span>) : ""}
+                                {errorTitleMessage === "Short Title" || errorTitleMessage === "Long Title" ? <p className='admin-create-course-input-title-short'>{errorTitleMessage}</p> : <p className='admin-create-course-input-title-excellent'>{errorTitleMessage}</p>}
+                                <p>{errorTitleMessage === "Short Title" || errorTitleMessage === "Long Title" ? <span className='admin-create-course-input-title-short-ln'>{courseTitle.length}</span> : <span className='admin-create-course-input-title-good-ln'>{courseTitle.length}</span>}/75</p>
+                            </div>
                         </div>
 
                         <div className='admin-create-course-input-containers'>
@@ -356,6 +438,11 @@ const CreateCourse = () => {
                                         </option>
                                     ))}
                                 </select>
+                            </div>
+
+                            <div className='admin-create-course-input' >
+                                <p>Price <span>*</span></p>
+                                <input type='number' placeholder='Course Price in US Doller' value={price} onChange={(e) => handlePriceChange(e)}/>
                             </div>
 
                         </div>
@@ -445,6 +532,17 @@ const CreateCourse = () => {
                                                         </button>
                                                     </div>
                                                 </div>
+                                                <div className='admin-create-course-adding-videos-title'>
+                                                    <p>Video title <span>*</span></p>
+                                                    <div>
+                                                        <input
+                                                            type='text'
+                                                            value={video.videoTitle}
+                                                            onChange={(e) => handleVideoTitleChange(weekIndex, video.id, e)}                                               
+                                                        />
+                                                        <p>{video.videoTitle.length}/75</p>
+                                                    </div>
+                                                </div>
                                                 <div className='admin-create-course-adding-videos-text-area'>
                                                     <p>Add video description <span>*</span></p>
                                                     <ReactQuill
@@ -462,15 +560,17 @@ const CreateCourse = () => {
                             )
                         })}
 
-                        { courseTitleAuthError.error === true || tagsAuthError.error === true || courseDescAuthError.error === true || thumbnailFileAuthError.error === true ? 
+                        { courseTitleAuthError.error === true || tagsAuthError.error === true || courseDescAuthError.error === true || thumbnailFileAuthError.error === true  || priceAuthError.error === true? 
                             (
                                <div className='admin-create-course-errors'>
                                     {courseTitleAuthError.error === true ?  (<p><MdErrorOutline size={24}/> {courseTitleAuthError?.value}</p>) : ""}
                                     {tagsAuthError.error === true ? (<p><MdErrorOutline size={24}/> {tagsAuthError?.value}</p>) : ""}
                                     {courseDescAuthError.error === true ? (<p><MdErrorOutline size={24}/> {courseDescAuthError?.value}</p>) : ""}
-                                    {thumbnailFileAuthError.error === true ? (<p><MdErrorOutline size={24}/> {thumbnailFileAuthError?.value}</p>):""}
+                                    {thumbnailFileAuthError.error === true ? (<p><MdErrorOutline size={24}/> {thumbnailFileAuthError?.value}</p>): ""}
+                                    {priceAuthError.error === true ? (<p><MdErrorOutline size={24}/> {priceAuthError?.value}</p>): ""}
                                </div> 
-                            ) : ""}
+                            ) : ""
+                        }
 
                         {videoDivsArrayError === true ? 
                             <>
