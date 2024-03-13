@@ -23,7 +23,8 @@ export const VideoUploadToAzureContainer = async (file, onProgress) => {
 
     const chunkSize = 2 * 1024 * 1024;
     const totalChunks = Math.ceil(file.size / chunkSize);
-    let uploadedChunks = 0;
+
+    let completedChunks = 0;
 
     const concurrency = 4;
     const uploadPromises = [];
@@ -53,12 +54,10 @@ export const VideoUploadToAzureContainer = async (file, onProgress) => {
         });
   
          // Add progress event listener to the promise
-         uploadPromise.then((response) => {
-          uploadedChunks++;
-          const progress = (uploadedChunks / totalChunks) * 100;
-          console.log("progress123", progress)
-          onProgress(progress);
-        });
+         uploadPromise.then(() => {
+          completedChunks++;
+          onProgress(completedChunks)
+        })
 
         chunkPromises.push({ promise: uploadPromise, abortController });
       }
@@ -85,35 +84,53 @@ export const uploadVideosToAzure = async (videoDivsArray, onProgress) => {
   const storageAccountName = "elearningplateform";
   const containerName = "courses-videos";
 
+  let totalVideos = 0;
+  let totalChunks = 0;
+  let completedChunks = 0;
+
   const updatedVideoDivsArray = [];
 
-  console.log("videoDivsArray", videoDivsArray);
+  for (const week of videoDivsArray) {
+    totalVideos += week.videos.length; 
+    for (const video of week.videos) {
+        const fileSize = video.videoFile.size;
+        const chunkSize = 2 * 1024 * 1024;
+        const chunks = Math.ceil(fileSize / chunkSize);
+        totalChunks += chunks; 
+
+    }
+  }
+  
+  console.log("totalChunks", totalChunks)
 
   for (const week of videoDivsArray) {
-      const updatedWeek = { ...week };
-      updatedWeek.videos = [];
+    const updatedWeek = { ...week };
+    updatedWeek.videos = [];
 
-      for (const video of week.videos) {
+    for (const video of week.videos) {
+      const originalFileName = video.videoFile.name;
+      const sanitizedFileName = originalFileName.replace(/ /g, '_');
+      const newFileName = `${Date.now()}_${v4()}_${sanitizedFileName}`;
 
-          const originalFileName = video.videoFile.name;
-          const sanitizedFileName = originalFileName.replace(/ /g, '_');
-          const newFileName = `${Date.now()}_${v4()}_${sanitizedFileName}`;
+      const renamedFile = new File([video.videoFile], newFileName, { type: video.videoFile.type });
 
-          const renamedFile = new File([video.videoFile], newFileName, { type: video.videoFile.type });
+      await VideoUploadToAzureContainer(renamedFile, () => {
+        completedChunks++; 
+        console.log("completedChunks", completedChunks);
+        onProgress({ videoProgress: (completedChunks / totalChunks) * 100, totalVideos });
+      });
 
-          await VideoUploadToAzureContainer(renamedFile, onProgress);
+      const uploadedVideoUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${renamedFile.name}`;
 
-          const uploadedVideoUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${renamedFile.name}`;
+      const updatedVideo = {
+        ...video,
+        videoFile: uploadedVideoUrl,
+      };
 
-          const updatedVideo = {
-              ...video,
-              videoFile: uploadedVideoUrl,
-          };
+      updatedWeek.videos.push(updatedVideo);
+    }
 
-          updatedWeek.videos.push(updatedVideo);
-      }
-
-      updatedVideoDivsArray.push(updatedWeek);
+    updatedVideoDivsArray.push(updatedWeek);
   }
 
   return updatedVideoDivsArray;

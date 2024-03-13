@@ -481,3 +481,32 @@
 .admin-create-course-submit-btn button:hover{
     transform: scale(1.01);
 }
+
+/* progress loader */
+.admin-allcourses-container-progress-loader{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    background-color: white;
+    height: 300px;
+    width: 700px;
+    margin: auto;
+    border-radius: 12px;
+}
+
+.admin-allcourses-container-progress-loader-progressbar{
+    height: 15px;
+    border: 1px solid rgb(194, 194, 194);
+    width: 550px;
+    border-radius: 50px;
+    position: relative;
+}
+.admin-allcourses-container-progress-loader-progressbar > span {
+    display: block;
+    height: 100%;
+    background-color: #007bff; /* Color of the progress indicator */
+    border-radius: 50px; /* Make it round */
+  }

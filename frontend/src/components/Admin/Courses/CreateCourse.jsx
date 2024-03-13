@@ -10,6 +10,7 @@ import { BsCloudUpload } from "react-icons/bs";
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import {adminCreateCourse, clearErrors} from '../../../actions/CoursesAction' 
+import ProgressLoader from '../../Utils/ProgressLoader';
 
 import './CreateCourse.css'
 
@@ -18,9 +19,9 @@ const CreateCourse = () => {
 
     const dispatch = useDispatch()
 
-    const {error} = useSelector((state)=>state.adminCourses);
+    const {error, loading, isSuccess} = useSelector((state)=>state.adminCourses);
 
-    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploadProgress, setUploadProgress] = useState(0); // set upload progress
 
     const [courseTitle, setCourseTitle] = useState('');
     const [courseCategory, setCourseCategory] = useState('Design');
@@ -34,13 +35,36 @@ const CreateCourse = () => {
         weekTitle: '',
         videos: [{ id: 1, videoDesc: '', videoFile: null }],
       });
-
-
-      console.log('uploadProgress', uploadProgress)
     
     const [videoDivsArray, setVideoDivsArray] = useState(
         Array.from({ length: weeks }, (_, weekIndex) => createEmptyWeek())
     );
+
+    const [courseTitleAuthError, setCourseTitleAuthError] = useState({ value: '', error: false });
+    const [tagsAuthError, setTagsAuthError] = useState({ value: '', error: false });
+    const [courseDescAuthError, setCourseDescAuthError] = useState({ value: '', error: false });
+    const [thumbnailFileAuthError, setThumbnailFileAuthError] = useState({ value: null, error: false });
+    const [videoDivsArrayError, setVideoDivsArrayError] = useState(false);
+    const [videoDivsArrayAuthError, setVideoDivsArrayAuthError] = useState([]);
+
+
+    const handleCourseTitle = (e) => {
+        const title = e.target.value
+        setCourseTitle(title)
+
+        if(courseTitle){
+            setCourseTitleAuthError({ value: "", error: false});
+        }
+    }
+
+    const handleCourseTags = (e) => {
+        const tags = e.target.value
+        setTags(tags)
+
+        if(tags){
+            setTagsAuthError({ value: "", error: false});
+        }
+    }
 
     const handleWeeksChange = (event) => {
         const selectedWeeks = parseInt(event.target.value, 10);
@@ -50,6 +74,10 @@ const CreateCourse = () => {
 
     const handleCourseEditorChange = (value) => {
         setCourseDesc(value);
+
+        if(courseDesc){
+            setCourseDescAuthError({ value: "", error: false});
+        }
     };
 
     const handleSeqByWeekChange = (weekIndex, e) => {
@@ -84,6 +112,10 @@ const CreateCourse = () => {
 
             image.src = URL.createObjectURL(selectedFile);
         }
+
+        if(selectedFile){
+            setThumbnailFileAuthError ({ value: null, error: false});
+        }
     };
 
     const handleWeekTitleChange = (weekIndex, e) => {
@@ -94,15 +126,15 @@ const CreateCourse = () => {
             index === weekIndex ? { ...week, weekTitle: title } : week
           )
         );
+
+        setVideoDivsArrayAuthError((prevErrors) => ({
+            ...prevErrors,
+            error: false,
+        }));
     };
 
     const handleFileInputChange = (weekIndex, divId, event) => {
         const vidFile = event.target.files[0]
-
-        console.log("weekIndex",weekIndex)
-        console.log("divId",divId)
-        console.log("vidFile",vidFile)
-
 
         setVideoDivsArray((prevVideoDivsArray) =>
             prevVideoDivsArray.map((week, wIndex) =>
@@ -116,6 +148,11 @@ const CreateCourse = () => {
                     : week
             )
         );
+
+        setVideoDivsArrayAuthError((prevErrors) => ({
+            ...prevErrors,
+            error: false,
+        }));
       
     };
 
@@ -132,6 +169,11 @@ const CreateCourse = () => {
                     : week
             )
         );
+
+        setVideoDivsArrayAuthError((prevErrors) => ({
+            ...prevErrors,
+            error: false,
+        }));
     };
     
     const handleAddVideo = (weekIndex) => {
@@ -167,8 +209,64 @@ const CreateCourse = () => {
         return fileName?.split('.').pop().toUpperCase();
     };
 
+    console.log("videoDivsArrayAuthError", videoDivsArrayAuthError)
     const handleSubmit = () => {
-    
+
+        if (!courseTitle) {
+            setCourseTitleAuthError({ value: "Tile is required", error: true });
+            return
+        }else if (!tags) {
+            setTagsAuthError({ value: "Tags is required", error: true });
+            return
+        }else if (!courseDesc) {
+            setCourseDescAuthError({ value: "Course description is required", error: true });
+            return
+        }else if (!thumbnailFile) {
+            setThumbnailFileAuthError({ value: "Thumbnail is required", error: true });
+            return
+        } 
+        
+        const hasEmptyFields = videoDivsArray.some((week, weekIndex) =>
+            week.videos.some((video, videoIndex) => {
+                if (!week.weekTitle) {
+                    if (Array.isArray(videoDivsArrayAuthError) && !videoDivsArrayAuthError?.some((errorData) => errorData.weekIndex === weekIndex && errorData.videoIndex === videoIndex && errorData.error === 'Title is required')) {
+                        setVideoDivsArrayAuthError((prevErrors) => [
+                            ...prevErrors,
+                            { weekIndex, videoIndex, error: 'Title is required' },
+                        ]);
+                        setVideoDivsArrayError(true);
+                    }
+                    return true;
+                }
+                if (!video.videoFile) {
+                    if (Array.isArray(videoDivsArrayAuthError) && !videoDivsArrayAuthError?.some((errorData) => errorData.weekIndex === weekIndex && errorData.videoIndex === videoIndex && errorData.error === 'Video file is required')) {
+                        setVideoDivsArrayAuthError((prevErrors) => [
+                            ...prevErrors,
+                            { weekIndex, videoIndex, error: 'Video file is required' },
+                        ]);
+                        setVideoDivsArrayError(true);
+                    }
+                    return true;
+                }
+                if (!video.videoDesc) {
+                    if (Array.isArray(videoDivsArrayAuthError) && !videoDivsArrayAuthError?.some((errorData) => errorData.weekIndex === weekIndex && errorData.videoIndex === videoIndex && errorData.error === 'Video description is required')) {
+                        setVideoDivsArrayAuthError((prevErrors) => [
+                            ...prevErrors,
+                            { weekIndex, videoIndex, error: 'Video description is required' },
+                        ]);
+                        setVideoDivsArrayError(true);
+                    }
+                    return true;
+                }
+                return false;
+            })
+        );
+
+        if (hasEmptyFields) {
+            return;
+        }
+        
+        setUploadProgress(0)
         const formData = {
             courseTitle,
             courseCategory,
@@ -184,11 +282,19 @@ const CreateCourse = () => {
         const onVideoUploadProgress = (progress) => {
             setUploadProgress(progress);
         };
+      
         
-        dispatch(adminCreateCourse(formData, onVideoUploadProgress))
+        dispatch(adminCreateCourse(formData, onVideoUploadProgress, ))
+
+        if(isSuccess === true){
+           
+        }
     }
 
     useEffect(() => {
+        if(isSuccess){
+            toast.success("Course Created")
+        }
         if(error){
             toast.error(error);
             dispatch(clearErrors());
@@ -208,159 +314,194 @@ const CreateCourse = () => {
             <div className='admin-allcourses-container'>
                 
                 <Link to={'/admin/all-courses'}>All Course</Link>
-
-                <div className='admin-create-course-container'>
-
-                    <p>Add new course</p>
-
-                    <div className='admin-create-course-input-title'>
-                        <p>Course Title <span>*</span></p>
-                        <input type='text' placeholder='Course Title' value={courseTitle} onChange={(e) => setCourseTitle(e.target.value)}/>
-                        <span>0/60</span>
+                
+                {loading  ? (
+                    <div className='admin-allcourses-container-progress-loader'>
+                        <ProgressLoader/>
+                        <p className='admin-allcourses-container-progress-loader-progressbar'>
+                            {uploadProgress?.videoProgress>0 ? (
+                                <span style={{ width: `${uploadProgress?.videoProgress}%` }}>{uploadProgress?.videoProgress?.toFixed(0)} %</span>
+                            ) : ""}
+                        </p>
+                        <span>Videos to  upload... {uploadProgress?.totalVideos}</span>
                     </div>
+                ) : (
+                    <div className='admin-create-course-container'>
 
-                    <div className='admin-create-course-input-containers'>
-                       
-                        <div className='admin-create-course-select'>
-                            <p>Course Category <span>*</span></p>
-                            <select value={courseCategory} onChange={(e) => setCourseCategory(e.target.value)}>
-                                <option selected>Design</option>
-                                <option>Website</option>
-                                <option>Apps</option>
-                                <option>Software</option>
-                                <option>Development</option>
-                                <option>Photography</option>
-                                <option>Music</option>
-                                <option>Marketing</option>
-                            </select>
-                        </div>
-                        <div className='admin-create-course-input' >
-                            <p>Tags <span>*</span></p>
-                            <input placeholder='Select 5 tags saprated by comma ,' value={tags} onChange={(e) => setTags(e.target.value)}/>
+                        <p>Add new course</p>
+
+                        <div className='admin-create-course-input-title'>
+                            <p>Course Title <span>*</span></p>
+                            <input type='text' placeholder='Course Title' value={courseTitle} onChange={(e) => handleCourseTitle(e)}/>
+                            <span>0/60</span>
                         </div>
 
-                        <div className='admin-create-course-select'>
-                            <p>Timeline <span>*</span></p>
-                            <select onChange={handleWeeksChange} value={weeks}>
-                                {[1, 2, 3, 4, 5, 7, 8, 9, 10].map((week) => (
-                                    <option key={week} value={week}>
-                                        {week} Week{week !== 1 && 's'}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div className='admin-create-course-text-area'>
-                        <p>Course Description <span>*</span></p>
-                        <ReactQuill 
-                            theme="snow"
-                            value={courseDesc}
-                            onChange={handleCourseEditorChange}
-                        />
-                    </div>
-
-                    <div className='admin-create-course-file-image'>
-                        <p>Cource Thumbnail <span>*</span></p>
-                        <div>
-                            <span>
-                                <label for="file-input-thumbnail">
-                                    <BsCloudUpload size={26} />
-                                </label>
-                                <input type='file' id="file-input-thumbnail" accept='image/*'  onChange={handleThumbnailChange}/>
-                            </span>
-                            {!thumbnailFile ? 
-                                <p>No File <span>Image height greater then 280px and smaller then 330px, image width greater then 640px and smaller then 700px</span> </p> 
-                                : 
-                                <img src={URL.createObjectURL(thumbnailFile)} alt='Thumbnail'/>
-                            }
-                        </div>
-                    </div>
-                    
-                    {Array?.from({ length: weeks }, (_, weekIndex) => {
-
-                        return(   
-                            <div key={weekIndex} className='admin-create-course-adding-videos-container'>
-                                
-                                <div className='admin-create-course-adding-videos-addition'>
-                                    <div className='admin-create-course-adding-videos-input'>
-                                        <p>Seq by Week <span>*</span></p>
-                                        <input 
-                                            type="number" 
-                                            placeholder="Seq by Week"  
-                                            // disabled 
-                                            value={weekIndex + 1} 
-                                            onChange={(e) => handleSeqByWeekChange(weekIndex, e)}
-                                        />
-                                    </div>
-
-                                    <div className='admin-create-course-adding-videos-input'>
-                                        <p>Week Title <span>*</span></p>
-                                        <input type="text" placeholder='Title for week' onChange={(e) => handleWeekTitleChange(weekIndex, e)}/>
-                                    </div>
-                                </div>
-            
-
-                                <>
-                                    {videoDivsArray[weekIndex]?.videos.map((video) => {
-
-                                        
-                                        return(
-                                        <div key={video.id} className='admin-create-course-adding-videos-wrapper'>
-                                            <div className='admin-create-course-adding-video'>
-                                                <div className='admin-create-course-adding-videos-file-video'>
-                                                    <p>Upload video <span>*</span></p>
-                                                    <div>
-                                                        <input
-                                                            type='file'
-                                                            accept='.mov, .mp4'
-                                                            onChange={(event) => handleFileInputChange(weekIndex, video.id, event)}                                               
-                                                        />
-                                                        {!video.videoFile ? 
-                                                        
-                                                        <p>No File</p> 
-                                                        :
-                                                        <p><span>{video.videoFile?.name.substring(0, 3)}...</span> <span>{getExtension(video.videoFile?.name)}</span></p>
-                                                        }
-                                                        
-                                                    </div>
-                                                   
-                                                </div>
-                                                <div className='admin-create-course-adding-videos-btn'>
-                                                    <p>Add another video</p>
-                                                    <button onClick={() => handleAddVideo(weekIndex)}>
-                                                        <IoAdd size={26} />
-                                                    </button>
-                                                    <button onClick={() => handleDeleteVideo(weekIndex, video.id)}>
-                                                        <CiCircleRemove size={26} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className='admin-create-course-adding-videos-text-area'>
-                                                <p>Add video description <span>*</span></p>
-                                                <ReactQuill
-                                                    theme="snow"
-                                                    value={video.videoDesc}
-                                                    onChange={(value) => handleVideoEditorChange(weekIndex, video.id, value)}
-                                                />
-                                            </div>
-                                        </div>
-                                        )
-                                    })}
-                                </>
-
+                        <div className='admin-create-course-input-containers'>
+                        
+                            <div className='admin-create-course-select'>
+                                <p>Course Category <span>*</span></p>
+                                <select value={courseCategory} onChange={(e) => setCourseCategory(e.target.value)}>
+                                    <option selected>Design</option>
+                                    <option>Website</option>
+                                    <option>Apps</option>
+                                    <option>Software</option>
+                                    <option>Development</option>
+                                    <option>Photography</option>
+                                    <option>Music</option>
+                                    <option>Marketing</option>
+                                </select>
                             </div>
-                        )
-                    })}
+                            <div className='admin-create-course-input' >
+                                <p>Tags <span>*</span></p>
+                                <input placeholder='Select 5 tags saprated by comma ,' value={tags} onChange={(e) => handleCourseTags(e)}/>
+                            </div>
 
-                    <div className='admin-create-course-submit-btn'>
-                        <button onClick={handleSubmit}> 
-                            Create Course
-                        </button>
+                            <div className='admin-create-course-select'>
+                                <p>Timeline <span>*</span></p>
+                                <select onChange={handleWeeksChange} value={weeks}>
+                                    {[1, 2, 3, 4, 5, 7, 8, 9, 10].map((week) => (
+                                        <option key={week} value={week}>
+                                            {week} Week{week !== 1 && 's'}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div className='admin-create-course-text-area'>
+                            <p>Course Description <span>*</span></p>
+                            <ReactQuill 
+                                theme="snow"
+                                value={courseDesc}
+                                onChange={handleCourseEditorChange}
+                            />
+                        </div>
+
+                        <div className='admin-create-course-file-image'>
+                            <p>Cource Thumbnail <span>*</span></p>
+                            <div>
+                                <span>
+                                    <label for="file-input-thumbnail">
+                                        <BsCloudUpload size={26} />
+                                    </label>
+                                    <input type='file' id="file-input-thumbnail" accept='image/*'  onChange={handleThumbnailChange}/>
+                                </span>
+                                {!thumbnailFile ? 
+                                    <p>No File <span>Image height greater then 280px and smaller then 330px, image width greater then 640px and smaller then 700px</span> </p> 
+                                    : 
+                                    <img src={URL.createObjectURL(thumbnailFile)} alt='Thumbnail'/>
+                                }
+                            </div>
+                        </div>
+                        
+                        {Array?.from({ length: weeks }, (_, weekIndex) => {
+
+                            return(   
+                                <div key={weekIndex} className='admin-create-course-adding-videos-container'>
+                                    
+                                    <div className='admin-create-course-adding-videos-addition'>
+                                        <div className='admin-create-course-adding-videos-input'>
+                                            <p>Seq by Week <span>*</span></p>
+                                            <input 
+                                                type="number" 
+                                                placeholder="Seq by Week"  
+                                                // disabled 
+                                                value={weekIndex + 1} 
+                                                onChange={(e) => handleSeqByWeekChange(weekIndex, e)}
+                                            />
+                                        </div>
+
+                                        <div className='admin-create-course-adding-videos-input'>
+                                            <p>Week Title <span>*</span></p>
+                                            <input type="text" placeholder='Title for week' onChange={(e) => handleWeekTitleChange(weekIndex, e)}/>
+                                        </div>
+                                    </div>
+                
+
+                                    <>
+                                        {videoDivsArray[weekIndex]?.videos.map((video) => {
+
+                                            
+                                            return(
+                                            <div key={video.id} className='admin-create-course-adding-videos-wrapper'>
+                                                <div className='admin-create-course-adding-video'>
+                                                    <div className='admin-create-course-adding-videos-file-video'>
+                                                        <p>Upload video <span>*</span></p>
+                                                        <div>
+                                                            <input
+                                                                type='file'
+                                                                accept='.mov, .mp4'
+                                                                onChange={(event) => handleFileInputChange(weekIndex, video.id, event)}                                               
+                                                            />
+                                                            {!video.videoFile ? 
+                                                            
+                                                            <p>No File</p> 
+                                                            :
+                                                            <p><span>{video.videoFile?.name.substring(0, 3)}...</span> <span>{getExtension(video.videoFile?.name)}</span></p>
+                                                            }
+                                                            
+                                                        </div>
+                                                    
+                                                    </div>
+                                                    <div className='admin-create-course-adding-videos-btn'>
+                                                        <p>Add another video</p>
+                                                        <button onClick={() => handleAddVideo(weekIndex)}>
+                                                            <IoAdd size={26} />
+                                                        </button>
+                                                        <button onClick={() => handleDeleteVideo(weekIndex, video.id)}>
+                                                            <CiCircleRemove size={26} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className='admin-create-course-adding-videos-text-area'>
+                                                    <p>Add video description <span>*</span></p>
+                                                    <ReactQuill
+                                                        theme="snow"
+                                                        value={video.videoDesc}
+                                                        onChange={(value) => handleVideoEditorChange(weekIndex, video.id, value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                            )
+                                        })}
+                                    </>
+
+                                </div>
+                            )
+                        })}
+
+                        { courseTitleAuthError.error === true || tagsAuthError.error === true || courseDescAuthError.error === true || thumbnailFileAuthError.error === true ? 
+                            (
+                               <div>
+                                    <p>{courseTitleAuthError?.value}</p>
+                                    <p>{tagsAuthError?.value}</p>
+                                    <p>{courseDescAuthError?.value}</p>
+                                    <p>{thumbnailFileAuthError?.value}</p>
+                               </div> 
+                            ) : ""}
+
+                        {videoDivsArrayError === true ? 
+                            <>
+                            {videoDivsArrayAuthError?.map((errorData, index) => (
+                                <div key={index}>
+                                    <p>Week {errorData.weekIndex}</p>
+                                    <p>Video {errorData.videoIndex}</p>
+                                    <p>Error: {errorData.error}</p>
+                                </div>
+                            ))}
+                            </>
+                            : ""
+                        }
+
+                        <div className='admin-create-course-submit-btn'>
+                            <button onClick={handleSubmit}> 
+                                Create Course
+                            </button>
+                        </div>
+
                     </div>
-
-                </div>
+                )}
 
             </div>
 
