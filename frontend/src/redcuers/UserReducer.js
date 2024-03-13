@@ -31,6 +31,9 @@ import{
     DELETE_USER_ADMIN_SUCCESS,
     DELETE_USER_ADMIN_FAIL,
 
+    FORGET_PASSWORD_SUCESS,
+    FORGET_PASSWORD_REQUEST,
+
     CLEAR_ERRORS
 
 } from '../constants/UserConstants'
@@ -94,6 +97,24 @@ export const userReducer = (state = {user: []}, action) =>{
 
         default:
             return state;    
+    }
+}
+
+export const ForgetPasswordReducer = (state, action) =>{
+
+    switch(state.action){
+     
+        case FORGET_PASSWORD_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+         
+        case FORGET_PASSWORD_SUCESS:
+            return {
+                loading: false,
+                data: action.payload
+            }  
     }
 }
 
