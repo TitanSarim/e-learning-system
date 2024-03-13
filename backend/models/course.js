@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     teacher_name: DataTypes.STRING,
     comments: DataTypes.JSON,
     reviews: DataTypes.JSON,
+    status: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Course',
