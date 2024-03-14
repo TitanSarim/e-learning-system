@@ -36,7 +36,7 @@ const ResetPassword = () => {
         return;
       }
 
-      if(newPassword != confirmNewPassword) {
+      if(newPassword !== confirmNewPassword) {
         return setIsPasswordValid("Password did not match")
       }
 

@@ -13,6 +13,7 @@ import {adminCreateCourse, clearErrors} from '../../../actions/CoursesAction'
 import ProgressLoader from '../../Utils/ProgressLoader';
 import { MdErrorOutline } from "react-icons/md";
 import { RiArrowRightSLine } from "react-icons/ri";
+import { TfiSave } from "react-icons/tfi";
 
 import './CreateCourse.css'
 
@@ -281,7 +282,7 @@ const CreateCourse = () => {
         return fileName?.split('.').pop().toUpperCase();
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (action) => {
 
         if (!courseTitle) {
             setCourseTitleAuthError({ value: "Tile is required", error: true });
@@ -336,15 +337,33 @@ const CreateCourse = () => {
         }
         
         setUploadProgress(0)
-        const formData = {
-            courseTitle,
-            courseCategory,
-            courseDesc,
-            price,
-            tags,
-            weeks,
-            thumbnailFile,
-            videoDivsArray,
+
+        let formData;
+
+        if(action === 'save'){
+            formData = {
+                courseTitle,
+                courseCategory,
+                courseDesc,
+                price,
+                tags,
+                weeks,
+                thumbnailFile,
+                videoDivsArray,
+                status: 'inactive'
+            }
+        }else if(action === 'create'){
+            formData = {
+                courseTitle,
+                courseCategory,
+                courseDesc,
+                price,
+                tags,
+                weeks,
+                thumbnailFile,
+                videoDivsArray,
+                status: 'active'
+            }
         }
 
         console.log("formData", formData)
@@ -591,7 +610,11 @@ const CreateCourse = () => {
                         }
 
                         <div className='admin-create-course-submit-btn'>
-                            <button onClick={handleSubmit}> 
+                            <button onClick={() => handleSubmit('save')}>
+                                <TfiSave size={30}/>
+                                Save
+                            </button>
+                            <button onClick={() => handleSubmit('create')}> 
                                 Create Course
                             </button>
                         </div>
