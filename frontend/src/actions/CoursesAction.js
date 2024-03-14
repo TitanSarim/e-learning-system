@@ -8,30 +8,28 @@ import axios from "axios";
 import { uploadVideosToAzure } from "../middlewares/VideoUpload";
 import { uploadImageToAzure } from "../middlewares/ImageUplaod";
 
-const BASE_URL = "http://localhost:3900";
-
 // CREATE COURSES ACTIONS
 export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
   const { thumbnailFile, videoDivsArray, ...restFormData } = formData;
 
-  const uploadedImageUrl = await uploadImageToAzure(thumbnailFile);
-  const uploadedVideoUrls = await uploadVideosToAzure(
-    videoDivsArray,
-    onProgress
-  );
-
-  const jsonData = {
-    ...restFormData,
-    thumbnailUrl: uploadedImageUrl,
-    videoUrls: uploadedVideoUrls,
-  };
-
-  const jsonString = JSON.stringify(jsonData);
-
   try {
     dispatch({ type: CREATE_COURSES_REQUEST });
 
-    console.log("Create course");
+    const { thumbnailFile, videoDivsArray, ...restFormData } = formData;
+
+    const uploadedImageUrl = await uploadImageToAzure(thumbnailFile);
+    const uploadedVideoUrls = await uploadVideosToAzure(
+      videoDivsArray,
+      onProgress
+    );
+
+    const jsonData = {
+      ...restFormData,
+      thumbnailUrl: uploadedImageUrl,
+      videoUrls: uploadedVideoUrls,
+    };
+
+    const jsonString = JSON.stringify(jsonData);
 
     const config = {
       headers: {
@@ -40,7 +38,7 @@ export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `${BASE_URL}/api/v1/createCourse`,
+      `/api/v1/createCourse`,
       jsonString,
       config
     );

@@ -30,7 +30,8 @@ export const VideoUploadToAzureContainer = async (file, onProgress) => {
 
   const chunkSize = 2 * 1024 * 1024;
   const totalChunks = Math.ceil(file.size / chunkSize);
-  let uploadedChunks = 0;
+
+  let completedChunks = 0;
 
   const concurrency = 4;
   const uploadPromises = [];
@@ -48,6 +49,8 @@ export const VideoUploadToAzureContainer = async (file, onProgress) => {
       const abortController = new AbortController();
       const signal = abortController.signal;
 
+      let uploadedChunks = 0;
+
       const uploadPromise = fetch(
         blobClient.url +
           `&comp=block&blockid=${btoa(String(i + j).padStart(6, "0"))}`,
@@ -62,6 +65,12 @@ export const VideoUploadToAzureContainer = async (file, onProgress) => {
           signal,
         }
       );
+
+      // Add progress event listener to the promise
+      uploadPromise.then(() => {
+        completedChunks++;
+        onProgress(completedChunks);
+      });
 
       // Add progress event listener to the promise
       uploadPromise.then((response) => {
@@ -97,9 +106,23 @@ export const uploadVideosToAzure = async (videoDivsArray, onProgress) => {
   const storageAccountName = "elearningplateform";
   const containerName = "courses-videos";
 
+  let totalVideos = 0;
+  let totalChunks = 0;
+  let completedChunks = 0;
+
   const updatedVideoDivsArray = [];
 
-  console.log("videoDivsArray", videoDivsArray);
+  for (const week of videoDivsArray) {
+    totalVideos += week.videos.length;
+    for (const video of week.videos) {
+      const fileSize = video.videoFile.size;
+      const chunkSize = 2 * 1024 * 1024;
+      const chunks = Math.ceil(fileSize / chunkSize);
+      totalChunks += chunks;
+    }
+  }
+
+  console.log("totalChunks", totalChunks);
 
   for (const week of videoDivsArray) {
     const updatedWeek = { ...week };
@@ -114,7 +137,14 @@ export const uploadVideosToAzure = async (videoDivsArray, onProgress) => {
         type: video.videoFile.type,
       });
 
-       await VideoUploadToAzureContainer(renamedFile, onProgress);
+      await VideoUploadToAzureContainer(renamedFile, () => {
+        completedChunks++;
+        console.log("completedChunks", completedChunks);
+        onProgress({
+          videoProgress: (completedChunks / totalChunks) * 100,
+          totalVideos,
+        });
+      });
 
       const uploadedVideoUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${renamedFile.name}`;
 

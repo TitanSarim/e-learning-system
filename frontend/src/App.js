@@ -13,6 +13,7 @@ import ClassRoom from './components/Students/ClassRoom/ClassRoom';
 import AllCourses from './components/Admin/Courses/AllCourses';
 import CreateCourse from './components/Admin/Courses/CreateCourse';
 import ForgotPassword from './components/Auth/ForgotPassword';
+import ResetPassword from './components/Auth/ResetPassword';
 
 function App() {
   return (
@@ -37,6 +38,8 @@ function App() {
 
           <Route path="/login" element={<Auth />} />
           <Route path="/forget/password" element={<ForgotPassword />} />
+          <Route path="/reset/password/:token/:id" element={<ResetPassword />} />
+
 
           {/* Route Path is Temporary */}
           <Route path="/class" element={<ClassRoom />} />

@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      teacherId:{
+        type: Sequelize.INTEGER
+      },
       slug:{
         type: Sequelize.JSON
       },

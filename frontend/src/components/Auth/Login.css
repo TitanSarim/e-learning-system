@@ -341,6 +341,20 @@
     padding: 10px 1rem 10px 1rem;
 }
 
+.auth-reset-password > div > form > div {
+    color: black 
+}
+
+.auth-reset-password > div > form > div > input {
+    padding: 10px 1rem 10px 1rem;
+    width: 83%;
+    border: none;
+}
+
+.auth-reset-password > div > form > div > input:focus {
+    outline: none;
+}
+
 .auth-forget-password > div > form > button{
     background-color: rgb(179, 171, 252);
     color: white;

@@ -26,9 +26,15 @@ import {
   FORGET_PASSWORD_SUCESS,
   FORGET_PASSWORD_REQUEST,
   FORGET_PASSWORD_FAIL,
+  RESET_PASSWORD_FAIL,
+
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCESS
 } from "../constants/UserConstants";
 
 import axios from "axios";
+
+const BASE_URL = "http://localhost:3900"
 
 // USER ACTIONS
 export const register = (formData) => async (dispatch) => {
@@ -51,7 +57,7 @@ export const login = (formData) => async (dispatch) => {
 
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.post(`/api/v1/loggedIn`, formData, config);
+    const { data } = await axios.post(`${BASE_URL}/api/v1/loggedIn`, formData, config);
 
     setTokenCookie(data?.token);
     console.log(data.token);
@@ -65,25 +71,45 @@ export const ForgetPassword = (email) => async (dispatch) => {
   try {
     dispatch({ type: FORGET_PASSWORD_REQUEST });
 
-    console.log(email);
-
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.post(`/api/v1/password/forget`, email, config);
+    const { data } = await axios.post(`${BASE_URL}/api/v1/password/forget`, email, config);
 
+    console.log(data);
     dispatch({ type: FORGET_PASSWORD_SUCESS, payload: data });
   } catch (error) {
-    // dispatch({type: FORGET_PASSWORD_FAIL, payload: error})
+    dispatch({type: FORGET_PASSWORD_FAIL, payload: error})
   }
 };
 
+export const ResetPasswordAction = (formData) => async (dispatch) => {
+  try {
+    dispatch({ type: RESET_PASSWORD_REQUEST });
+
+    const config = { headers: { "Content-Type": "application/json" } };
+
+    const { data } = await axios.post(`${BASE_URL}/api/v1/reset/password`, formData, config);
+
+    
+    dispatch({ type: RESET_PASSWORD_SUCESS, payload: data });
+
+  } catch (error) {
+
+     dispatch({type: RESET_PASSWORD_FAIL, payload: error})
+
+  }
+};
+
+
+
 export const userLogOut = () => async (dispatch) => {
   try {
-    await axios.get(`/api/v1/logout`);
+    await axios.get(`${BASE_URL}/api/v1/logout`);
 
     dispatch({
       type: LOGOUT_USER_SUCCESS,
     });
+
   } catch (error) {
     dispatch({ type: LOGOUT_USER_FAIL, payload: error.response.data.message });
   }

@@ -24,6 +24,7 @@ export const AdminCourseReducer = (state = {Admincourses: []}, action) =>{
                 loading: false,
                 isAuthenticated: true,
                 Admincourses: state.Admincourses,
+                isSuccess: true,
             };
 
 
@@ -33,6 +34,7 @@ export const AdminCourseReducer = (state = {Admincourses: []}, action) =>{
                 loading: false,
                 isAuthenticated: false,
                 Admincourses: null,
+                isSuccess: true,
                 error: action.payload,
             };
 

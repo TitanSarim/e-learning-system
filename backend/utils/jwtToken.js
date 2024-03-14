@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const crypto = require("crypto");
 
 const generatedToken = (id, email, username, role) => {
 
@@ -6,5 +7,10 @@ const generatedToken = (id, email, username, role) => {
 
     return token;
 }
+exports.getResetPasswordToken = ()=>{
+    return crypto.randomBytes(32).toString("hex")
+}
 
 module.exports = generatedToken;
+
+

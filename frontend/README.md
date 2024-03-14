@@ -68,3 +68,63 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+
+
+
+
+export const uploadVideosToAzure = async (videoDivsArray, onProgress) => {
+  const storageAccountName = "elearningplateform";
+  const containerName = "courses-videos";
+
+  let totalVideos = 0;
+  let totalChunks = 0;
+  let uploadedVideos = 0;
+
+  const updatedVideoDivsArray = [];
+
+  for (const week of videoDivsArray) {
+    const updatedWeek = { ...week };
+    updatedWeek.videos = [];
+
+    for (const video of week.videos) {
+      const originalFileName = video.videoFile.name;
+      const sanitizedFileName = originalFileName.replace(/ /g, '_');
+      const newFileName = `${Date.now()}_${v4()}_${sanitizedFileName}`;
+
+      const renamedFile = new File([video.videoFile], newFileName, { type: video.videoFile.type });
+
+      // Calculate the total chunks for each video
+      const videoTotalChunks = Math.ceil(renamedFile.size / (2 * 1024 * 1024));
+      totalChunks += videoTotalChunks;
+
+      totalVideos++;
+
+      await VideoUploadToAzureContainer(renamedFile, (progress) => {
+        // Calculate the video progress based on the total progress
+        const videoProgress = progress / 100;
+        uploadedVideos += videoProgress; // Increment uploadedVideos based on video progress
+        const overallProgress = (uploadedVideos / totalChunks) * 100;
+        onProgress({ overallProgress, totalVideos });
+      });
+
+      // Do not accumulate completedChunks across videos
+      uploadedVideos = 0;
+
+      const uploadedVideoUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${renamedFile.name}`;
+
+      const updatedVideo = {
+        ...video,
+        videoFile: uploadedVideoUrl,
+      };
+
+      updatedWeek.videos.push(updatedVideo);
+    }
+
+    updatedVideoDivsArray.push(updatedWeek);
+  }
+
+  return updatedVideoDivsArray;
+};

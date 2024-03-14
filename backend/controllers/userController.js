@@ -4,6 +4,8 @@ const generatedToken = require("../utils/jwtToken")
 const setTokenCookie = require("../utils/sendToken")
 const errorHandler = require('../utils/errorHandler');
 const catchAsyncError = require('../middleware/catchAsyncError');
+const getResetPasswordToken = require("../utils/jwtToken");
+const sendEmail = require('../utils/sendEmail');
 
 
 
@@ -53,7 +55,6 @@ const catchAsyncError = require('../middleware/catchAsyncError');
 
         const {email, password } = req.body;
 
-        
         const user = await User.findOne({
             where: {email},
         })
@@ -85,6 +86,70 @@ const catchAsyncError = require('../middleware/catchAsyncError');
       return next(new errorHandler(error, 500));
     }
   });
+
+  const forgetPassword = catchAsyncError(async(req, res, next) => {
+    
+    const {email} = req.body;
+    
+
+    const user = await User.findOne({ where: {email} })
+
+    if(!user) return "email not found"
+
+    const resetToken = getResetPasswordToken()
+
+    const ClientID = "http://localhost:3000" // will work on it
+
+    const resetTokenUrl = `${ClientID}/reset/password/${resetToken}/${user.id}`
+
+    const message = `Please, click the link below to reset your password :- \n\n  ${resetTokenUrl} \n\nIf you have not requested this email then, please ignore it.`;
+
+      try {
+        const response = await sendEmail({ 
+        subject: "Reset Password",
+        email: user.email,
+        payload: message,
+      })
+
+      if(response) {
+        res.status(200).json({
+        success: true,
+        message: "check your email"
+      })
+      }else {
+        res.status(401).json({
+        success: true,
+        message: "Error try again"
+      })
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+    
+    
+  })
+
+  const ResetPassword = catchAsyncError(async(req, res, next) =>{
+    
+    const { newPassword, id } = req.body;
+
+    console.log(newPassword, id);
+    
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+     await User.update(
+        { password: hashedPassword },
+        { where: { id } }
+    );
+
+    res.status(200).json({ 
+      success: true, 
+      message: 'Password updated successfully' 
+    });
+
+
+   })
 
   const createNewUser = catchAsyncError(async (req, res, next) => {2
     
@@ -247,5 +312,7 @@ module.exports = {
     getAllUsers,
     getSingleUser,
     deleteUser,
-    logout
+    logout,
+    forgetPassword,
+    ResetPassword
 };

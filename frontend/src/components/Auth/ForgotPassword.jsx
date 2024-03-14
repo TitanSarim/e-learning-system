@@ -1,9 +1,16 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector} from "react-redux";
 import { ForgetPassword } from "../../actions/UserActions";
+import { toast } from 'react-toastify';
+import { clearErrors } from "../../actions/UserActions";
+
+
 
 const ForgotPassword = () => {
   const dispatch = useDispatch()
+
+  const { error , loading, message } = useSelector((state)=> state.forgetPassword)
+  
 
   const [email, setEmail] = useState("")
   const [isEmailValid, setIsEmailValid] = useState("")
@@ -18,11 +25,31 @@ const ForgotPassword = () => {
         return;
       }
 
-      dispatch(ForgetPassword(email))
+       const myForm = new FormData();
 
-    console.log(email);
-    setIsEmailValid("")
+       myForm.set("email", email)
+
+       dispatch(ForgetPassword(myForm))
+
+
+    
+      setIsEmailValid("")
   }
+
+  useEffect(()=>{
+
+        if(error){
+            toast.error(error);
+            dispatch(clearErrors());
+        }
+
+        if(message){
+          toast.success(message.message)
+     
+        }
+   
+  }, [dispatch, error, message])
+
 
 
   return <section className="auth">
