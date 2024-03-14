@@ -3,6 +3,10 @@ import {
     CREATE_COURSES_SUCCESS,
     CREATE_COURSES_FAIL,
 
+    GET_ALL_ADMIN_COURSES_REQUEST,
+    GET_ALL_ADMIN_COURSES_SUCCESS,
+    GET_ALL_ADMIN_COURSES_FAIL,
+
     CLEAR_ERRORS,
 } from '../constants/CoursesConstants' 
 import axios from 'axios'
@@ -46,6 +50,20 @@ export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
 
 }
 
+// GET ADMIN COURSES ACTIONS
+export const AdminGetCourses = () => async (dispatch) =>{
+
+    try {
+        dispatch({type: GET_ALL_ADMIN_COURSES_REQUEST});
+        
+        const {data} = await axios.get(`/api/v1/get-all-admin-courses`)
+
+        dispatch({type: GET_ALL_ADMIN_COURSES_SUCCESS, payload: data.Admincourses});
+        
+    } catch (error) {
+        dispatch({type: GET_ALL_ADMIN_COURSES_FAIL, payload: error.response.data.message});
+    }
+}
 
 
 export const clearErrors = () => async (dispatch) => {

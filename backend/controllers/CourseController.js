@@ -6,6 +6,8 @@ const errorHandler = require('../utils/errorHandler');
 const catchAsyncError = require('../middleware/catchAsyncError');
 const {generateSlug} = require('../middleware/GenerateSlug');
 
+
+// admin
 const createCourse  = catchAsyncError(async (req, res, next) => {
 
 
@@ -52,7 +54,27 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
 
 })
 
+// admin
+const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
+
+
+    try {
+
+        const Admincourses  = await Course.findAll();
+
+        res.status(201).json({
+            success: true,
+            message: 'Course retrived successfully',
+            Admincourses: Admincourses,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
 
 module.exports = {
-    createCourse
+    createCourse,
+    GetAllCourseAdmin
 }
