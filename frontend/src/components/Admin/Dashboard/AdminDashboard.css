@@ -5,8 +5,9 @@
     align-items: flex-start;
     justify-content: space-between;
     width: 100%;
-    height: 200vh;
-    background-color: #f3f3f3;
+    min-height: 100vh;
+    height: max-content;
+    background-color: #0A2647;
 }
 
 .admin-dashboard-sidebar{

@@ -1,9 +1,8 @@
 .admin-sidebar{
     width: 100%;
-    border-right: 1px solid rgb(209, 209, 209);
     height: 200vh;
-    background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+    background-color: #0A2647;
+    box-shadow: rgba(161, 161, 161, 0.15) 2.4px 2.4px 3.2px;
 }
 
 .admin-sidebar-container{
@@ -30,29 +29,35 @@
 }
 
 .admin-sidebar-tabs a{
-    background-color: rgb(231, 231, 231);
-    color: black;
-    font-weight: 500;
-    padding: 13px 40px;
-    text-align: start;
-    text-decoration: none;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    color: rgb(255, 255, 255);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #4b4747;
     border-radius: 10px;
-    position: relative;
     display: flex;
-    align-items: center;
     flex-direction: row;
-    gap: 30px;
-    transition: all 500ms;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    gap: 12px;
 }
 
 
 .admin-sidebar-tabs a svg{
     width: 24px;
     height: 24px;
-    color: rgb(107, 107, 107);
+    color: rgb(226, 226, 226);
 }
 
 .admin-sidebar-tabs a:hover{
     transform: scale(1.01);
-    background-color: rgb(218, 218, 218);
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
 }
