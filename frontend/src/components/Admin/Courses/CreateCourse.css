@@ -1,3 +1,15 @@
+.admin-wrapper-create-course{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 82%;
+    align-items: center;
+    justify-content: flex-start;
+    margin: auto;
+    margin-top: 0%;
+    left: 160px;
+    height: 230vh;
+}
 .admin-create-course-container{
     position: relative;
     display: flex;
@@ -6,8 +18,8 @@
     top: 60px;
     width: 75%;
     height: auto;
-    max-height: 1841px;
-    min-height: 1600px;
+    max-height: 2000px;
+    min-height: 1700px;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
@@ -539,6 +551,29 @@
     width: 100%;
 }
 
+
+.admin-create-course-checkbox{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.admin-create-course-checkbox>p{
+    font-size: 19px;
+    color: tomato;
+    font-weight: 500;
+}
+
+.admin-create-course-checkbox>input[type="checkbox" i]{
+    width: 33px;
+    height: 33px;
+    cursor: pointer;
+    border-radius: 12px !important;
+}
+
 .admin-create-course-submit-btn{
     width: 100%;
     display: flex;
@@ -547,28 +582,29 @@
     gap: 60px;
 }
 
-.admin-create-course-submit-btn button:nth-child(1){
+.admin-create-course-submit-btn-save{
     position: relative;
     border: 1px solid rgba(62, 169, 211, 0.993);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
     padding: 6px 20px;
     background-color: transparent;
     border-radius: 7px;
     color: rgba(62, 169, 211, 0.993);
     cursor: pointer;
     transition: all 500ms;
-    font-size: 17px;
+    font-size: 20px;
+    margin: 20px 0px;
 }
 
-.admin-create-course-submit-btn button:nth-child(1):hover{
+.admin-create-course-submit-btn-save:hover{
     background-color: rgba(62, 169, 211, 0.658);
     color: white;
 }   
 
-.admin-create-course-submit-btn button:nth-child(2){
+.admin-create-course-submit-btn-create{
     background-color: rgb(14, 18, 37);
     color: white;
     font-size: 17px;
@@ -581,7 +617,7 @@
     transition: all 500ms;
 }
 
-.admin-create-course-submit-btn button:nth-child(2):hover{
+.admin-create-course-submit-btn-create{
     transform: scale(1.01);
 }
 
@@ -643,16 +679,28 @@
 }
 
 
-.admin-allcourses-container-progress-loader-progressbar{
-    height: 15px;
-    border: 1px solid rgb(194, 194, 194);
+.admin-allcourses-container-progress-loader-progressbar {
+    height: 24px;
     width: 550px;
     border-radius: 50px;
     position: relative;
+    border: none;
+    border: 1px solid #e52e71;
+    padding: 2px 6px 2px 2px;
+
 }
+
+
 .admin-allcourses-container-progress-loader-progressbar > span {
     display: block;
     height: 100%;
-    background-color: #007bff; /* Color of the progress indicator */
-    border-radius: 50px; /* Make it round */
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    border-radius: 50px; 
+    color: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 4px;
   }
+

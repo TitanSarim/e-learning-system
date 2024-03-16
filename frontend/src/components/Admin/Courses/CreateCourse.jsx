@@ -54,6 +54,7 @@ const CreateCourse = () => {
     const [thumbnailFileAuthError, setThumbnailFileAuthError] = useState({ value: null, error: false });
     const [videoDivsArrayError, setVideoDivsArrayError] = useState(false);
     const [videoDivsArrayAuthError, setVideoDivsArrayAuthError] = useState([]);
+    const [isChecked, setIsChecked] = useState(false);
 
 
     const handleCourseTitle = (e) => {
@@ -282,6 +283,7 @@ const CreateCourse = () => {
         return fileName?.split('.').pop().toUpperCase();
     };
 
+
     const handleSubmit = (action) => {
 
         if (!courseTitle) {
@@ -396,7 +398,7 @@ const CreateCourse = () => {
         <SideBar/>
     </div>
 
-        <div className='admin-wrapper'>
+        <div className='admin-wrapper-create-course'>
             <NavBar/>
 
             <div className='admin-allcourses-container'>
@@ -407,9 +409,9 @@ const CreateCourse = () => {
                     <div className='admin-allcourses-container-progress-loader'>
                         <ProgressLoader/>
                         <p className='admin-allcourses-container-progress-loader-progressbar'>
-                            {uploadProgress?.videoProgress>0 ? (
-                                <span style={{ width: `${uploadProgress?.videoProgress}%` }}>{uploadProgress?.videoProgress?.toFixed(0)} %</span>
-                            ) : ""}
+                        {uploadProgress?.videoProgress>0 ? (
+                            <span style={{ width: `${uploadProgress?.videoProgress}%` }}>{uploadProgress?.videoProgress?.toFixed(0)}%</span>
+                        ) : ""}
                         </p>
                         <span>Videos to  upload... {uploadProgress?.totalVideos}</span>
                     </div>
@@ -608,15 +610,22 @@ const CreateCourse = () => {
                             </>
                             : ""
                         }
-
+                        
+                        <div className='admin-create-course-checkbox'>
+                            <input type='checkbox' checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}/>
+                            <p>Check this box if you just want to save the course, you can make it active later.</p>
+                        </div>
                         <div className='admin-create-course-submit-btn'>
-                            <button onClick={() => handleSubmit('save')}>
-                                <TfiSave size={30}/>
-                                Save
-                            </button>
-                            <button onClick={() => handleSubmit('create')}> 
-                                Create Course
-                            </button>
+                            {isChecked ? (
+                                <button onClick={() => handleSubmit('save')} className='admin-create-course-submit-btn-save'>
+                                    <TfiSave size={27}/>
+                                    Save
+                                </button>
+                            ) : (
+                                <button onClick={() => handleSubmit('create')} className='admin-create-course-submit-btn-create'>  
+                                    Create Course
+                                </button>
+                            )}
                         </div>
 
                     </div>
@@ -633,3 +642,6 @@ const CreateCourse = () => {
 export default CreateCourse
 
 
+// {uploadProgress?.videoProgress>0 ? (
+//     <span style={{ width: `${30}%` }}>{uploadProgress?.videoProgress?.toFixed(0)} %</span>
+// ) : ""}

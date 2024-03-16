@@ -1,3 +1,16 @@
+.admin-wrapper-all-courses{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 82%;
+    align-items: center;
+    justify-content: flex-start;
+    margin: auto;
+    margin-top: 0%;
+    left: 160px;
+    height: 170vh;
+}
+
 .admin-allcourses-container{
     position: relative;
     display: flex;
@@ -32,6 +45,67 @@
     text-decoration: none;
 }
 
+/* filters */
+.admin-allcourses-filter{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 87%;
+    margin: 50px auto 2px auto;
+    border: 1px solid #b24592;
+    border-radius: 50px;
+    padding: 12px 12px;
+}
+
+.admin-allcourses-filter-search{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    background-color: #144272;
+    border-radius: 50px;
+    padding: 12px 12px;
+    width: 25%;
+}
+
+.admin-allcourses-filter-search input{
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 17px;
+    width: 92%;
+}
+
+.admin-allcourses-filter-search input::placeholder{
+    color: rgb(211, 211, 211) !important;
+}
+
+.admin-allcourses-filter-search svg{
+    color: white;
+}
+
+
+.admin-allcourses-filter-container{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+}
+
+.admin-allcourses-filter-container>svg{
+    color: white;
+    background-color: #144272;
+    border-radius: 50px;
+    padding: 9px 10px;
+}
+
 /* cards */
 
 .admin-allcourses-wrapper{
@@ -48,7 +122,10 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
     gap: 40px;
+    margin-top: 60px;
 }
 .admin-allcourses-card-container{
     position: relative;
