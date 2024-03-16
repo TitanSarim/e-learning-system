@@ -1,44 +1,45 @@
-.admin-navbar{
-    position: relative;
-    width: 90%;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: flex-end;
-    height: 70px;
-    top: 40px;
+.admin-navbar {
+  position: relative;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 70px;
+  top: 40px;
 }
 
-.admin-navbar>div{
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    background-color: rgb(255, 255, 255);
-    padding: 10px 40px;
-    border-radius: 4px;
-    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+.admin-navbar > div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  /* background-color: rgb(255, 255, 255); */
+  background-color: #b938eb;
+  padding: 10px 40px;
+  border-radius: 4px;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
+    rgba(17, 17, 26, 0.1) 0px 0px 8px;
 }
 
-.admin-navbar>div>img{
-    width: 60px;
+.admin-navbar > div > img {
+  width: 60px;
 }
 
-.admin-navbar>div>button{
-    background-color: rgb(216, 216, 216);
-    padding: 9px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 500ms;
-    border: none;
-    outline: none;
+.admin-navbar > div > button {
+  background-color: rgb(216, 216, 216);
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 500ms;
+  border: none;
+  outline: none;
 }
-.admin-navbar>div>button>svg{
-
+.admin-navbar > div > button > svg {
 }
 
-.admin-navbar>div>button:hover{
-    background-color: rgb(180, 180, 180);
+.admin-navbar > div > button:hover {
+  background-color: rgb(180, 180, 180);
 }

@@ -7,85 +7,118 @@ const catchAsyncError = require('../middleware/catchAsyncError');
 const getResetPasswordToken = require("../utils/jwtToken");
 const sendEmail = require('../utils/sendEmail');
 
+const createUser = catchAsyncError(async (req, res, next) => {
+  const { username, email, age, gender, role, password, status } = req.body;
 
+  try {
+    const existingUser = await User.findOne({
+      where: { email },
+    });
 
-
-  const createUser = catchAsyncError(async (req, res, next) => {
-    const { username, email, age, gender, role, password, status } = req.body;
-
-    try {
-      const existingUser = await User.findOne({
-        where: { email },
-      });
-
-      if (existingUser) {
-        return next(new errorHandler('User with this email already exists', 400));
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Create the user
-      const user = await User.create({
-        username,
-        email,
-        age,
-        gender,
-        role,
-        password: hashedPassword,
-        status,
-      });
-
-      const token = generatedToken(user.id, user.email, user.username, user.role);
-      setTokenCookie(res, token);
-
-      res.status(201).json({
-        success: true,
-        message: 'User created successfully',
-        user: user,
-        token,
-      });
-    } catch (error) {
-      return next(new errorHandler(error, 500));
+    if (existingUser) {
+      return next(new errorHandler("User with this email already exists", 400));
     }
-  });
 
-  const loginUser = catchAsyncError(async (req, res, next) => {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    try {
+    // Create the user
+    const user = await User.create({
+      username,
+      email,
+      age,
+      gender,
+      role,
+      password: hashedPassword,
+      status,
+    });
 
-        const {email, password } = req.body;
+    const token = generatedToken(user.id, user.email, user.username, user.role);
+    setTokenCookie(res, token);
 
-        const user = await User.findOne({
-            where: {email},
-        })
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      user: user,
+      token,
+    });
+  } catch (error) {
+    return next(new errorHandler(error, 500));
+  }
+});
 
-        if(!user){
-            return next(new errorHandler('Invalid Email', 400))
-        }
-
-        const passwordMatches = await bcrypt.compare(password, user.password);
-
-        if(!passwordMatches){
-            return next(new errorHandler('Invalid Password', 400))
-        }
-
-        console.log('User Logged in Successfully');
-
-
-        const token = generatedToken(user.id, user.email, user.username, user.role)
-        setTokenCookie(res, token)
-        
+const loginUser = catchAsyncError(async (req, res, next) => {
   
-      res.status(201).json({
-        success: true,
-        message: 'User created successfully',
-        user: user,
-        token,
-      });
-    } catch (error) {
-      return next(new errorHandler(error, 500));
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({
+      where: { email },
+    });
+    console.log(user);
+
+    if (!user) {
+      return next(new errorHandler("Invalid Email", 400));
     }
-  });
+
+    const passwordMatches = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatches) {
+      return next(new errorHandler("Invalid Password", 400));
+    }
+
+    console.log("User Logged in Successfully");
+
+    const token = generatedToken(user.id, user.email, user.username, user.role);
+    setTokenCookie(res, token);
+
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      user: user,
+      token,
+    });
+  } catch (error) {
+    return next(new errorHandler(error, 500));
+  }
+});
+
+const createNewUser = catchAsyncError(async (req, res, next) => {
+  2;
+
+  const { username, email, age, gender, role, password, status } = req.body;
+
+  try {
+    const existingUser = await User.findOne({
+      where: { email },
+    });
+
+    if (existingUser) {
+      return next(new errorHandler("User with this email already exists", 400));
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create the user
+    const users = await User.create({
+      username,
+      email,
+      age,
+      gender,
+      role,
+      password: hashedPassword,
+      status,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      users: users,
+    });
+  } catch (error) {
+    return next(new errorHandler(error, 500));
+  }
+});
+
 
   const forgetPassword = catchAsyncError(async(req, res, next) => {
     
@@ -151,42 +184,6 @@ const sendEmail = require('../utils/sendEmail');
 
    })
 
-  const createNewUser = catchAsyncError(async (req, res, next) => {2
-    
-    const { username, email, age, gender, role, password, status } = req.body;
-
-    try {
-      const existingUser = await User.findOne({
-        where: { email },
-      });
-
-      if (existingUser) {
-        return next(new errorHandler('User with this email already exists', 400));
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Create the user
-      const users = await User.create({
-        username,
-        email,
-        age,
-        gender,
-        role,
-        password: hashedPassword,
-        status,
-      });
-
-      res.status(201).json({
-        success: true,
-        message: 'User created successfully',
-        users: users,
-      });
-    } catch (error) {
-      return next(new errorHandler(error, 500));
-    }
-  });
-
   const updateUser = catchAsyncError(async (req, res, next) => {
     const { userId } = req.params;
     const { username, email, age, gender, role, password, status } = req.body;
@@ -236,73 +233,72 @@ const sendEmail = require('../utils/sendEmail');
     }
   });
 
-  const getAllUsers = catchAsyncError(async (req, res, next) => {
-    try {
-      const users = await User.findAll();
-  
-      res.status(200).json({
-        success: true,
-        message: 'All users retrieved successfully',
-        users: users,
-      });
-    } catch (error) {
-      return next(new errorHandler(error, 500));
-    }
-  });
-
-  const getSingleUser = catchAsyncError(async (req, res, next) => {
-    const { userId } = req.params; 
-
-    try {
-      const user = await User.findByPk(userId);
-  
-      if (!user) {
-        return next(new errorHandler('User not found', 404));
-      }
-  
-      res.status(200).json({
-        success: true,
-        message: 'User retrieved successfully',
-        user,
-      });
-    } catch (error) {
-      return next(new errorHandler(error, 500));
-    }
-  });
-
-  const deleteUser = catchAsyncError(async (req, res, next) => {
-    const { userId } = req.params; 
-  
-    try {
-      const user = await User.findByPk(userId);
-  
-      if (!user) {
-        return next(new errorHandler('User not found', 404));
-      }
-  
-      await user.destroy();
-  
-      res.status(200).json({
-        success: true,
-        message: 'User deleted successfully',
-      });
-    } catch (error) {
-      return next(new errorHandler(error, 500));
-    }
-  });
-  
-  const logout = catchAsyncError(async (req, res, next) => {
-
-    res.cookie("token", null,{
-        expires: new Date(Date.now()),
-        httpOnly: true,
-    })
+const getAllUsers = catchAsyncError(async (req, res, next) => {
+  try {
+    const users = await User.findAll();
 
     res.status(200).json({
-        success: true,
-        message: "Logged Out"
-      });
+      success: true,
+      message: "All users retrieved successfully",
+      users: users,
+    });
+  } catch (error) {
+    return next(new errorHandler(error, 500));
+  }
+});
+
+const getSingleUser = catchAsyncError(async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return next(new errorHandler("User not found", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User retrieved successfully",
+      user,
+    });
+  } catch (error) {
+    return next(new errorHandler(error, 500));
+  }
+});
+
+const deleteUser = catchAsyncError(async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return next(new errorHandler("User not found", 404));
+    }
+
+    await user.destroy();
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    return next(new errorHandler(error, 500));
+  }
+});
+
+const logout = catchAsyncError(async (req, res, next) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
   });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged Out",
+  });
+});
 
 module.exports = {
     createUser,
