@@ -1,4 +1,4 @@
-const { User } = require('../models'); // Adjust the path based on your project structure
+const { User, UserProfile } = require('../models'); // Adjust the path based on your project structure
 const bcrypt = require('bcryptjs');
 const generatedToken = require("../utils/jwtToken")
 const setTokenCookie = require("../utils/sendToken")
@@ -32,6 +32,20 @@ const catchAsyncError = require('../middleware/catchAsyncError');
         password: hashedPassword,
         status,
       });
+
+      // await UserProfile.create({
+      //   userId: user.id,
+      //   firstname: "null",
+      //   lastname: "null",
+      //   avatar: "null",
+      //   tagline: "null",
+      //   about: "null",
+      //   experience: "null",
+      //   education: "null",
+      //   skills: "null",
+      //   social: "null",
+      //   certificates: "null"
+      // })
 
       const token = generatedToken(user.id, user.email, user.username, user.role);
       setTokenCookie(res, token);
@@ -88,7 +102,7 @@ const catchAsyncError = require('../middleware/catchAsyncError');
 
   const createNewUser = catchAsyncError(async (req, res, next) => {2
     
-    const { username, email, age, gender, role, password, status } = req.body;
+    const { username, email, age, gender, role, avatar, password, status } = req.body;
 
     try {
       const existingUser = await User.findOne({

@@ -12,6 +12,7 @@ import UpdateUser from './components/Admin/User/UpdateUser';
 import ClassRoom from './components/Students/ClassRoom/ClassRoom';
 import AllCourses from './components/Admin/Courses/AllCourses';
 import CreateCourse from './components/Admin/Courses/CreateCourse';
+import ProfileDetail from './components/ProfileDetail/ProfileDetail';
 
 function App() {
   return (
@@ -24,6 +25,10 @@ function App() {
           
           <Route path="/Student" element={<ProtectedRoutes />}>
             <Route path="/Student/Profile" element={<StudentProfile/>}/>
+          </Route>
+
+          <Route path='/Profile' element={<ProtectedRoutes/>}>
+            <Route path="/Profile/detail" element={<ProfileDetail/>}/>
           </Route>
 
           <Route path="/admin" element={<ProtectedRoutes />}>

@@ -1,0 +1,150 @@
+import React from 'react'
+import Select from 'react-select';
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import { LuMinusSquare } from "react-icons/lu";
+
+const selectDegree = [
+  { value: 'none', label: 'None' },
+  { value: 'Apps', label: 'Apps' },
+  { value: 'Website', label: 'Website' },
+];
+
+const selectField = [
+  { value: 'none', label: 'None' },
+  { value: 'Apps', label: 'Apps' },
+  { value: 'Website', label: 'Website' },
+];
+
+const ProfileEducation = ({setEducationContainers, educationContainers}) => {
+  
+  
+  const addEducationContainer = () => {
+    const newContainer = {
+      id: Date.now(), // use a unique identifier
+      universityName: '',
+      field: 'none',
+      degree: 'none',
+      fromDate: null,
+      toDate: null
+    };
+    setEducationContainers([...educationContainers, newContainer]);
+  };
+
+  const removeEducationContainer = (id) => {
+    setEducationContainers(educationContainers.filter(container => container.id !== id));
+  };
+
+  const handleUniversityNameChange = (id, newName) => {
+    setEducationContainers(educationContainers.map(container => 
+      container.id === id ? { ...container, universityName: newName } : container
+    ));
+  };
+
+  const handleFieldChange = (id, newValue) => {
+    setEducationContainers(educationContainers.map(container => 
+      container.id === id ? { ...container, field: newValue } : container
+    ));
+  };
+
+  const handleDegreeChange = (id, newValue) => {
+    setEducationContainers(educationContainers.map(container => 
+      container.id === id ? { ...container, degree: newValue } : container
+    ));
+  };
+
+  const handleFromDateChange = (id, newValue) => {
+    setEducationContainers(educationContainers.map(container => 
+      container.id === id ? { ...container, fromDate: newValue } : container
+    ));
+  };
+
+  const handleToDateChange = (id, newValue) => {
+    setEducationContainers(educationContainers.map(container => 
+      container.id === id ? { ...container, toDate: newValue } : container
+    ));
+  };
+
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: 210,
+      backgroundColor: '#1B1D29',
+      border: state.isFocused ? 'none' : 'none',
+      outline: "none",
+      borderRadius: 7, 
+      cursour: "pointer"
+      }),
+      singleValue: (provided) => ({
+        ...provided,
+        color: 'white', 
+      }),  
+      placeholder: (provided) => ({
+        ...provided,
+        color: 'rgb(163, 163, 163)', 
+      }),
+    };
+
+  return (
+    <div className='general-profile-detail-tabs-about-education'>
+
+      <button onClick={addEducationContainer}>Add More</button>
+
+      <div className='general-profile-detail-tabs-about-education-wrapper'>
+
+      {educationContainers.map(container => (
+        <div className='general-profile-detail-tabs-about-education-container'>
+          <div className='general-profile-detail-tabs-about-education-university'>
+            <p>University name</p>
+            <div>
+              <input type="text" value={container.universityName} onChange={(e) => handleUniversityNameChange(container.id, e.target.value)}/>
+              <button onClick={() => removeEducationContainer(container.id)}><LuMinusSquare size={24}/></button>
+            </div>
+          </div>
+          <div className='general-profile-detail-tabs-about-education-field-degree'>
+              <div>
+                <p>Field</p>
+                  <Select
+                    value={container.field}
+                    onChange={(selectedOption) => handleFieldChange(container.id, selectedOption.value)}
+                    options={selectField}
+                    styles={customStyles}
+                    placeholder="Select Field"
+                  />
+              </div>
+              <div>
+                <p>Degree</p>
+                <Select
+                  value={container.degree}
+                  onChange={(selectedOption) => handleDegreeChange(container.id, selectedOption.value)}
+                  options={selectDegree} 
+                  styles={customStyles}
+                  placeholder="Degree Type"
+                />
+              </div>
+          </div>
+          <div className='general-profile-detail-tabs-about-education-date'>
+              <div>
+                <p>From</p>
+                <DatePicker onChange={(date) => handleFromDateChange(container.id, date)} value={container.fromDate} />
+              </div>
+              <div>
+                <p>To</p>
+                <DatePicker onChange={(date) => handleToDateChange(container.id, date)} value={container.toDate} />
+              </div>
+          </div>
+        </div>
+        ))}
+
+      </div>
+
+
+
+
+    </div>
+  )
+}
+
+export default ProfileEducation
