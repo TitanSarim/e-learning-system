@@ -20,6 +20,9 @@ const ProfileDetail = () => {
   const [activeTab, setActiveTab] = useState('Me');
   const [phoneNo, setPhoneNo] = useState()
   const [aboutMe, setAboutMe] = useState()
+  const [selectSkills, setSelectSkills] = useState()
+  const [cv, setCv] = useState()
+  const [coverLetter, setCoverLetter] = useState()
 
   const [educationContainers, setEducationContainers] = useState([{
     id: 1,
@@ -30,7 +33,17 @@ const ProfileDetail = () => {
     toDate: null
   }]);
 
-  console.log('educationContainers',educationContainers)
+  const [skillsContainers, setSkillsContainers] = useState([{
+    id: 1,
+    CompanyName: '',
+    location: '',
+    JobTitle: '',
+    desc: '',
+    fromDate: null,
+    toDate: null
+  }]);
+
+
 
   const handleMainTabClick = (tab) => {
     setActiveTab(tab);
@@ -38,7 +51,15 @@ const ProfileDetail = () => {
 
   const handleAboutChange = (value) => {
     setAboutMe(value);
-  
+  }
+
+  const handleCoverLetterChange = (value) => {
+    setCoverLetter(value);
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
   }
 
   return (
@@ -102,25 +123,22 @@ const ProfileDetail = () => {
 
               {/*  tab content */}
               {activeTab === 'Me' &&(
-                <ProfileTabsMe setPhoneNo={setPhoneNo} value={phoneNo}/>
+                <ProfileTabsMe setPhoneNo={setPhoneNo} value={phoneNo} handleSubmit={handleSubmit}/>
               )}
               {activeTab === 'About' &&(
-                <ProfileTabsAbout setValue={handleAboutChange} value={aboutMe}/>
+                <ProfileTabsAbout setValue={handleAboutChange} value={aboutMe} handleSubmit={handleSubmit}/>
               )}
               {activeTab === 'Education' &&(
-                <ProfileEducation   
-                    setEducationContainers={setEducationContainers}
-                    educationContainers={educationContainers}
-                    />
+                <ProfileEducation   handleSubmit={handleSubmit} setEducationContainers={setEducationContainers} educationContainers={educationContainers} />
               )}
               {activeTab === 'Skills' &&(
-                <ProfileTabsSkills setPhoneNo={setPhoneNo} value={phoneNo}/>
+                <ProfileTabsSkills setSelectSkills={setSelectSkills} value={selectSkills} handleSubmit={handleSubmit}/>
               )}
               {activeTab === 'Experience' &&(
-                <ProfileTabsExperience setPhoneNo={setPhoneNo} value={phoneNo}/>
+                <ProfileTabsExperience handleSubmit={handleSubmit} setskillsContainers={setSkillsContainers} skillsContainers={skillsContainers}/>
               )}
               {activeTab === 'Resume' &&(
-                <ProfileTabsResume setPhoneNo={setPhoneNo} value={phoneNo}/>
+                <ProfileTabsResume handleSubmit={handleSubmit} cv={cv} setCv={setCv} coverLetter={coverLetter} handleCoverLetterChange={handleCoverLetterChange}/>
               )}
 
             </div>

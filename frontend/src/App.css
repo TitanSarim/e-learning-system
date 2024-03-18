@@ -1,0 +1,17 @@
+
+::-webkit-scrollbar {
+    width: 8px; /* You can adjust this width as per your preference */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #1B1D29; /* Track color */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #292d42; /* Thumb color */
+    border-radius: 6px; /* Rounded corners */
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #444a68; /* Thumb color on hover */
+  }

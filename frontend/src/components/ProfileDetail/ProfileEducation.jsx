@@ -8,12 +8,12 @@ import {selectField} from '../../Jsons/EducationalPrograms'
 import {selectDegree} from '../../Jsons/EducationDegrees'
 
 
-const ProfileEducation = ({setEducationContainers, educationContainers}) => {
+const ProfileEducation = ({setEducationContainers, educationContainers, handleSubmit}) => {
   
   
   const addEducationContainer = () => {
     const newContainer = {
-      id: Date.now(), // use a unique identifier
+      id: Date.now(),
       universityName: '',
       field: 'none',
       degree: 'none',
@@ -85,14 +85,15 @@ const ProfileEducation = ({setEducationContainers, educationContainers}) => {
 
       <button onClick={addEducationContainer}>Add More</button>
 
-      <div className='general-profile-detail-tabs-about-education-wrapper'>
+      <form onSubmit={handleSubmit}>
+      <div className='general-profile-detail-tabs-about-education-wrapper' >
 
       {educationContainers.map(container => (
-        <div className='general-profile-detail-tabs-about-education-container'>
+        <div className='general-profile-detail-tabs-about-education-container' >
           <div className='general-profile-detail-tabs-about-education-university'>
             <p>University name</p>
             <div>
-              <input type="text" value={container.universityName} onChange={(e) => handleUniversityNameChange(container.id, e.target.value)}/>
+              <input type="text" value={container.universityName} onChange={(e) => handleUniversityNameChange(container.id, e.target.value)} required/>
               <button onClick={() => removeEducationContainer(container.id)}><LuMinusSquare size={24}/></button>
             </div>
           </div>
@@ -105,6 +106,7 @@ const ProfileEducation = ({setEducationContainers, educationContainers}) => {
                     options={selectField}
                     styles={customStyles}
                     placeholder="Select Field"
+                    required
                   />
               </div>
               <div>
@@ -115,23 +117,28 @@ const ProfileEducation = ({setEducationContainers, educationContainers}) => {
                   options={selectDegree} 
                   styles={customStyles}
                   placeholder="Degree Type"
+                  required
                 />
               </div>
           </div>
           <div className='general-profile-detail-tabs-about-education-date'>
               <div>
                 <p>From</p>
-                <DatePicker onChange={(date) => handleFromDateChange(container.id, date)} value={container.fromDate} />
+                <DatePicker onChange={(date) => handleFromDateChange(container.id, date)} value={container.fromDate} required/>
               </div>
               <div>
                 <p>To</p>
-                <DatePicker onChange={(date) => handleToDateChange(container.id, date)} value={container.toDate} />
+                <DatePicker onChange={(date) => handleToDateChange(container.id, date)} value={container.toDate} required/>
               </div>
           </div>
         </div>
         ))}
 
       </div>
+
+      <input type='submit' value="Save" className='general-profile-detail-tabs-about-education-form-submit'/>
+
+      </form>
 
 
 

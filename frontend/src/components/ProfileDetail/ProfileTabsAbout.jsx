@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import {Link} from 'react-router-dom'
 
-const ProfileTabsAbout = ({handleAboutChange, aboutMe}) => {
+const ProfileTabsAbout = ({handleAboutChange, aboutMe, handleSubmit}) => {
 
   return (
 
-    <div className='general-profile-detail-tabs-about'>
+    <form className='general-profile-detail-tabs-about' onSubmit={handleSubmit}>
         <div className='general-profile-detail-tabs-about-editor'>
             <p>About You</p>
             <ReactQuill 
@@ -17,11 +16,9 @@ const ProfileTabsAbout = ({handleAboutChange, aboutMe}) => {
             />
         </div>
 
-        <Link className='general-profile-detail-tabs-about-button'>
-          Save
-        </Link>
+        <input className='general-profile-detail-tabs-about-button' type='Submit' value="Save"/>
 
-    </div>
+    </form>
 
   )
 }
