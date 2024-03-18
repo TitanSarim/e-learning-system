@@ -4,18 +4,9 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { LuMinusSquare } from "react-icons/lu";
+import {selectField} from '../../Jsons/EducationalPrograms'
+import {selectDegree} from '../../Jsons/EducationDegrees'
 
-const selectDegree = [
-  { value: 'none', label: 'None' },
-  { value: 'Apps', label: 'Apps' },
-  { value: 'Website', label: 'Website' },
-];
-
-const selectField = [
-  { value: 'none', label: 'None' },
-  { value: 'Apps', label: 'Apps' },
-  { value: 'Website', label: 'Website' },
-];
 
 const ProfileEducation = ({setEducationContainers, educationContainers}) => {
   
@@ -33,7 +24,9 @@ const ProfileEducation = ({setEducationContainers, educationContainers}) => {
   };
 
   const removeEducationContainer = (id) => {
-    setEducationContainers(educationContainers.filter(container => container.id !== id));
+    if (educationContainers.length > 1) {
+      setEducationContainers(educationContainers.filter(container => container.id !== id));
+    }
   };
 
   const handleUniversityNameChange = (id, newName) => {
@@ -107,7 +100,7 @@ const ProfileEducation = ({setEducationContainers, educationContainers}) => {
               <div>
                 <p>Field</p>
                   <Select
-                    value={container.field}
+                    defaultValue={container.field}
                     onChange={(selectedOption) => handleFieldChange(container.id, selectedOption.value)}
                     options={selectField}
                     styles={customStyles}
@@ -117,7 +110,7 @@ const ProfileEducation = ({setEducationContainers, educationContainers}) => {
               <div>
                 <p>Degree</p>
                 <Select
-                  value={container.degree}
+                  defaultValue={container.degree}
                   onChange={(selectedOption) => handleDegreeChange(container.id, selectedOption.value)}
                   options={selectDegree} 
                   styles={customStyles}

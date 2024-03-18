@@ -524,10 +524,15 @@
     margin: 10px 0px;
 }
 
+.css-qbdosj-Input{
+    color: white !important;
+}
+
 .general-profile-detail-tabs-about-education-field-degree div>p{
     color: rgb(216, 216, 216);
     margin-bottom: 5px;
 }
+
 
 .general-profile-detail-tabs-about-education-date{
     position: relative;
