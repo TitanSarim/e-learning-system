@@ -2,7 +2,7 @@ import React from 'react'
 
 import './NavBar.css'
 
-import Logo1 from '../../assets/icons8-book.gif'
+import Logo1 from '../../assets/icons8-book.png'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -17,7 +17,7 @@ const NavBar = () => {
 
         <div className='navbar-logo'>
             <img src={Logo1} alt='logo'/>
-            <p>M-Time</p>
+            {/* <p>M-Time</p> */}
         </div>
 
         <div className='navbar-pages'>

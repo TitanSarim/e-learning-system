@@ -2,9 +2,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 
+
+
 *{
   margin: 0%;
   padding: 0%;
   font-family: 'Montserrat', sans-serif;
   scroll-behavior: smooth;
+}
+
+
+
+/* ! https://colorhunt.co/palette/0a26471442722052952c74b3 */
+.pallet1{
+  color: #0A2647;
+  color: #144272;
+  color: #205295;
+  color: #2C74B3;
+}
+
+/* ! https://colorhunt.co/palette/645cbba084dcbface2ebc7e6 */
+.pallet2{
+  color: #645CBB;
+  color: #A084DC;
+  color: #BFACE2;
+  color: #EBC7E6;
+}
+
+/*  button background */
+.buttonpallet{
+  background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+  color: rgb(255, 255, 255);
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  box-shadow: 0 0 20px #4b4747;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none;
+  gap: 12px;
+}
+
+.buttonpallet:hover{
+  transform: scale(1.01);
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
 }

@@ -1,17 +1,17 @@
 import {
-    CREATE_COURSES_REQUEST,
-    CREATE_COURSES_SUCCESS,
-    CREATE_COURSES_FAIL,
+  CREATE_COURSES_REQUEST,
+  CREATE_COURSES_SUCCESS,
+  CREATE_COURSES_FAIL,
+  GET_ALL_ADMIN_COURSES_REQUEST,
+  GET_ALL_ADMIN_COURSES_SUCCESS,
+  GET_ALL_ADMIN_COURSES_FAIL,
+  CLEAR_ERRORS,
+} from "../constants/CoursesConstants";
+import axios from "axios";
+import { uploadVideosToAzure } from "../middlewares/VideoUpload";
+import { uploadImageToAzure } from "../middlewares/ImageUplaod";
 
-    GET_ALL_ADMIN_COURSES_REQUEST,
-    GET_ALL_ADMIN_COURSES_SUCCESS,
-    GET_ALL_ADMIN_COURSES_FAIL,
-
-    CLEAR_ERRORS,
-} from '../constants/CoursesConstants' 
-import axios from 'axios'
-import {uploadVideosToAzure} from '../middlewares/VideoUpload'
-import {uploadImageToAzure} from '../middlewares/ImageUplaod'
+const BASE_URL = "http://localhost:3900";
 
 // CREATE COURSES ACTIONS
 export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
@@ -41,40 +41,43 @@ export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
- 
-    const {data} = await axios.post(`/api/v1/createCourse`, jsonString, config);
 
-      dispatch({ type: CREATE_COURSES_SUCCESS, payload: data.Admincourses });
+    const { data } = await axios.post(
+      `/api/v1/createCourse`,
+      jsonString,
+      config
+    );
 
-    } catch (error) {
-    
-      dispatch({
+    dispatch({ type: CREATE_COURSES_SUCCESS, payload: data.Admincourses });
+  } catch (error) {
+    dispatch({
       type: CREATE_COURSES_FAIL,
       payload: error.response.data.message,
     });
     console.log("error", error);
   }
-
-}
-  
+};
 
 // GET ADMIN COURSES ACTIONS
-export const AdminGetCourses = () => async (dispatch) =>{
+export const AdminGetCourses = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ALL_ADMIN_COURSES_REQUEST });
 
-    try {
-        dispatch({type: GET_ALL_ADMIN_COURSES_REQUEST});
-        
-        const {data} = await axios.get(`/api/v1/get-all-admin-courses`)
+    const { data } = await axios.get(
+      `${BASE_URL}/api/v1/get-all-admin-courses`
+    );
 
-        dispatch({type: GET_ALL_ADMIN_COURSES_SUCCESS, payload: data.Admincourses});
-        
-    } catch (error) {
-        dispatch({type: GET_ALL_ADMIN_COURSES_FAIL, payload: error.response.data.message});
-    }
-}
-
- 
-
+    dispatch({
+      type: GET_ALL_ADMIN_COURSES_SUCCESS,
+      payload: data.Admincourses,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_ADMIN_COURSES_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });

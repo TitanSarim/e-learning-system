@@ -5,6 +5,7 @@ import { TfiBook } from "react-icons/tfi";
 import { PiStudent } from "react-icons/pi";
 import { CiUser } from "react-icons/ci";
 import { TfiStatsUp } from "react-icons/tfi";
+import LogoIcon from '../../../assets/icons8-book.png'
 
 import './SideBar.css'
 const SideBar = () => {
@@ -13,7 +14,7 @@ const SideBar = () => {
 
       <div className='admin-sidebar-container'>
 
-        <p>M-Time</p>
+        <img src={LogoIcon} alt="Logo"/>
 
         <div className='admin-sidebar-tabs'>
           <Link to="/admin/dashboard"><GrHomeRounded/> <p>Dashboard</p></Link>

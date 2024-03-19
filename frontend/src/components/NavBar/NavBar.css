@@ -21,15 +21,15 @@
 }
 
 .navbar-logo img{
-    width: 50px;
+    width: 200px;
 }
 
-.navbar-logo p{
+/* .navbar-logo p{
     width: 130px;
     color: white;
     font-weight: 700;
     font-size: 28px;
-}
+} */
 
 .navbar-pages{
     position: relative;

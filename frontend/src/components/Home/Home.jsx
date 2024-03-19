@@ -29,7 +29,7 @@ import cardImg from '../../assets/Mask group.png'
 import fromImg from '../../assets/Ellipse 1202.png'
 import layer from "../../assets/layer.png"
 import Frame from "../../assets/Frame.png"
-import Logo1 from '../../assets/icons8-book.gif'
+import Logo1 from '../../assets/icons8-book.png'
 import Profiles from "../../assets/profiles.png"
 import { Link } from 'react-router-dom';
 import Testimonial from './Testimonial';
@@ -292,7 +292,7 @@ const Home = () => {
                             
                             <div className='navbar-logo'>
                                 <img src={Logo1} alt='logo'/>
-                                <p>M-Time</p>
+                                {/* <p>M-Time</p> */}
                             </div>   
 
                             <p>Veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
