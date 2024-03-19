@@ -198,7 +198,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    gap:  160px;
+    gap:  40px;
 }
 
 .general-profile-detail-tabs-content-input-type-1, .general-profile-detail-tabs-content-input-type-3{
@@ -873,21 +873,39 @@
     color: rgb(216, 216, 216);
 }
 
-
-.general-profile-detail-tabs-about{
+.general-profile-detail-tabs-about-experience-checkbox {
     position: relative;
-    width: 99%;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    top: 10px;
+}
+.general-profile-detail-tabs-about-experience-checkbox input{
+    width: 35px;
+    height: 35px;
+}
+
+
+.general-profile-detail-tabs-about-resume-container{
+    position: relative;
+    width: 96%;
     display: flex;
     align-items: flex-start;
 }
 
-.general-profile-detail-tabs-about>form{
+.general-profile-detail-tabs-about-resume-container>form{
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
 }
+
+
+
+
 
 .general-profile-detail-tabs-about-coverletter{
     width: 90%;
@@ -971,6 +989,183 @@
 }
 
 .general-profile-detail-tabs-about-submit-btn:hover{
+    transform: scale(1.01);
+    background-position: right center; 
+    color: #fff;
+}
+
+/* social */
+
+.general-profile-detail-container-social{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 96%;
+    height: 52vh;
+}
+
+.general-profile-detail-container-social>form{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    top: 0px;
+}
+.general-profile-detail-container-social>form>p{
+    color: rgb(216, 216, 216);
+}
+
+.general-profile-detail-container-social-wrapper{
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    top: 20px;
+}
+
+.general-profile-detail-container-social-tabs{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 40%;
+    height: 70px;
+    justify-content: space-between;
+    border: 1px solid #B24592;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.general-profile-detail-container-social-tabs>a{
+    color: white;
+    background-color: #1B1D29;
+    padding: 7px 7px 4px 7px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.096);
+    transition: all 500ms;
+}
+
+.general-profile-detail-container-social-tabs>a:hover{
+    border: 1px solid rgba(255, 255, 255, 0.425);
+    transform: scale(1.03);
+}
+
+.general-profile-detail-container-social-tabs>div{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.general-profile-detail-container-social-git{
+    color: #313131;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+.general-profile-detail-container-social-twitter{
+    color: #229cff;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+.general-profile-detail-container-social-instagram{
+    color: #ff0080;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+.general-profile-detail-container-social-dribbble{
+    color: #B24592;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+.general-profile-detail-container-social-site{
+    color: #ff501b;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+
+.general-profile-detail-container-social-tabs div div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.general-profile-detail-container-social-tabs div div>p{
+    color: rgb(216, 216, 216);
+    font-weight: 500;
+}
+
+.general-profile-detail-container-social-tabs div div span{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.general-profile-detail-container-social-tabs div div span input{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    border-bottom: 1px solid rgba(119, 119, 119, 0.349);
+}
+
+.general-profile-detail-container-social-tabs div div span svg{
+    color: white;
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.general-profile-detail-container-social-tabs div div span svg:hover{
+    color: tomato;
+    transform: scale(1.09);
+}
+
+.general-profile-detail-container-social-submit{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    /* top: 65px; */
+    outline: none !important;
+    border: none !important;
+    left: 10px;
+    top: 15px;
+}
+
+.general-profile-detail-container-social-submit:hover{
     transform: scale(1.01);
     background-position: right center; 
     color: #fff;

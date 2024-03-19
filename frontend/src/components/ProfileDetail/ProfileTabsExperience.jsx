@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { LuMinusSquare } from 'react-icons/lu';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -8,6 +8,7 @@ import 'react-calendar/dist/Calendar.css';
 
 const ProfileTabsExperience = ({handleSubmit, setskillsContainers, skillsContainers}) => {
 
+  const [current, setCurrent] = useState(false)
 
   const addExperienceContainer = () => {
     const newContainer = {
@@ -59,31 +60,21 @@ const ProfileTabsExperience = ({handleSubmit, setskillsContainers, skillsContain
   };
 
   const handleToDateChange = (id, newValue) => {
-    setskillsContainers(skillsContainers.map(container => 
-      container.id === id ? { ...container, toDate: newValue } : container
-    ));
+    if(current === false){
+      setskillsContainers(skillsContainers.map(container => 
+        container.id === id ? { ...container, toDate: newValue } : container
+      ));
+    }else{
+      setskillsContainers(skillsContainers.map(container => 
+        container.id === id ? { ...container, toDate: current } : container
+      ));
+    }
   };
 
+  const handleCurrentChange = () => {
+    setCurrent(prevState => !prevState);
+  };
 
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      width: 210,
-      backgroundColor: '#1B1D29',
-      border: state.isFocused ? 'none' : 'none',
-      outline: "none",
-      borderRadius: 7, 
-      cursour: "pointer"
-      }),
-      singleValue: (provided) => ({
-        ...provided,
-        color: 'white', 
-      }),  
-      placeholder: (provided) => ({
-        ...provided,
-        color: 'rgb(163, 163, 163)', 
-      }),
-    };
 
 
   return (
@@ -130,7 +121,15 @@ const ProfileTabsExperience = ({handleSubmit, setskillsContainers, skillsContain
                   </div>
                   <div>
                     <p>To</p>
-                    <DatePicker onChange={(date) => handleToDateChange(container.id, date)} value={container.toDate} required/>
+                    {current === true ? (
+                      <DatePicker onChange={(date) => handleToDateChange(container.id, date)} value={container.toDate} disabled/>
+                    ) : (
+                      <DatePicker onChange={(date) => handleToDateChange(container.id, date)} value={container.toDate} required/>
+                    )}
+                  </div>
+                  <div className='general-profile-detail-tabs-about-experience-checkbox'>
+                    <p>Or Current</p>
+                    <input type='checkbox' value={current} onChange={handleCurrentChange}/>
                   </div>
                 </div>
                 

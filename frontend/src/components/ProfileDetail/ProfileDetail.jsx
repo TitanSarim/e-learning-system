@@ -12,18 +12,24 @@ import ProfileTabsResume from './ProfileTabsResume.jsx'
 
 import './ProfileDetail.css'
 import ProfileEducation from './ProfileEducation.jsx';
+import ProfileSocial from './ProfileSocial.jsx';
 
 
 const ProfileDetail = () => {
 
-
+  const [personalDetails, setPersonalDetails] = useState({
+    firstName: '',
+    lastName: '',
+    address: '',
+    email: '',
+    phoneNumber: '',
+    headline: ''
+  });
   const [activeTab, setActiveTab] = useState('Me');
-  const [phoneNo, setPhoneNo] = useState()
   const [aboutMe, setAboutMe] = useState()
   const [selectSkills, setSelectSkills] = useState()
   const [cv, setCv] = useState()
   const [coverLetter, setCoverLetter] = useState()
-
   const [educationContainers, setEducationContainers] = useState([{
     id: 1,
     universityName: '',
@@ -32,7 +38,6 @@ const ProfileDetail = () => {
     fromDate: null,
     toDate: null
   }]);
-
   const [skillsContainers, setSkillsContainers] = useState([{
     id: 1,
     CompanyName: '',
@@ -42,6 +47,13 @@ const ProfileDetail = () => {
     fromDate: null,
     toDate: null
   }]);
+  const [socialDetails, setSocialDetails] = useState({
+    Github: '',
+    Instagram: '',
+    Twitter: '',
+    Dribble: '',
+    Portfolio: '',
+  });
 
 
 
@@ -115,6 +127,10 @@ const ProfileDetail = () => {
                                 onClick={() => handleMainTabClick('Experience')}>
                   Experience
                 </button>
+                <button className={activeTab === 'Social' ? 'general-profile-detail-tab-avtive' : ''}
+                                onClick={() => handleMainTabClick('Social')}>
+                  Social
+                </button>
                 <button className={activeTab === 'Resume' ? 'general-profile-detail-tab-avtive' : ''}
                                 onClick={() => handleMainTabClick('Resume')}>
                   Resume
@@ -123,7 +139,7 @@ const ProfileDetail = () => {
 
               {/*  tab content */}
               {activeTab === 'Me' &&(
-                <ProfileTabsMe setPhoneNo={setPhoneNo} value={phoneNo} handleSubmit={handleSubmit}/>
+                <ProfileTabsMe setPersonalDetails={setPersonalDetails} value={personalDetails} handleSubmit={handleSubmit}/>
               )}
               {activeTab === 'About' &&(
                 <ProfileTabsAbout setValue={handleAboutChange} value={aboutMe} handleSubmit={handleSubmit}/>
@@ -136,6 +152,9 @@ const ProfileDetail = () => {
               )}
               {activeTab === 'Experience' &&(
                 <ProfileTabsExperience handleSubmit={handleSubmit} setskillsContainers={setSkillsContainers} skillsContainers={skillsContainers}/>
+              )}
+              {activeTab === 'Social' &&(
+                <ProfileSocial handleSubmit={handleSubmit} socialDetails={socialDetails} setSocialDetails={setSocialDetails}/>
               )}
               {activeTab === 'Resume' &&(
                 <ProfileTabsResume handleSubmit={handleSubmit} cv={cv} setCv={setCv} coverLetter={coverLetter} handleCoverLetterChange={handleCoverLetterChange}/>

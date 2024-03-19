@@ -5,8 +5,14 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 
 
 const ProfileTabsResume = ({handleSubmit, cv, setCv, coverLetter, handleCoverLetterChange}) => {
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0]; 
+    setCv(file);
+  };
+
   return (
-    <div className='general-profile-detail-tabs-about'>
+    <div className='general-profile-detail-tabs-about-resume-container'>
 
         <form onSubmit={handleSubmit}>
 
@@ -24,7 +30,7 @@ const ProfileTabsResume = ({handleSubmit, cv, setCv, coverLetter, handleCoverLet
               <p>Your Cv or Resume:</p>
               <div>
                 <label htmlFor="resume"><IoCloudUploadOutline size={24}/></label>
-                <input type='file' accept='application/pdf' id='resume' required/>
+                <input type='file' accept='application/pdf' id='resume' onChange={handleFileChange} required/>
               </div>
             </div>
 

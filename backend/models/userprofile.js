@@ -15,17 +15,19 @@ module.exports = (sequelize, DataTypes) => {
   }
   UserProfile.init({
     userId: DataTypes.INTEGER,
+    avatar: DataTypes.JSON,
+    location: DataTypes.STRING, // and this one
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
-    avatar: DataTypes.JSON,
-    tagline: DataTypes.JSON,
+    phoneno: DataTypes.STRING,
+    Headline: DataTypes.JSON,
     about: DataTypes.JSON,
-    experience: DataTypes.JSON,
     education: DataTypes.JSON,
     skills: DataTypes.JSON,
-    social: DataTypes.JSON,
-    certificates: DataTypes.JSON,
+    experience: DataTypes.JSON,
+    social: DataTypes.JSON, //this one is left
     cv: DataTypes.JSON,
+    coverletter: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'UserProfile',
