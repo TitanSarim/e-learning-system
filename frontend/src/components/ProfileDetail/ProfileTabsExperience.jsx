@@ -59,22 +59,16 @@ const ProfileTabsExperience = ({handleSubmit, setskillsContainers, skillsContain
     ));
   };
 
+
+  const handleCurrentChange = (event) => {
+    setCurrent(event.target.checked);
+  };
+
   const handleToDateChange = (id, newValue) => {
-    if(current === false){
-      setskillsContainers(skillsContainers.map(container => 
-        container.id === id ? { ...container, toDate: newValue } : container
-      ));
-    }else{
-      setskillsContainers(skillsContainers.map(container => 
-        container.id === id ? { ...container, toDate: current } : container
-      ));
-    }
+    setskillsContainers(skillsContainers.map(container => 
+      container.id === id ? { ...container, toDate: current ? null : newValue } : container
+    ));
   };
-
-  const handleCurrentChange = () => {
-    setCurrent(prevState => !prevState);
-  };
-
 
 
   return (
@@ -92,7 +86,7 @@ const ProfileTabsExperience = ({handleSubmit, setskillsContainers, skillsContain
                 <div className='general-profile-detail-tabs-about-experience-inputs'>
                     <div>
                       <p>Company Name</p>
-                        <input type="text" value={container.universityName} onChange={(e) => handleCompanyNameChange(container.id, e.target.value)} required/>
+                        <input type="text" value={container.CompanyName} onChange={(e) => handleCompanyNameChange(container.id, e.target.value)} required/>
                     </div>
                     <div>
                       <p>Location</p>
@@ -129,7 +123,7 @@ const ProfileTabsExperience = ({handleSubmit, setskillsContainers, skillsContain
                   </div>
                   <div className='general-profile-detail-tabs-about-experience-checkbox'>
                     <p>Or Current</p>
-                    <input type='checkbox' value={current} onChange={handleCurrentChange}/>
+                    <input type='checkbox' checked={current} onChange={handleCurrentChange}/>
                   </div>
                 </div>
                 

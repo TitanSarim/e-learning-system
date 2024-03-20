@@ -2,7 +2,7 @@ import React from 'react'
 import {selectDegree} from '../../Jsons/EducationDegrees'
 import Select from 'react-select';
 
-const ProfileTabsSkills = ({setSelectSkills, value, handleSubmit}) => {
+const ProfileTabsSkills = ({setSelectSkills, selectSkills, handleSubmit}) => {
 
   const customStyles = {
     control: (provided, state) => ({
@@ -25,6 +25,8 @@ const ProfileTabsSkills = ({setSelectSkills, value, handleSubmit}) => {
       }),
     };
 
+    console.log("selectSkills", selectSkills)
+
 
   return (
     <div className='general-profile-detail-tabs-skills'>
@@ -34,9 +36,8 @@ const ProfileTabsSkills = ({setSelectSkills, value, handleSubmit}) => {
           <p>Skills</p>
           <Select
             isMulti
-            defaultValue={value}
-            onChange={(selectedOption) => setSelectSkills(selectedOption.value)}
-            options={selectDegree} 
+            defaultValue={selectSkills}
+            onChange={(selectedOptions) => setSelectSkills(selectedOptions)}             options={selectDegree} 
             styles={customStyles}
             placeholder="Add Your Skills"
             required

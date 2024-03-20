@@ -59,6 +59,7 @@ const ProfileEducation = ({setEducationContainers, educationContainers, handleSu
     ));
   };
 
+  console.log("educationContainers", educationContainers)
 
   const customStyles = {
     control: (provided, state) => ({
@@ -101,7 +102,7 @@ const ProfileEducation = ({setEducationContainers, educationContainers, handleSu
               <div>
                 <p>Field</p>
                   <Select
-                    defaultValue={container.field}
+                     defaultValue={selectField.find(option => option.value === container.field)}
                     onChange={(selectedOption) => handleFieldChange(container.id, selectedOption.value)}
                     options={selectField}
                     styles={customStyles}
@@ -112,7 +113,7 @@ const ProfileEducation = ({setEducationContainers, educationContainers, handleSu
               <div>
                 <p>Degree</p>
                 <Select
-                  defaultValue={container.degree}
+                  defaultValue={selectDegree.find(option => option.value === container.degree)}
                   onChange={(selectedOption) => handleDegreeChange(container.id, selectedOption.value)}
                   options={selectDegree} 
                   styles={customStyles}

@@ -33,20 +33,6 @@ const catchAsyncError = require('../middleware/catchAsyncError');
         status,
       });
 
-      // await UserProfile.create({
-      //   userId: user.id,
-      //   firstname: "null",
-      //   lastname: "null",
-      //   avatar: "null",
-      //   tagline: "null",
-      //   about: "null",
-      //   experience: "null",
-      //   education: "null",
-      //   skills: "null",
-      //   social: "null",
-      //   certificates: "null"
-      // })
-
       const token = generatedToken(user.id, user.email, user.username, user.role);
       setTokenCookie(res, token);
 

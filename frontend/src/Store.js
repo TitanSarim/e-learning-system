@@ -6,12 +6,15 @@ import storage from 'redux-persist/lib/storage';
 
 import {userReducer, AdminUserReducer} from './redcuers/UserReducer'
 import {AdminCourseReducer} from './redcuers/CourseReducer'
+import {myPorfileReducer} from './redcuers/ProfileReducer'
 
 const reducer = combineReducers({
 
     user: userReducer,
-    adminUsers: AdminUserReducer,
 
+    myPorfile: myPorfileReducer,
+
+    adminUsers: AdminUserReducer,
     adminCourses: AdminCourseReducer,
 
 });

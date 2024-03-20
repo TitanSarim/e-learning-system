@@ -12,7 +12,7 @@ const calculateMD5 = async (data) => {
 
 export const VideoUploadToAzureContainer = async (file, onProgress) => {
     const storageAccountName = "elearningplateform";
-    const sasToken = "sv=2022-11-02&ss=bfqt&srt=sco&sp=rwlacupiytfx&se=2026-04-01T23:48:46Z&st=2024-03-08T15:48:46Z&spr=https,http&sig=6rkt5tO2fGiunogJXADewkfjMNCk2GcOyH%2FK5M1g5ws%3D";
+    const sasToken = "sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2026-04-03T08:22:38Z&st=2024-03-11T00:22:38Z&spr=https,http&sig=7qqNArRh8%2B5JS48YXTtOE62xcw9PGTvGJA9czS3diuA%3D";
     const containerName = "courses-videos";
 
     const blobService = new BlobServiceClient(`https://${storageAccountName}.blob.core.windows.net/?${sasToken}`,  newPipeline(new AnonymousCredential()));

@@ -15,6 +15,8 @@ import CreateCourse from './components/Admin/Courses/CreateCourse';
 import ProfileDetail from './components/ProfileDetail/ProfileDetail';
 
 function App() {
+
+
   return (
     <>
       <BrowserRouter>
