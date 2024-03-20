@@ -44,22 +44,22 @@ const getUserProfile = catchAsyncError(async(req, res, next) => {
       if(userProfileTable){
         myProfile = {
           ...myProfile,
-          avatar: JSON.parse(userProfileTable.avatar).url,
-          location: userProfileTable.location,
-          firstname: userProfileTable.firstname,
-          lastname: userProfileTable.lastname,
-          phoneno: userProfileTable.phoneno,
-          Headline: JSON.parse(userProfileTable.Headline),
-          about: JSON.parse(userProfileTable.about),
-          education: JSON.parse(userProfileTable.education),
-          skills: JSON.parse(userProfileTable.skills).data,
-          experience: JSON.parse(userProfileTable.experience),
-          social: JSON.parse(userProfileTable.social),
-          cv: JSON.parse(userProfileTable.cv).url,
-          coverletter: JSON.parse(userProfileTable.coverletter),
+          avatar: userProfileTable.avatar?.url || '',
+          location: userProfileTable.location || '',
+          firstname: userProfileTable.firstname || '',
+          lastname: userProfileTable.lastname || '',
+          phoneno: userProfileTable.phoneno || '',
+          Headline: userProfileTable.Headline?.data || '',
+          about: userProfileTable.about?.data || '',
+          education: userProfileTable.education?.data || [],
+          skills: userProfileTable.skills?.data || [],
+          experience: userProfileTable.experience?.data || [],
+          social: userProfileTable.social?.data || {},
+          cv: userProfileTable.cv?.url || '',
+          coverletter: userProfileTable.coverletter?.data || '',
         }
       }
-      
+
       res.status(201).json({
         success: true,
         message: 'Profile retrived',
@@ -95,14 +95,14 @@ const createUpdateUserProfile = catchAsyncError(async (req, res, next) => {
                 firstname: firstname,
                 lastname: lastname,
                 phoneno: phoneno,
-                Headline: Headline,
-                about: about,
-                education: education,
+                Headline: {data: Headline},
+                about: {data: about},
+                education: {data: education},
                 skills: {data: skills},
-                experience: experience,
-                social: social,
+                experience: {data: experience},
+                social: {data: social},
                 cv: {url: cv},
-                coverletter: coverletter
+                coverletter: {data: coverletter}
             });
         } else {
             myProfile = await UserProfile.update({
@@ -112,14 +112,14 @@ const createUpdateUserProfile = catchAsyncError(async (req, res, next) => {
               firstname: firstname,
               lastname: lastname,
               phoneno: phoneno,
-              Headline: Headline,
-              about: about,
-              education: education,
+              Headline: {data: Headline},
+              about: {data: about},
+              education: {data: education},
               skills: {data: skills},
-              experience: experience,
-              social: social,
+              experience: {data: experience},
+              social: {data: social},
               cv: {url: cv},
-              coverletter: coverletter
+              coverletter: {data: coverletter}
             },
             {
               where: { userId: userId } 

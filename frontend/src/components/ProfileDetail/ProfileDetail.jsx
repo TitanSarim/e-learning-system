@@ -16,7 +16,7 @@ import './ProfileDetail.css'
 import ProfileEducation from './ProfileEducation.jsx';
 import ProfileSocial from './ProfileSocial.jsx';
 
-import {getMyProfile, updateMyProfile, updateMyAvatar, updateMyResume, clearErrors} from '../../actions/ProfileAction.js'
+import {getMyProfile, updateMyProfile, clearErrors} from '../../actions/ProfileAction.js'
 import {useSelector, useDispatch} from 'react-redux';
 import ProfileAvatar from './ProfileAvatar.jsx';
 
@@ -28,23 +28,26 @@ const ProfileDetail = () => {
   const {myProfileData, error, loading} = useSelector((state)=>state.myPorfile);
 
   
-  const [profileData, setProfileData] = useState([])
+  const [profileData, setProfileData] = useState(myProfileData)
   const [editorOpen, setEditorOpen] = useState(false);
 
+  console.log("profileData", profileData)
+
+  const [userName, setUserName] = useState('');
   const [personalDetails, setPersonalDetails] = useState({
-      firstName: myProfileData?.firstname,
-      lastName: myProfileData?.lastname,
-      address: myProfileData?.location,
-      email: myProfileData?.email,
-      phoneNumber: myProfileData?.phoneno,
-      headline: myProfileData?.Headline
+    firstName: '',
+    lastName: '',
+    address: '',
+    email: '',
+    phoneNumber: '',
+    headline: ''
   });
   const [activeTab, setActiveTab] = useState('Me');
   const [avatar, setAvatar] = useState(myProfileData?.avatar || userImage);
-  const [aboutMe, setAboutMe] = useState(myProfileData?.about)
-  const [selectSkills, setSelectSkills] = useState(myProfileData?.skills)
-  const [cv, setCv] = useState(myProfileData?.cv)
-  const [coverLetter, setCoverLetter] = useState(myProfileData?.coverletter)
+  const [aboutMe, setAboutMe] = useState()
+  const [selectSkills, setSelectSkills] = useState()
+  const [cv, setCv] = useState()
+  const [coverLetter, setCoverLetter] = useState()
   const [educationContainers, setEducationContainers] = useState([{
     id: 1,
     universityName: '',
@@ -95,11 +98,10 @@ const ProfileDetail = () => {
       coverletter: coverLetter,
     }
 
-    console.log("formData", formData)
     dispatch(updateMyProfile(formData, myProfileData?.cv)) 
   }
 
-  const hanldeEditorModelOpen = (id) => {
+  const hanldeEditorModelOpen = () => {
     setEditorOpen(true)
 }
 
@@ -110,19 +112,36 @@ const ProfileDetail = () => {
         dispatch(clearErrors());
     }
     dispatch(getMyProfile());
-
 }, [dispatch, error])
 
 useEffect(() => {
-  setProfileData(myProfileData)
-
-  if (myProfileData?.education && myProfileData?.education.length > 0) {
-    setEducationContainers(myProfileData?.education);
-  } 
-  if (myProfileData?.experience && myProfileData?.experience.length > 0) {
-    setSkillsContainers(myProfileData?.experience);
-  } 
+  if (myProfileData && Object.keys(myProfileData).length > 0) {
+    setProfileData(myProfileData);
+  }
 }, [myProfileData]);
+
+useEffect(() => {
+  setAboutMe(profileData?.about)
+  setSelectSkills(profileData?.skills)
+  setUserName( profileData?.username)
+  setCoverLetter(profileData?.coverletter)
+  setCv(profileData?.cv)
+  setPersonalDetails({
+    firstName: profileData?.firstname,
+    lastName: profileData?.lastname,
+    address: profileData?.location,
+    email: profileData?.email,
+    phoneNumber: profileData?.phoneno,
+    headline: profileData?.Headline
+  });
+
+  if (profileData?.education && profileData?.education.length > 0) {
+    setEducationContainers(profileData?.education);
+  } 
+  if (profileData?.experience && profileData?.experience.length > 0) {
+    setSkillsContainers(profileData?.experience);
+  } 
+}, [profileData]);
 
   return (
     <div className='general-profile-detail-container'>
@@ -144,7 +163,7 @@ useEffect(() => {
                     <button onClick={() => hanldeEditorModelOpen()}><MdModeEditOutline/>Edit</button>
                   </div>
                   <div className='general-profile-detail-image-user-detail'>
-                    <p>@{myProfileData?.username}</p>
+                    <p>@{userName}</p>
                     <p>
                       Full Stack Developer
                       <span><FaLocationDot size={20}/>{personalDetails?.address}</span>
@@ -234,3 +253,7 @@ useEffect(() => {
 }
 
 export default ProfileDetail
+
+
+
+

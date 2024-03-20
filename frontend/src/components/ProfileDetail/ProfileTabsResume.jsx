@@ -17,8 +17,6 @@ const ProfileTabsResume = ({handleSubmit, cv, setCv, coverLetter, setCoverLetter
     setCv(file);
   };
 
-  console.log('cv', cv.name)
-
   return (
     <div className='general-profile-detail-tabs-about-resume-container'>
 
