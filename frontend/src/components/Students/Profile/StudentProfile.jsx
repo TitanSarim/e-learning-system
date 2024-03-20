@@ -98,8 +98,8 @@ const StudentProfile = () => {
               </div>
 
               <div className='profile-profile-rightbar-setting'>
-                <button><SlBell size={27}/></button>
-                <button><FiEdit2 size={27}/></button>
+                <Link><SlBell size={27}/></Link>
+                <Link to='/Profile/detail'><FiEdit2 size={27}/></Link>
               </div>
           </div>
 

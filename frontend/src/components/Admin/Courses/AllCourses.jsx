@@ -58,17 +58,14 @@ const AllCourses = () => {
   const filterCourses = () => {
     let filteredCourses = allCourses;
 
-    // Filter by status
     if (selectedStatusOption !== 'none') {
       filteredCourses = filteredCourses.filter((course) => course.status === selectedStatusOption);
     }
 
-    // Filter by category
     if (selectedCategoryOption !== 'none') {
       filteredCourses = filteredCourses.filter((course) => course.category === selectedCategoryOption);
     }
 
-    // Filter by search query
     if (searchQuery.trim() !== '') {
       const query = searchQuery.toLowerCase();
       filteredCourses = filteredCourses.filter(

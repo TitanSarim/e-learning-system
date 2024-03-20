@@ -83,7 +83,7 @@
     justify-content: center;
 }
 
-.profile-profile-rightbar-setting button{
+.profile-profile-rightbar-setting a{
     background-color: transparent;
     cursor: pointer;
     border-radius: 50%;
@@ -91,7 +91,7 @@
     padding: 12px 13px 12px 13px;
 }
 
-.profile-profile-rightbar-setting button svg{
+.profile-profile-rightbar-setting a svg{
     color: rgb(128, 128, 128);
 }
 

@@ -145,8 +145,8 @@ const CreateCourse = () => {
 
                 // Check if dimensions are within the specified ranges
                 if (
-                    (naturalWidth >= 640 && naturalWidth <= 700) &&
-                    (naturalHeight >= 280 && naturalHeight <= 330)
+                    (naturalWidth >= 700 && naturalWidth <= 5000) &&
+                    (naturalHeight >= 450 && naturalHeight <= 3200)
                 ) {
                     setThumbnailFile(selectedFile);
                     toast.success('Image selected')
@@ -487,7 +487,7 @@ const CreateCourse = () => {
                                     <input type='file' id="file-input-thumbnail" accept='image/*'  onChange={handleThumbnailChange}/>
                                 </span>
                                 {!thumbnailFile ? 
-                                    <p>No File <span>Image height greater then 280px and smaller then 330px, image width greater then 640px and smaller then 700px</span> </p> 
+                                    <p>No File <span>Image height greater then 450px and smaller then 3200px, image width greater then 700px and smaller then 5000px</span> </p> 
                                     : 
                                     <img src={URL.createObjectURL(thumbnailFile)} alt='Thumbnail'/>
                                 }

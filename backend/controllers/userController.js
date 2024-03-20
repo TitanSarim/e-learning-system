@@ -1,11 +1,11 @@
-const { User } = require('../models'); // Adjust the path based on your project structure
-const bcrypt = require('bcryptjs');
-const generatedToken = require("../utils/jwtToken")
-const setTokenCookie = require("../utils/sendToken")
-const errorHandler = require('../utils/errorHandler');
-const catchAsyncError = require('../middleware/catchAsyncError');
+const { User, UserProfile } = require("../models"); // Adjust the path based on your project structure
+const bcrypt = require("bcryptjs");
+const generatedToken = require("../utils/jwtToken");
+const setTokenCookie = require("../utils/sendToken");
+const errorHandler = require("../utils/errorHandler");
+const catchAsyncError = require("../middleware/catchAsyncError");
 const getResetPasswordToken = require("../utils/jwtToken");
-const sendEmail = require('../utils/sendEmail');
+const sendEmail = require("../utils/sendEmail");
 
 const createUser = catchAsyncError(async (req, res, next) => {
   const { username, email, age, gender, role, password, status } = req.body;
@@ -32,6 +32,20 @@ const createUser = catchAsyncError(async (req, res, next) => {
       status,
     });
 
+    // await UserProfile.create({
+    //   userId: user.id,
+    //   firstname: "null",
+    //   lastname: "null",
+    //   avatar: "null",
+    //   tagline: "null",
+    //   about: "null",
+    //   experience: "null",
+    //   education: "null",
+    //   skills: "null",
+    //   social: "null",
+    //   certificates: "null"
+    // })
+
     const token = generatedToken(user.id, user.email, user.username, user.role);
     setTokenCookie(res, token);
 
@@ -47,7 +61,6 @@ const createUser = catchAsyncError(async (req, res, next) => {
 });
 
 const loginUser = catchAsyncError(async (req, res, next) => {
-  
   try {
     const { email, password } = req.body;
 
@@ -119,119 +132,106 @@ const createNewUser = catchAsyncError(async (req, res, next) => {
   }
 });
 
+const forgetPassword = catchAsyncError(async (req, res, next) => {
+  const { email } = req.body;
 
-  const forgetPassword = catchAsyncError(async(req, res, next) => {
-    
-    const {email} = req.body;
-    
+  const user = await User.findOne({ where: { email } });
 
-    const user = await User.findOne({ where: {email} })
+  if (!user) return "email not found";
 
-    if(!user) return "email not found"
+  const resetToken = getResetPasswordToken();
 
-    const resetToken = getResetPasswordToken()
+  const ClientID = "http://localhost:3000"; // will work on it
 
-    const ClientID = "http://localhost:3000" // will work on it
+  const resetTokenUrl = `${ClientID}/reset/password/${resetToken}/${user.id}`;
 
-    const resetTokenUrl = `${ClientID}/reset/password/${resetToken}/${user.id}`
+  const message = `Please, click the link below to reset your password :- \n\n  ${resetTokenUrl} \n\nIf you have not requested this email then, please ignore it.`;
 
-    const message = `Please, click the link below to reset your password :- \n\n  ${resetTokenUrl} \n\nIf you have not requested this email then, please ignore it.`;
-
-      try {
-        const response = await sendEmail({ 
-        subject: "Reset Password",
-        email: user.email,
-        payload: message,
-      })
-
-      if(response) {
-        res.status(200).json({
-        success: true,
-        message: "check your email"
-      })
-      }else {
-        res.status(401).json({
-        success: true,
-        message: "Error try again"
-      })
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-    
-    
-  })
-
-  const ResetPassword = catchAsyncError(async(req, res, next) =>{
-    
-    const { newPassword, id } = req.body;
-
-    console.log(newPassword, id);
-    
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-     await User.update(
-        { password: hashedPassword },
-        { where: { id } }
-    );
-
-    res.status(200).json({ 
-      success: true, 
-      message: 'Password updated successfully' 
+  try {
+    const response = await sendEmail({
+      subject: "Reset Password",
+      email: user.email,
+      payload: message,
     });
 
-
-   })
-
-  const updateUser = catchAsyncError(async (req, res, next) => {
-    const { userId } = req.params;
-    const { username, email, age, gender, role, password, status } = req.body;
-  
-    try {
-
-      const user = await User.findByPk(userId);
-  
-      if (!user) {
-        return next(new errorHandler('User not found', 404));
-      }
-  
-      // If the email is being updated, check for uniqueness
-      if (email && email !== user.email) {
-        const duplicateEmail = await User.findOne({
-          where: { email },
-        });
-  
-        if (duplicateEmail) {
-          return next(new errorHandler('Email is already in use', 400));
-        }
-      }
-  
-      // Update user information
-      user.username = username || user.username;
-      user.email = email || user.email;
-      user.age = age || user.age;
-      user.gender = gender || user.gender;
-      user.role = role || user.role;
-      user.status = status || user.status;
-  
-      // If password is provided, update it
-      if (password) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        user.password = hashedPassword;
-      }
-  
-      await user.save();
-  
+    if (response) {
       res.status(200).json({
         success: true,
-        message: 'User updated successfully',
-        user: user,
+        message: "check your email",
       });
-    } catch (error) {
-      return next(new errorHandler(error, 500));
+    } else {
+      res.status(401).json({
+        success: true,
+        message: "Error try again",
+      });
     }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const ResetPassword = catchAsyncError(async (req, res, next) => {
+  const { newPassword, id } = req.body;
+
+  console.log(newPassword, id);
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  await User.update({ password: hashedPassword }, { where: { id } });
+
+  res.status(200).json({
+    success: true,
+    message: "Password updated successfully",
   });
+});
+
+const updateUser = catchAsyncError(async (req, res, next) => {
+  const { userId } = req.params;
+  const { username, email, age, gender, role, password, status } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return next(new errorHandler("User not found", 404));
+    }
+
+    // If the email is being updated, check for uniqueness
+    if (email && email !== user.email) {
+      const duplicateEmail = await User.findOne({
+        where: { email },
+      });
+
+      if (duplicateEmail) {
+        return next(new errorHandler("Email is already in use", 400));
+      }
+    }
+
+    // Update user information
+    user.username = username || user.username;
+    user.email = email || user.email;
+    user.age = age || user.age;
+    user.gender = gender || user.gender;
+    user.role = role || user.role;
+    user.status = status || user.status;
+
+    // If password is provided, update it
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      user: user,
+    });
+  } catch (error) {
+    return next(new errorHandler(error, 500));
+  }
+});
 
 const getAllUsers = catchAsyncError(async (req, res, next) => {
   try {
@@ -301,14 +301,14 @@ const logout = catchAsyncError(async (req, res, next) => {
 });
 
 module.exports = {
-    createUser,
-    loginUser,
-    createNewUser,
-    updateUser,
-    getAllUsers,
-    getSingleUser,
-    deleteUser,
-    logout,
-    forgetPassword,
-    ResetPassword
+  createUser,
+  loginUser,
+  createNewUser,
+  updateUser,
+  getAllUsers,
+  getSingleUser,
+  deleteUser,
+  logout,
+  forgetPassword,
+  ResetPassword,
 };

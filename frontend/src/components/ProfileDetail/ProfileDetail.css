@@ -1,0 +1,1172 @@
+.general-profile-detail-container{
+    position: relative;
+    width: 100%;
+    height: max-content;
+    background-color: #1B1D29;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 100vh;
+}
+
+.general-profile-detail-left-bar{
+    width: 18%;
+    background-color: #141622;
+    height: 70vh;
+    border-radius: 20px;
+    margin: 50px 30px;
+}
+
+.general-profile-detail-wrapper{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 30px;
+    width: 76%;
+}
+.general-profile-detail-image-location{
+    height: 34vh;
+    background-color: #141622;
+    width: 100%;
+    border-radius: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.general-profile-detail-image-location>img{
+    position:absolute;
+    width: 96%;
+    border-radius: 20px;
+    height: 20vh;
+    top: 25px;
+}
+
+.general-profile-detail-image-location>div{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 96%;
+    top: 150px;
+    left: 40px;
+    gap: 60px;
+}
+
+.general-profile-detail-image-user{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.general-profile-detail-image-user img{
+    width: 120px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.general-profile-detail-image-user button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: rgb(101, 101, 236);
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.general-profile-detail-image-user button:hover{
+    color: tomato;
+}
+
+.general-profile-detail-image-user-detail{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    top: 30px;
+    gap: 10px;
+}
+
+.general-profile-detail-image-user-detail p:nth-child(1){
+    color: rgba(255, 255, 255, 0.774);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.general-profile-detail-image-user-detail p:nth-child(2){
+    color: rgba(255, 255, 255, 0.644);
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    justify-content: center;
+    gap: 60px;
+}
+
+.general-profile-detail-image-user-detail p:nth-child(2) span{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    justify-content: center;
+    gap: 10px;
+    text-transform: uppercase;
+}
+
+.general-profile-detail-image-user-detail p:nth-child(2) span svg{
+    color: rgb(255, 181, 71);
+}
+
+
+/*  */
+.general-profile-detail-tabs-container{
+    min-height: 54vh;
+    max-height: max-content;
+    background-color: #141622;
+    width: 100%;
+    border-radius: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    top: 30px;
+}
+
+.general-profile-detail-tabs{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 98%;
+    margin: 15px 20px;
+}
+
+.general-profile-detail-tabs button{
+    border: none;
+    border-bottom: 1px solid #B24592;
+    background-color: #1B1D29;
+    outline: none;
+    padding: 14px 23px;
+    font-size: 17px;
+    color: rgb(216, 216, 216);
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.general-profile-detail-tabs button:hover{
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.general-profile-detail-tab-avtive{
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+/* inputs */
+.general-profile-detail-tabs-content{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    align-items: flex-start;
+    gap: 20px;
+    justify-content: center;
+    top: 30px;
+}
+
+.general-profile-detail-tabs-content-form{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap:  40px;
+}
+
+.general-profile-detail-tabs-content-input-type-1, .general-profile-detail-tabs-content-input-type-3{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+.general-profile-detail-tabs-content-input-type-1 div, .general-profile-detail-tabs-content-input-type-3 div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.general-profile-detail-tabs-content-input-type-1 div>p,
+.general-profile-detail-tabs-content-input-type-3 div>p{
+    color: rgb(216, 216, 216);
+}
+
+.general-profile-detail-tabs-content-input-type-1 div input{
+    border: 1px solid rgba(255, 255, 255, 0.281);
+    outline: none;
+    background-color: #1B1D29;
+    border-radius: 7px;
+    padding: 15px 10px;
+    color: white;
+    width: 320px;
+    font-size: 17px;
+}
+
+.general-profile-detail-tabs-content-input-type-3 div input{
+    border: 1px solid rgba(255, 255, 255, 0.281);
+    outline: none;
+    background-color: #1B1D29;
+    border-radius: 7px;
+    padding: 15px 10px;
+    color: white;
+    width: 280px;
+    font-size: 17px;
+}
+
+.general-profile-detail-tabs-content-input-type-1 button,
+.general-profile-detail-tabs-content-input-type-3 button{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    position: relative;
+    top: 12px;
+    color: rgb(196, 49, 196);
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.PhoneInput{
+    position: relative;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.PhoneInputCountry{
+    position: relative;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.PhoneInputCountrySelectArrow{
+    display: none !important;
+}
+
+
+.general-profile-detail-tabs-content-input-type-2{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.general-profile-detail-tabs-content-input-type-2 div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.general-profile-detail-tabs-content-input-type-2 div>p{
+    color: rgb(216, 216, 216);
+}
+
+
+.general-profile-detail-tabs-content-input-type-2 div input{
+    border: 1px solid rgba(255, 255, 255, 0.281);
+    outline: none;
+    background-color: #1B1D29;
+    border-radius: 7px;
+    padding: 15px 10px;
+    color: white;
+    width: 660px;
+    font-size: 17px;
+}
+
+.general-profile-detail-tabs-content-input-type-2 button{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    position: relative;
+    top: 12px;
+    color: rgb(196, 49, 196);
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.general-profile-detail-tabs-content-save-button{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    border: none !important;
+}
+
+.general-profile-detail-tabs-content-save-button:hover{
+    transform: scale(1.01);
+    background-position: right center; 
+    color: #fff;
+    text-decoration: none;
+}
+
+/* about me */
+.general-profile-detail-tabs-about{
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    left: 20px;
+}
+.general-profile-detail-tabs-about-editor{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    top: 25px;
+    width: 90%;
+}
+
+
+.general-profile-detail-tabs-about-editor>p{
+    color: rgb(216, 216, 216);
+}
+
+.general-profile-detail-tabs-about-editor>.quill{
+    color: white !important;
+    height: 250px;
+    font-size: 18px !important;
+} 
+
+.general-profile-detail-tabs-about-editor>.quill>.ql-toolbar.ql-snow{
+    border: 1px solid rgba(255, 255, 255, 0.226);
+}
+.general-profile-detail-tabs-about-editor>.quill>.ql-container.ql-snow{
+    border: 1px solid rgba(255, 255, 255, 0.226);
+}
+
+.general-profile-detail-tabs-about-button{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    top: 65px;
+    outline: none !important;
+    border: none !important;
+}
+
+.general-profile-detail-tabs-about-button:hover{
+    transform: scale(1.01);
+    background-position: right center; 
+    color: #fff;
+    text-decoration: none;
+}
+
+
+/* education */
+
+.general-profile-detail-tabs-about-education{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 97%;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.general-profile-detail-tabs-about-education>form{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.general-profile-detail-tabs-about-education-form-submit{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    /* top: 65px; */
+    outline: none !important;
+    border: none !important;
+}
+
+.general-profile-detail-tabs-about-education-form-submit:hover{
+    transform: scale(1.01);
+    background-position: right center; 
+    color: #fff;
+    text-decoration: none;
+}
+
+.general-profile-detail-tabs-about-education>button{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.general-profile-detail-tabs-about-education-wrapper{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    /* max-height: 260px; */
+    /* overflow-y: auto; */
+    justify-content: center;
+    gap: 50px;
+}
+.general-profile-detail-tabs-about-education-container{
+    border: 1px solid #B24592;
+    border-radius: 12px;
+    padding: 10px 12px;
+    width: 33%;
+}
+
+.general-profile-detail-tabs-about-education-university{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.general-profile-detail-tabs-about-education-university>p{
+    color: rgb(216, 216, 216);
+}
+
+.general-profile-detail-tabs-about-education-university>div{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.general-profile-detail-tabs-about-education-university>div>button{
+    background-color: transparent;
+    border: 2px solid tomato;
+    padding: 7px 8px 5px 8px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.general-profile-detail-tabs-about-education-university>div>button:hover{
+    background-color: tomato;
+}
+
+.general-profile-detail-tabs-about-education-university>div>button>svg{
+    color: rgba(255, 255, 255, 0.507);
+}
+
+.general-profile-detail-tabs-about-education-university>div>input{
+    width: 85%;
+    border: 1px solid rgba(255, 255, 255, 0.281);
+    outline: none;
+    background-color: #1B1D29;
+    border-radius: 7px;
+    padding: 15px 10px;
+    color: white;
+    font-size: 17px;
+}
+
+.general-profile-detail-tabs-about-education-field-degree{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin: 10px 0px;
+}
+
+.css-qbdosj-Input{
+    color: white !important;
+}
+
+.general-profile-detail-tabs-about-education-field-degree div>p{
+    color: rgb(216, 216, 216);
+    margin-bottom: 5px;
+}
+
+
+.general-profile-detail-tabs-about-education-date{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.general-profile-detail-tabs-about-education-date div>p{
+    color: rgb(216, 216, 216);
+    margin-bottom: 5px;
+}
+
+.react-date-picker__wrapper{
+    width: 210px;
+    border: 1px solid rgba(255, 255, 255, 0.281) !important;
+    background-color: #1B1D29;
+    border-radius: 7px;
+    padding: 8px 10px;
+}
+
+.react-date-picker__inputGroup{
+    color: white;
+}
+
+.react-date-picker__clear-button > svg{
+    background-color: white;
+    border-radius: 8px;
+}
+
+.react-date-picker__calendar-button{
+    display: none;
+}
+
+/* skills */
+.general-profile-detail-tabs-skills{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 96%;
+    top: 50px;
+}
+
+.general-profile-detail-tabs-skills form{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 37vh;
+}
+
+.general-profile-detail-tabs-skills form>div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.general-profile-detail-tabs-skills form>div>p{
+    color: rgb(216, 216, 216);
+}
+
+
+.general-profile-detail-tabs-skills form>input{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    /* top: 65px; */
+    outline: none !important;
+    border: none !important;
+}
+
+
+.general-profile-detail-tabs-skills form>input:hover{
+    transform: scale(1.01);
+    background-position: right center; 
+    color: #fff;
+    text-decoration: none;
+}
+
+.css-1p3m7a8-multiValue{
+    background-color: transparent !important;
+    border: 1px solid #B24592 !important;
+    color: white !important;
+    border-radius: 50px !important;
+    padding: 8px 14px !important;
+} 
+
+.css-wsp0cs-MultiValueGeneric{
+    color: white !important;
+}
+
+.css-12a83d4-MultiValueRemove{
+    cursor: pointer;
+    transition: all 500ms !important;
+    border-radius: 50px !important;
+}
+
+.css-12a83d4-MultiValueRemove:hover{
+    background-color: tomato !important;
+    color: white !important;
+}
+
+
+/* skills */
+
+
+.general-profile-detail-tabs-about-experience{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 97%;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.general-profile-detail-tabs-about-experience>form{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.general-profile-detail-tabs-about-experience-form-submit{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    /* top: 65px; */
+    outline: none !important;
+    border: none !important;
+}
+
+.general-profile-detail-tabs-about-experience-form-submit:hover{
+    transform: scale(1.01);
+    background-position: right center; 
+    color: #fff;
+    text-decoration: none;
+}
+
+.general-profile-detail-tabs-about-experience>button{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    /* top: 65px; */
+    outline: none !important;
+    border: none !important;
+}
+
+.general-profile-detail-tabs-about-experience>button:hover{
+    transform: scale(1.01);
+    background-position: right center; 
+    color: #fff;
+    text-decoration: none;
+}
+
+
+.general-profile-detail-tabs-about-experience-wrapper{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    /* max-height: 260px; */
+    /* overflow-y: auto; */
+    justify-content: center;
+    gap: 50px;
+}
+.general-profile-detail-tabs-about-experience-container{
+    border: 1px solid #B24592;
+    border-radius: 12px;
+    padding: 10px 12px;
+    width: 96%;
+    gap: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 50vh;
+    height: 47vh;
+}
+
+.general-profile-detail-tabs-about-experience-inputs{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.general-profile-detail-tabs-about-experience-inputs button{
+    border: 2px solid tomato;
+    border-radius: 50px;
+    background-color: transparent;
+    padding: 6px 6px 2px 6px;
+    position: relative;
+    top: 25px;
+    color: tomato;
+    cursor: pointer;
+    transition: all 500ms;
+}
+.general-profile-detail-tabs-about-experience-inputs button:hover{
+    background-color: tomato;
+    color: white;
+}
+
+.general-profile-detail-tabs-about-experience-inputs div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+    width: 28%;
+}
+
+.general-profile-detail-tabs-about-experience-inputs div>p{
+    color: rgb(216, 216, 216);
+}   
+
+.general-profile-detail-tabs-about-experience-inputs div input{
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.281);
+    outline: none;
+    background-color: #1B1D29;
+    border-radius: 7px;
+    padding: 15px 10px;
+    color: white;
+    font-size: 17px;
+}
+
+.general-profile-detail-tabs-about-experience-text-editor{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.general-profile-detail-tabs-about-experience-text-editor>p{
+    color: rgb(216, 216, 216);
+}
+
+.general-profile-detail-tabs-about-experience-text-editor>.quill{
+    height: 20vh;
+} 
+
+.general-profile-detail-tabs-about-experience-text-editor>.quill > .ql-snow{
+    color: white !important;
+}
+
+.general-profile-detail-tabs-about-experience-dates{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+    top: 40px;
+}
+
+.general-profile-detail-tabs-about-experience-dates div p{
+    color: rgb(216, 216, 216);
+}
+
+.general-profile-detail-tabs-about-experience-checkbox {
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    top: 10px;
+}
+.general-profile-detail-tabs-about-experience-checkbox input{
+    width: 35px;
+    height: 35px;
+}
+
+
+.general-profile-detail-tabs-about-resume-container{
+    position: relative;
+    width: 96%;
+    display: flex;
+    align-items: flex-start;
+}
+
+.general-profile-detail-tabs-about-resume-container>form{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+
+
+
+
+.general-profile-detail-tabs-about-coverletter{
+    width: 90%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 33vh;
+}
+
+.general-profile-detail-tabs-about-coverletter>p{
+    color: rgb(216, 216, 216);
+}
+
+
+.general-profile-detail-tabs-about-coverletter >.quill{
+    height: 24vh;
+}
+
+.general-profile-detail-tabs-about-coverletter >.quill .ql-snow{
+    color: white !important;
+}
+
+.general-profile-detail-tabs-about-resume{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 120px;
+}
+
+.general-profile-detail-tabs-about-resume>p{
+    color: rgb(216, 216, 216);
+}
+
+.general-profile-detail-tabs-about-resume>div{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.general-profile-detail-tabs-about-resume>div>input{
+    display: none;
+}
+
+.general-profile-detail-tabs-about-resume>div>label{
+    border: 1px dashed #B24592;
+    color: white;
+    padding: 10px 50px 10px 50px;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 500ms;
+    background-color: #252138;
+}
+
+.general-profile-detail-tabs-about-resume>div>label:hover{
+    border: 1px dashed tomato;
+
+}
+
+.general-profile-detail-tabs-about-submit-btn{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    /* top: 65px; */
+    outline: none !important;
+    border: none !important;
+}
+
+.general-profile-detail-tabs-about-submit-btn:hover{
+    transform: scale(1.01);
+    background-position: right center; 
+    color: #fff;
+}
+
+/* social */
+
+.general-profile-detail-container-social{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 96%;
+    height: 52vh;
+}
+
+.general-profile-detail-container-social>form{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    top: 0px;
+}
+.general-profile-detail-container-social>form>p{
+    color: rgb(216, 216, 216);
+}
+
+.general-profile-detail-container-social-wrapper{
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    top: 20px;
+}
+
+.general-profile-detail-container-social-tabs{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 40%;
+    height: 70px;
+    justify-content: space-between;
+    border: 1px solid #B24592;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.general-profile-detail-container-social-tabs>a{
+    color: white;
+    background-color: #1B1D29;
+    padding: 7px 7px 4px 7px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.096);
+    transition: all 500ms;
+}
+
+.general-profile-detail-container-social-tabs>a:hover{
+    border: 1px solid rgba(255, 255, 255, 0.425);
+    transform: scale(1.03);
+}
+
+.general-profile-detail-container-social-tabs>div{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.general-profile-detail-container-social-git{
+    color: #313131;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+.general-profile-detail-container-social-twitter{
+    color: #229cff;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+.general-profile-detail-container-social-instagram{
+    color: #ff0080;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+.general-profile-detail-container-social-dribbble{
+    color: #B24592;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+.general-profile-detail-container-social-site{
+    color: #ff501b;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
+
+.general-profile-detail-container-social-tabs div div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.general-profile-detail-container-social-tabs div div>p{
+    color: rgb(216, 216, 216);
+    font-weight: 500;
+}
+
+.general-profile-detail-container-social-tabs div div span{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.general-profile-detail-container-social-tabs div div span input{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    border-bottom: 1px solid rgba(119, 119, 119, 0.349);
+}
+
+.general-profile-detail-container-social-tabs div div span svg{
+    color: white;
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.general-profile-detail-container-social-tabs div div span svg:hover{
+    color: tomato;
+    transform: scale(1.09);
+}
+
+.general-profile-detail-container-social-submit{
+    position: relative;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #252138;
+    border-radius: 10px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    /* top: 65px; */
+    outline: none !important;
+    border: none !important;
+    left: 10px;
+    top: 15px;
+}
+
+.general-profile-detail-container-social-submit:hover{
+    transform: scale(1.01);
+    background-position: right center; 
+    color: #fff;
+}
