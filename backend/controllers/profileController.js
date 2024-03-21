@@ -1,6 +1,7 @@
 const { User, UserProfile } = require('../models'); // Adjust the path based on your project structure
 const errorHandler = require('../utils/errorHandler');
 const catchAsyncError = require('../middleware/catchAsyncError');
+const azure = require('azure-storage');
 
 
 const getUserProfile = catchAsyncError(async(req, res, next) => {
@@ -76,10 +77,9 @@ const getUserProfile = catchAsyncError(async(req, res, next) => {
 const createUpdateUserProfile = catchAsyncError(async (req, res, next) => {
 
     const userId = req.user.userid
-
-
     const {avatar, location, firstname, lastname, phoneno, Headline, about,  education, skills, experience, social, cv, coverletter} = req.body;
 
+    
     try {
 
         let myProfileUpdate = await UserProfile.findOne({
@@ -88,7 +88,7 @@ const createUpdateUserProfile = catchAsyncError(async (req, res, next) => {
             }
         });
 
-        if (!myProfileUpdate) {
+        if (myProfileUpdate?.userId !== userId) {
             myProfileUpdate = await UserProfile.create({
                 userId: userId,
                 avatar: {url: avatar},
@@ -193,22 +193,66 @@ const createUpdateUserProfile = catchAsyncError(async (req, res, next) => {
 const updateUserAvatar = catchAsyncError(async(req, res, next) => {
 
   try {
-    const userId = req.user.userid
-    const fileUrl = req.file.url
+    const userId = req.user.userid;
+    const fileUrl = req.file.url;
 
-    const parsedUrl = new URL(fileUrl);
-    const cleanFileUrl = parsedUrl.origin + parsedUrl.pathname;
+    const userProfile = await UserProfile.findOne({
+      where: { 
+        userId: userId 
+      },
+    })
 
-    await UserProfile.update(
-      { avatar: { url: cleanFileUrl } },
-      { where: { userId: userId } }
-    );
+    const OldUrl =  userProfile.avatar?.url
+
+    console.log("OldUrl", OldUrl)
     
-    res.status(201).json({
-      success: true,
-      message: 'Image Uploaded',
-      avatarUrl: cleanFileUrl
-    });
+
+    if(OldUrl){
+      
+      const oldBlobName = OldUrl.split('/').pop();
+      const blobService = azure.createBlobService(process.env.AZURE_STORAGE_ACCOUNT_NAME, process.env.AZURE_STORAGE_ACCOUNT_KEY);
+      blobService.deleteBlobIfExists('avatar', oldBlobName, (error, result) => {
+        if (error) {
+          console.error('Error deleting Image:', error);
+        } else {
+          console.log('Blob deleted successfully:', oldBlobName);
+
+          const parsedUrl = new URL(fileUrl);
+          const cleanFileUrl = parsedUrl.origin + parsedUrl.pathname;
+
+          UserProfile.update(
+            { avatar: { url: cleanFileUrl } },
+            { where: { userId: userId } }
+          ).then(() => {
+            res.status(201).json({
+              success: true,
+              message: 'Image Uploaded',
+              avatarUrl: cleanFileUrl
+            });
+          }).catch(error => {
+            console.error('Error updating user profile:', error);
+            return next(new errorHandler(error, 500));
+          });
+        }
+      });
+    }else {
+
+      const parsedUrl = new URL(fileUrl);
+      const cleanFileUrl = parsedUrl.origin + parsedUrl.pathname;
+
+      const updatePorifle = await UserProfile.update(
+        { avatar: { url: cleanFileUrl } },
+        { where: { userId: userId } }
+      )
+
+      res.status(201).json({
+        success: true,
+        message: 'Image Uploaded',
+        avatarUrl: cleanFileUrl
+      });
+
+    }
+
 
   } catch (error) {
     return next(new errorHandler(error, 500));
@@ -216,8 +260,52 @@ const updateUserAvatar = catchAsyncError(async(req, res, next) => {
   }
 })
 
+const deleteUserAvatar = catchAsyncError(async(req, res, next) => {
+  try {
+
+    const userId = req.user.userid;
+
+    const userProfile = await UserProfile.findOne({
+      where: { 
+        userId: userId 
+      },
+    })
+
+    const OldUrl =  userProfile.avatar?.url
+
+    const oldBlobName = OldUrl.split('/').pop();
+
+    const blobService = azure.createBlobService(process.env.AZURE_STORAGE_ACCOUNT_NAME, process.env.AZURE_STORAGE_ACCOUNT_KEY);
+    blobService.deleteBlobIfExists('avatar', oldBlobName, (error, result) => {
+      if (error) {
+        console.error('Error deleting Image:', error);
+      } else {
+        console.log('Blob deleted successfully:', oldBlobName);
+        UserProfile.update(
+          { avatar: "" },
+          { where: { userId: userId } }
+        ).then(() => {
+          res.status(201).json({
+            success: true,
+            message: 'Image Deleted Successfully',
+          });
+        }).catch(error => {
+          console.error('Error updating user profile:', error);
+          return next(new errorHandler(error, 500));
+        });
+      }
+    
+    });
+    
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    return next(new errorHandler(error, 500));
+  }
+})  
+
   module.exports = {
     getUserProfile,
     createUpdateUserProfile,
-    updateUserAvatar
+    updateUserAvatar,
+    deleteUserAvatar,
   }
