@@ -4,12 +4,20 @@ import 'react-quill/dist/quill.snow.css';
 import { IoCloudUploadOutline } from "react-icons/io5";
 
 
-const ProfileTabsResume = ({handleSubmit, cv, setCv, coverLetter, handleCoverLetterChange}) => {
+const ProfileTabsResume = ({handleSubmit, cv, setCv, coverLetter, setCoverLetter}) => {
+
+
+  const handleCoverLetterChange = (value) => {
+    setCoverLetter(value);
+  }
+
 
   const handleFileChange = (event) => {
     const file = event.target.files[0]; 
     setCv(file);
   };
+
+  console.log('cv', cv.name)
 
   return (
     <div className='general-profile-detail-tabs-about-resume-container'>
@@ -17,7 +25,7 @@ const ProfileTabsResume = ({handleSubmit, cv, setCv, coverLetter, handleCoverLet
         <form onSubmit={handleSubmit}>
 
             <div className='general-profile-detail-tabs-about-coverletter'>
-              <p>About You</p>
+              <p>Cover Letter</p>
               <ReactQuill 
                   theme="snow"
                   value={coverLetter}
@@ -30,7 +38,7 @@ const ProfileTabsResume = ({handleSubmit, cv, setCv, coverLetter, handleCoverLet
               <p>Your Cv or Resume:</p>
               <div>
                 <label htmlFor="resume"><IoCloudUploadOutline size={24}/></label>
-                <input type='file' accept='application/pdf' id='resume' onChange={handleFileChange} required/>
+                <input type='file' accept='application/pdf' id='resume' onChange={handleFileChange}/>
               </div>
             </div>
 

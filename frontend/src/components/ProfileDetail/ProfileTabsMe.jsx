@@ -3,7 +3,8 @@ import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import { MdModeEditOutline } from 'react-icons/md';
 
-const ProfileTabsMe = ({ personalDetails, setPersonalDetails, handleSubmit }) => {
+const ProfileTabsMe = ({loading, value, setPersonalDetails, handleSubmit }) => {
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setPersonalDetails(prevDetails => ({
@@ -28,12 +29,12 @@ const ProfileTabsMe = ({ personalDetails, setPersonalDetails, handleSubmit }) =>
             <input
               type='text'
               name='firstName'
-              value={personalDetails?.firstName}
+              value={value?.firstName}
               onChange={handleInputChange}
               required
             />
           </div>
-          <button><MdModeEditOutline/>Edit</button>
+          {/* <button><MdModeEditOutline/>Edit</button> */}
         </div>
         <div className='general-profile-detail-tabs-content-input-type-1'>
           <div>
@@ -41,25 +42,25 @@ const ProfileTabsMe = ({ personalDetails, setPersonalDetails, handleSubmit }) =>
             <input
               type='text'
               name='lastName'
-              value={personalDetails?.lastName}
+              value={value?.lastName}
               onChange={handleInputChange}
               required
             />
           </div>
-          <button><MdModeEditOutline/>Edit</button>
+          {/* <button><MdModeEditOutline/>Edit</button> */}
         </div>
         <div className='general-profile-detail-tabs-content-input-type-1'>
           <div>
-            <p>Address</p>
+            <p>Address (Country and City)</p>
             <input
               type='text'
               name='address'
-              value={personalDetails?.address}
+              value={value?.address}
               onChange={handleInputChange}
               required
             />
           </div>
-          <button><MdModeEditOutline/>Edit</button>
+          {/* <button><MdModeEditOutline/>Edit</button> */}
         </div>
       </div>
 
@@ -70,23 +71,23 @@ const ProfileTabsMe = ({ personalDetails, setPersonalDetails, handleSubmit }) =>
             <input
               type='email'
               name='email'
-              value={personalDetails?.email}
+              value={value?.email}
               onChange={handleInputChange}
-              required
+              disabled
             />
           </div>
-          <button><MdModeEditOutline/>Edit</button>
+          {/* <button><MdModeEditOutline/>Edit</button> */}
         </div>
         <div className='general-profile-detail-tabs-content-input-type-3'>
           <div>
             <p>Phone Number</p>
             <PhoneInput
-              value={personalDetails?.phoneNumber}
+              value={value?.phoneNumber}
               onChange={handlePhoneChange}
               required
             />
           </div>
-          <button><MdModeEditOutline/>Edit</button>
+          {/* <button><MdModeEditOutline/>Edit</button> */}
         </div>
       </div>
 
@@ -96,12 +97,12 @@ const ProfileTabsMe = ({ personalDetails, setPersonalDetails, handleSubmit }) =>
           <input
             type='text'
             name='headline'
-            value={personalDetails?.headline}
+            value={value?.headline}
             onChange={handleInputChange}
             required
           />
         </div>
-        <button><MdModeEditOutline/>Edit</button>
+        {/* <button><MdModeEditOutline/>Edit</button> */}
       </div>
 
       <input type='submit' value="Save" className='general-profile-detail-tabs-content-save-button'/>

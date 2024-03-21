@@ -12,22 +12,25 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER
       },
+      avatar: {
+        type: Sequelize.JSON
+      },
+      location:{
+        type: Sequelize.STRING
+      },
       firstname:{
         type: Sequelize.STRING
       },
       lastname:{
         type: Sequelize.STRING
       },
-      avatar: {
-        type: Sequelize.JSON
+      phoneno:{
+        type: Sequelize.STRING
       },
-      tagline: {
+      Headline:{
         type: Sequelize.JSON
       },
       about:{
-        type: Sequelize.JSON
-      },
-      experience:{
         type: Sequelize.JSON
       },
       education:{
@@ -36,13 +39,16 @@ module.exports = {
       skills:{
         type: Sequelize.JSON
       },
+      experience:{
+        type: Sequelize.JSON
+      },
       social:{
         type: Sequelize.JSON
       },
-      certificates:{
+      cv:{
         type: Sequelize.JSON
       },
-      cv:{
+      coverletter:{
         type: Sequelize.JSON
       },
       createdAt: {

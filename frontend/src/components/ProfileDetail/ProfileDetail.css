@@ -105,6 +105,7 @@
     color: rgba(255, 255, 255, 0.774);
     font-size: 24px;
     font-weight: 600;
+    text-transform: capitalize;
 }
 
 .general-profile-detail-image-user-detail p:nth-child(2){
@@ -1075,6 +1076,13 @@
     border-radius: 50px;
 }
 
+.general-profile-detail-container-social-LinkedIn{
+    color: #3963b3;
+    background-color: white;
+    padding: 9px 9px;
+    border-radius: 50px;
+}
+
 .general-profile-detail-container-social-twitter{
     color: #229cff;
     background-color: white;
@@ -1169,4 +1177,86 @@
     transform: scale(1.01);
     background-position: right center; 
     color: #fff;
+}
+
+/* avatar popup */
+.avatar-popup-content {
+    height: 600px; 
+    width: 1000px !important;
+}
+
+
+.general-profile-detail-container-upload-avatar{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.general-profile-detail-container-upload-avatar-rendered{
+    height: 500px !important;
+    width: 500px !important;
+    position: relative !important;
+    top: 30px;
+    margin: auto;
+    /* display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between; */
+    /* gap: 40px; */
+}
+
+.general-profile-detail-container-upload-avatar-rendered>img{
+    max-height: 500px !important;
+}
+
+.general-profile-detail-container-upload-avatar-rendered>div>label{
+    border: 1px dashed #1B1D29;
+    padding: 10px 100px;
+    border-radius: 10px;
+    width: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    cursor: pointer;
+    background-color: #a3a3a32d;
+    top: 16px;
+}
+
+.general-profile-detail-container-upload-avatar-rendered>div>input{
+    display: none;
+}
+
+.general-profile-detail-container-upload-avatar-wrapper{
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: flex-end;
+   width: 400px;
+   gap: 40px;
+}
+
+.general-profile-detail-container-upload-avatar-wrapper-images-preview{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.general-profile-detail-container-upload-avatar-wrapper-images-preview img:nth-child(1){
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
+
+.general-profile-detail-container-upload-avatar-wrapper-images-preview img:nth-child(2){
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
 }

@@ -17,6 +17,8 @@ import ResetPassword from "./components/Auth/ResetPassword";
 import ProfileDetail from "./components/ProfileDetail/ProfileDetail";
 
 function App() {
+
+
   return (
     <>
       <BrowserRouter>

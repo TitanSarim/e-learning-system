@@ -1,40 +1,55 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import imageBackGround from '../../assets/Polygon Luminarymain.png'
 import userImage from '../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
 import { FaLocationDot } from "react-icons/fa6";
 import { MdModeEditOutline } from "react-icons/md";
-
+import { toast } from 'react-toastify';
+import Loader from '../Utils/Loader.jsx';
 import ProfileTabsMe from './ProfileTabsMe'
 import ProfileTabsAbout from './ProfileTabsAbout.jsx'
 import ProfileTabsSkills from './ProfileTabsSkills.jsx'
 import ProfileTabsExperience from './ProfileTabsExperience.jsx'
 import ProfileTabsResume from './ProfileTabsResume.jsx'
-
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css'
 import './ProfileDetail.css'
 import ProfileEducation from './ProfileEducation.jsx';
 import ProfileSocial from './ProfileSocial.jsx';
 
+import {getMyProfile, updateMyProfile, updateMyAvatar, updateMyResume, clearErrors} from '../../actions/ProfileAction.js'
+import {useSelector, useDispatch} from 'react-redux';
+import ProfileAvatar from './ProfileAvatar.jsx';
 
 const ProfileDetail = () => {
 
+
+  const dispatch = useDispatch()
+
+  const {myProfileData, error, loading} = useSelector((state)=>state.myPorfile);
+
+  
+  const [profileData, setProfileData] = useState([])
+  const [editorOpen, setEditorOpen] = useState(false);
+
   const [personalDetails, setPersonalDetails] = useState({
-    firstName: '',
-    lastName: '',
-    address: '',
-    email: '',
-    phoneNumber: '',
-    headline: ''
+      firstName: myProfileData?.firstname,
+      lastName: myProfileData?.lastname,
+      address: myProfileData?.location,
+      email: myProfileData?.email,
+      phoneNumber: myProfileData?.phoneno,
+      headline: myProfileData?.Headline
   });
   const [activeTab, setActiveTab] = useState('Me');
-  const [aboutMe, setAboutMe] = useState()
-  const [selectSkills, setSelectSkills] = useState()
-  const [cv, setCv] = useState()
-  const [coverLetter, setCoverLetter] = useState()
+  const [avatar, setAvatar] = useState(myProfileData?.avatar || userImage);
+  const [aboutMe, setAboutMe] = useState(myProfileData?.about)
+  const [selectSkills, setSelectSkills] = useState(myProfileData?.skills)
+  const [cv, setCv] = useState(myProfileData?.cv)
+  const [coverLetter, setCoverLetter] = useState(myProfileData?.coverletter)
   const [educationContainers, setEducationContainers] = useState([{
     id: 1,
     universityName: '',
-    field: 'none',
-    degree: 'none',
+    field: '',
+    degree: '',
     fromDate: null,
     toDate: null
   }]);
@@ -48,31 +63,66 @@ const ProfileDetail = () => {
     toDate: null
   }]);
   const [socialDetails, setSocialDetails] = useState({
-    Github: '',
-    Instagram: '',
-    Twitter: '',
-    Dribble: '',
-    Portfolio: '',
+    Github: myProfileData?.social?.Github,
+    Linkedin: myProfileData?.social?.Linkedin,
+    Instagram: myProfileData?.social?.Instagram,
+    Twitter: myProfileData?.social?.Twitter,
+    Dribble: myProfileData?.social?.Dribble,
+    Portfolio: myProfileData?.social?.Portfolio,
   });
-
-
 
   const handleMainTabClick = (tab) => {
     setActiveTab(tab);
   };
 
-  const handleAboutChange = (value) => {
-    setAboutMe(value);
-  }
-
-  const handleCoverLetterChange = (value) => {
-    setCoverLetter(value);
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    
+    const formData = {
+      avatar: avatar,
+      location: personalDetails?.address,
+      firstname: personalDetails?.firstName,
+      lastname: personalDetails?.lastName,
+      phoneno: personalDetails?.phoneNumber,
+      Headline: personalDetails?.headline,
+      about: aboutMe,
+      education: educationContainers,
+      skills: selectSkills,
+      experience: skillsContainers,
+      social: socialDetails,
+      cv: cv,
+      coverletter: coverLetter,
+    }
 
+    console.log("formData", formData)
+    dispatch(updateMyProfile(formData, myProfileData?.cv)) 
   }
+
+  const hanldeEditorModelOpen = (id) => {
+    setEditorOpen(true)
+}
+
+  useEffect(() => {
+
+    if(error){
+        toast.error(error);
+        dispatch(clearErrors());
+    }
+    dispatch(getMyProfile());
+
+}, [dispatch, error])
+
+useEffect(() => {
+  setProfileData(myProfileData)
+
+  if (myProfileData?.education && myProfileData?.education.length > 0) {
+    setEducationContainers(myProfileData?.education);
+  } 
+  if (myProfileData?.experience && myProfileData?.experience.length > 0) {
+    setSkillsContainers(myProfileData?.experience);
+  } 
+}, [myProfileData]);
 
   return (
     <div className='general-profile-detail-container'>
@@ -90,14 +140,14 @@ const ProfileDetail = () => {
               <img src={imageBackGround} alt='Plygon backdround'/>
               <div>
                   <div className='general-profile-detail-image-user'>
-                    <img src={userImage} alt='Profile'/>
-                    <button><MdModeEditOutline/>Edit</button>
+                    <img src={avatar} alt='Profile'/>
+                    <button onClick={() => hanldeEditorModelOpen()}><MdModeEditOutline/>Edit</button>
                   </div>
                   <div className='general-profile-detail-image-user-detail'>
-                    <p>Michal Jhon</p>
+                    <p>@{myProfileData?.username}</p>
                     <p>
                       Full Stack Developer
-                      <span><FaLocationDot size={20}/>NewYork, USA</span>
+                      <span><FaLocationDot size={20}/>{personalDetails?.address}</span>
                     </p>
                   </div>
               </div>
@@ -138,32 +188,45 @@ const ProfileDetail = () => {
               </div>
 
               {/*  tab content */}
-              {activeTab === 'Me' &&(
-                <ProfileTabsMe setPersonalDetails={setPersonalDetails} value={personalDetails} handleSubmit={handleSubmit}/>
-              )}
-              {activeTab === 'About' &&(
-                <ProfileTabsAbout setValue={handleAboutChange} value={aboutMe} handleSubmit={handleSubmit}/>
-              )}
-              {activeTab === 'Education' &&(
-                <ProfileEducation   handleSubmit={handleSubmit} setEducationContainers={setEducationContainers} educationContainers={educationContainers} />
-              )}
-              {activeTab === 'Skills' &&(
-                <ProfileTabsSkills setSelectSkills={setSelectSkills} value={selectSkills} handleSubmit={handleSubmit}/>
-              )}
-              {activeTab === 'Experience' &&(
-                <ProfileTabsExperience handleSubmit={handleSubmit} setskillsContainers={setSkillsContainers} skillsContainers={skillsContainers}/>
-              )}
-              {activeTab === 'Social' &&(
-                <ProfileSocial handleSubmit={handleSubmit} socialDetails={socialDetails} setSocialDetails={setSocialDetails}/>
-              )}
-              {activeTab === 'Resume' &&(
-                <ProfileTabsResume handleSubmit={handleSubmit} cv={cv} setCv={setCv} coverLetter={coverLetter} handleCoverLetterChange={handleCoverLetterChange}/>
+              {loading ? <Loader/> : (
+                <>
+                {activeTab === 'Me' &&(
+                  <ProfileTabsMe  loading={loading} setPersonalDetails={setPersonalDetails} value={personalDetails} handleSubmit={handleSubmit}/>
+                )}
+                {activeTab === 'About' &&(
+                  <ProfileTabsAbout setAboutMe={setAboutMe} aboutMe={aboutMe} handleSubmit={handleSubmit}/>
+                )}
+                {activeTab === 'Education' &&(
+                  <ProfileEducation   handleSubmit={handleSubmit} setEducationContainers={setEducationContainers} educationContainers={educationContainers} />
+                )}
+                {activeTab === 'Skills' &&(
+                  <ProfileTabsSkills setSelectSkills={setSelectSkills} selectSkills={selectSkills} handleSubmit={handleSubmit}/>
+                )}
+                {activeTab === 'Experience' &&(
+                  <ProfileTabsExperience handleSubmit={handleSubmit} setskillsContainers={setSkillsContainers} skillsContainers={skillsContainers}/>
+                )}
+                {activeTab === 'Social' &&(
+                  <ProfileSocial handleSubmit={handleSubmit} socialDetails={socialDetails} setSocialDetails={setSocialDetails}/>
+                )}
+                {activeTab === 'Resume' &&(
+                  <ProfileTabsResume handleSubmit={handleSubmit} cv={cv} setCv={setCv} coverLetter={coverLetter} setCoverLetter={setCoverLetter}/>
+                )}
+                </>
               )}
 
             </div>
 
 
         </div>
+
+        <Popup
+          open={editorOpen}
+          closeOnDocumentClick
+          onClose={() => setEditorOpen(false)}
+          className='avatar-popup'
+        >
+          <ProfileAvatar setEditorOpen={setEditorOpen} setAvatar={setAvatar} avatar={avatar}/>
+        </Popup>
 
     </div>
   )
