@@ -135,8 +135,33 @@ const createUpdateUserProfile = catchAsyncError(async (req, res, next) => {
     }
   });
 
+const updateUserAvatar = catchAsyncError(async(req, res, next) => {
+
+  try {
+    const userId = req.user.userid
+    const fileUrl = req.file.url
+
+    console.log("file", fileUrl)
+
+    await UserProfile.update(
+      { avatar: { url: fileUrl } },
+      { where: { userId: userId } }
+    );
+    
+    res.status(201).json({
+      success: true,
+      message: 'Image Uploaded',
+      avatarUrl: fileUrl
+    });
+
+  } catch (error) {
+    return next(new errorHandler(error, 500));
+
+  }
+})
 
   module.exports = {
     getUserProfile,
-    createUpdateUserProfile
+    createUpdateUserProfile,
+    updateUserAvatar
   }

@@ -2,26 +2,85 @@ import React, { useRef, useState, useEffect } from 'react';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
 import { IoCloudUploadOutline } from "react-icons/io5";
-
-const ProfileAvatar = ({ setEditorOpen, setAvatar, avatar }) => {
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import ButtonLoader from '../Utils/ButtonLoader'
+const ProfileAvatar = ({setEditorOpen,  avatar, setAvatar }) => {
 
     const imageRef = useRef(null);
     const [cropper, setCropper] = useState(null);
+
+    const [newPhoto, setNewPhoto] = useState(avatar);
     const [newAvatar, setNewAvatar] = useState(null);
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         if (imageRef.current && cropper) {
-            cropper.destroy(); // Destroy previous Cropper instance
-            initCropper(); // Initialize a new Cropper instance
+            cropper.destroy();
         }
-    }, [avatar]); // Re-initialize Cropper when avatar changes
+    }, [newPhoto]);
+
+    const dataURLToBlob = (dataURL) => {
+        const byteString = atob(dataURL.split(',')[1]);
+        const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: mimeString });
+    };
+
+    const blobToFile = (blob, fileName) => {
+        const file = new File([blob], fileName, { type: blob.type });
+        return file;
+    };
 
     const handleCrop = () => {
         if (cropper) {
-            const croppedDataUrl = cropper.getCroppedCanvas().toDataURL();
+            const croppedDataUrl = cropper?.getCroppedCanvas()?.toDataURL();
             setNewAvatar(croppedDataUrl);
         }
     };
+
+    const handleSave = async () =>{
+
+        setIsLoading(true)
+        let fileFormData = new FormData();
+
+        if (cropper) {
+            const croppedDataUrl = cropper?.getCroppedCanvas()?.toDataURL();
+            setNewAvatar(croppedDataUrl);
+
+            // Revert to file
+            const blob = dataURLToBlob(croppedDataUrl);
+            const file = blobToFile(blob, "cropped-image.png");
+            console.log('file', file)
+
+            fileFormData.append('avatar', file);
+        }
+
+        try {
+            const response = await axios.post('/api/v1/upload-avatar', fileFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            if(response?.data.success === true) {
+                toast.success("Image Uploaded")
+                setAvatar(response?.data.avatarUrl)
+            }else if(response?.data.success === false){
+                toast.error("Error, Please try again later")
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }finally{
+            console.log('File uploaded successfully');
+            setIsLoading(false)
+            setEditorOpen(false)
+        }
+
+    }
 
     const initCropper = () => {
         const newCropper = new Cropper(imageRef.current, {
@@ -42,7 +101,7 @@ const ProfileAvatar = ({ setEditorOpen, setAvatar, avatar }) => {
                 <img
                     ref={imageRef}
                     alt="Avatar"
-                    // src={avatar}
+                    src={newPhoto}
                     onLoad={initCropper}
                     style={{ maxWidth: '100%' }}
                 />
@@ -59,7 +118,7 @@ const ProfileAvatar = ({ setEditorOpen, setAvatar, avatar }) => {
                                 reader.onload = (event) => {
                                     // Set the src of the image to the selected file
                                     imageRef.current.src = event.target.result;
-                                    setAvatar(event.target.result); 
+                                    setNewPhoto(event.target.result); 
                                     setNewAvatar(null);
                                 };
                                 reader.readAsDataURL(e.target.files[0]);
@@ -71,16 +130,26 @@ const ProfileAvatar = ({ setEditorOpen, setAvatar, avatar }) => {
 
             <div className='general-profile-detail-container-upload-avatar-wrapper'>
 
+               <div className='general-profile-detail-container-upload-avatar-wrapper-container'>
                 {newAvatar ? (
-                    <div className='general-profile-detail-container-upload-avatar-wrapper-images-preview'>
-                        <img src={newAvatar} alt='rendered' />
-                        <img src={newAvatar} alt='rendered' />
-                    </div>
-                ) : (
-                    <p>Save To Preview</p>
-                )}
+                        <div className='general-profile-detail-container-upload-avatar-wrapper-images-preview'>
+                            <img src={newAvatar} alt='rendered' />
+                            <img src={newAvatar} alt='rendered' />
+                        </div>
+                    ) : (
+                        ''
+                    )}
 
-                <button onClick={handleCrop}>Save</button>
+                    <button onClick={handleCrop}>Click to Preview</button>
+               </div>
+               <div className='general-profile-detail-container-upload-avatar-save-uploadbtns'>
+                    {isLoading ? (
+                        <p><span><ButtonLoader/></span></p>
+                    ) : (
+                        <button onClick={handleSave}>Save</button>
+                    )}
+                    <button onClick={() => setEditorOpen(false)}>Close</button>
+               </div>
             </div>
 
 

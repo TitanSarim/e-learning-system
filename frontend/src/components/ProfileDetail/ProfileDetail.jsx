@@ -31,8 +31,6 @@ const ProfileDetail = () => {
   const [profileData, setProfileData] = useState(myProfileData)
   const [editorOpen, setEditorOpen] = useState(false);
 
-  console.log("profileData", profileData)
-
   const [userName, setUserName] = useState('');
   const [personalDetails, setPersonalDetails] = useState({
     firstName: '',
@@ -43,7 +41,7 @@ const ProfileDetail = () => {
     headline: ''
   });
   const [activeTab, setActiveTab] = useState('Me');
-  const [avatar, setAvatar] = useState(myProfileData?.avatar || userImage);
+  const [avatar, setAvatar] = useState();
   const [aboutMe, setAboutMe] = useState()
   const [selectSkills, setSelectSkills] = useState()
   const [cv, setCv] = useState()
@@ -66,12 +64,12 @@ const ProfileDetail = () => {
     toDate: null
   }]);
   const [socialDetails, setSocialDetails] = useState({
-    Github: myProfileData?.social?.Github,
-    Linkedin: myProfileData?.social?.Linkedin,
-    Instagram: myProfileData?.social?.Instagram,
-    Twitter: myProfileData?.social?.Twitter,
-    Dribble: myProfileData?.social?.Dribble,
-    Portfolio: myProfileData?.social?.Portfolio,
+    Github: '',
+    Linkedin: '',
+    Instagram: '',
+    Twitter: '',
+    Dribble: '',
+    Portfolio: '',
   });
 
   const handleMainTabClick = (tab) => {
@@ -83,7 +81,7 @@ const ProfileDetail = () => {
     event.preventDefault();
     
     const formData = {
-      avatar: avatar,
+      avatar: profileData?.avatar,
       location: personalDetails?.address,
       firstname: personalDetails?.firstName,
       lastname: personalDetails?.lastName,
@@ -97,8 +95,8 @@ const ProfileDetail = () => {
       cv: cv,
       coverletter: coverLetter,
     }
-
-    dispatch(updateMyProfile(formData, myProfileData?.cv)) 
+    dispatch(updateMyProfile(formData, myProfileData?.cv,)) 
+    window.location.reload()
   }
 
   const hanldeEditorModelOpen = () => {
@@ -121,6 +119,7 @@ useEffect(() => {
 }, [myProfileData]);
 
 useEffect(() => {
+  setAvatar(profileData?.avatar || userImage)
   setAboutMe(profileData?.about)
   setSelectSkills(profileData?.skills)
   setUserName( profileData?.username)
@@ -141,6 +140,8 @@ useEffect(() => {
   if (profileData?.experience && profileData?.experience.length > 0) {
     setSkillsContainers(profileData?.experience);
   } 
+  setSocialDetails(profileData?.social);
+
 }, [profileData]);
 
   return (
@@ -159,7 +160,11 @@ useEffect(() => {
               <img src={imageBackGround} alt='Plygon backdround'/>
               <div>
                   <div className='general-profile-detail-image-user'>
-                    <img src={avatar} alt='Profile'/>
+                    {profileData?.avatar ? (
+                      <img src={avatar} alt='Profile'/>
+                    ) : (
+                      <img src={userImage} alt='Profile'/>
+                    )}
                     <button onClick={() => hanldeEditorModelOpen()}><MdModeEditOutline/>Edit</button>
                   </div>
                   <div className='general-profile-detail-image-user-detail'>
@@ -244,7 +249,7 @@ useEffect(() => {
           onClose={() => setEditorOpen(false)}
           className='avatar-popup'
         >
-          <ProfileAvatar setEditorOpen={setEditorOpen} setAvatar={setAvatar} avatar={avatar}/>
+          <ProfileAvatar handleSubmit={handleSubmit} setEditorOpen={setEditorOpen} avatar={avatar} setAvatar={setAvatar}/>
         </Popup>
 
     </div>
