@@ -96,14 +96,14 @@ const ProfileDetail = () => {
       coverletter: coverLetter,
     }
     dispatch(updateMyProfile(formData, myProfileData?.cv,)) 
-    window.location.reload()
+    // window.location.reload()
   }
 
   const hanldeEditorModelOpen = () => {
     setEditorOpen(true)
 }
 
-  useEffect(() => {
+useEffect(() => {
 
     if(error){
         toast.error(error);
