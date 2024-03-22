@@ -3,6 +3,7 @@ import imageBackGround from '../../assets/Polygon Luminarymain.png'
 import userImage from '../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
 import { FaLocationDot } from "react-icons/fa6";
 import { MdModeEditOutline } from "react-icons/md";
+import { CiCircleRemove } from "react-icons/ci";
 import { toast } from 'react-toastify';
 import Loader from '../Utils/Loader.jsx';
 import ProfileTabsMe from './ProfileTabsMe'
@@ -19,6 +20,9 @@ import ProfileSocial from './ProfileSocial.jsx';
 import {getMyProfile, updateMyProfile, clearErrors} from '../../actions/ProfileAction.js'
 import {useSelector, useDispatch} from 'react-redux';
 import ProfileAvatar from './ProfileAvatar.jsx';
+import DeleteAvatar from './DeleteAvatar.jsx';
+import ProfileDetailSideBar from './ProfileDetailSideBar.jsx';
+import NavBar from '../NavBar/NavBar.jsx';
 
 const ProfileDetail = () => {
 
@@ -30,6 +34,7 @@ const ProfileDetail = () => {
   
   const [profileData, setProfileData] = useState(myProfileData)
   const [editorOpen, setEditorOpen] = useState(false);
+  const [avatarDeleteConfirm, setAvatarDeleteConfirm] = useState(false);
 
   const [userName, setUserName] = useState('');
   const [personalDetails, setPersonalDetails] = useState({
@@ -96,12 +101,16 @@ const ProfileDetail = () => {
       coverletter: coverLetter,
     }
     dispatch(updateMyProfile(formData, myProfileData?.cv,)) 
-    // window.location.reload()
   }
 
   const hanldeEditorModelOpen = () => {
     setEditorOpen(true)
-}
+  }
+
+  
+  const hanldeAavatarDeleteModelOpen = () => {
+    setAvatarDeleteConfirm(true)
+  }
 
 useEffect(() => {
 
@@ -145,11 +154,15 @@ useEffect(() => {
 }, [profileData]);
 
   return (
+    <div className='class-container'>
+      <div className='navbar-container-class' >
+        <NavBar />
+      </div>
     <div className='general-profile-detail-container'>
 
         {/* left bar */}
         <div className='general-profile-detail-left-bar'>
-
+          <ProfileDetailSideBar profileData={profileData}/>
         </div>
 
         {/* right side */}
@@ -165,7 +178,10 @@ useEffect(() => {
                     ) : (
                       <img src={userImage} alt='Profile'/>
                     )}
-                    <button onClick={() => hanldeEditorModelOpen()}><MdModeEditOutline/>Edit</button>
+                    <div>
+                      <button onClick={() => hanldeEditorModelOpen()}><MdModeEditOutline/>Edit</button>
+                      <button onClick={() => hanldeAavatarDeleteModelOpen()}><CiCircleRemove size={23}/></button>
+                    </div>
                   </div>
                   <div className='general-profile-detail-image-user-detail'>
                     <p>@{userName}</p>
@@ -251,6 +267,17 @@ useEffect(() => {
         >
           <ProfileAvatar handleSubmit={handleSubmit} setEditorOpen={setEditorOpen} avatar={avatar} setAvatar={setAvatar}/>
         </Popup>
+
+        <Popup
+          open={avatarDeleteConfirm}
+          closeOnDocumentClick
+          onClose={() => setAvatarDeleteConfirm(false)}
+          className='delete-avatar-popup'
+        >
+          <DeleteAvatar setAvatarDeleteConfirm={setAvatarDeleteConfirm} setAvatar={setAvatar}/>
+        </Popup>
+
+    </div>
 
     </div>
   )

@@ -1,0 +1,163 @@
+.profile-detail-side-bar{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.profile-detail-side-bar-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 40px;
+    padding-left: 25px;
+    width: 100%;
+}
+
+.profile-detail-side-bar-profile-completion {
+    position: relative;
+    width: 90%;
+    height: 60px;
+    background-color: transparent;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.profile-detail-side-bar-profile-completion>p{
+    color: white;
+    color: rgb(219, 219, 219);
+}
+
+.progress-bar {
+    position: relative;
+    width: 90%;
+    height: 17px;
+    background-color: transparent;
+    border: 1px solid rgba(255, 65, 255, 0.432);
+    border-radius: 50px;
+    padding: 4px 4px;
+}
+
+.progress {
+    height: 100%;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
+    border-radius: 50px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.progress>p{
+    position: relative;
+    right: 12px;
+    color: white;
+    font-size: 14px;
+    bottom: 1px;
+}
+
+.profile-detail-side-bar-profile-settings{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 330px;
+    gap: 30px;
+    width: 100%;
+    padding: 30px 0px;
+}
+
+.profile-detail-side-bar-profile-settings div{
+    position: relative;
+    width: 100%;
+}
+.profile-detail-side-bar-profile-settings div:nth-child(1) a{
+    position: relative;
+    display: flex;
+    text-decoration: none;
+    border-bottom: 1px solid #F15F79;
+    width: 70% !important;
+    color: rgb(219, 219, 219);
+    padding: 8px 15px;
+    transition: all 500ms;
+}
+
+.profile-detail-side-bar-profile-settings div:nth-child(2) a{
+    position: relative;
+    display: flex;
+    text-decoration: none;
+    border-bottom: 1px solid #F15F79;
+    width: 70% !important;
+    color: rgb(219, 219, 219);
+    padding: 8px 15px;
+    transition: all 500ms;
+}
+
+.profile-detail-side-bar-profile-settings div:nth-child(1) a:hover{
+    color: #F15F79;
+}
+.profile-detail-side-bar-profile-settings div:nth-child(2) a:hover{
+    color: #F15F79;
+}
+
+.profile-detail-side-bar-links{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    height: 120px;
+    gap: 30px;
+    width: 100%;
+}
+
+.profile-detail-side-bar-links div{
+    width: 100%;
+}
+
+.profile-detail-side-bar-links div:nth-child(1) button{
+    color: white;
+    text-decoration: none;
+    background-color: transparent;
+    border: 1px solid rgb(255, 67, 67);
+    outline: none;
+    background-color: transparent;
+    width: 90%;
+    padding: 10px 0px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.profile-detail-side-bar-links div:nth-child(1) button:hover{
+    background-color: rgba(255, 61, 61, 0.425);
+    border: 1px solid rgba(255, 61, 61, 0.425);
+}
+
+.profile-detail-side-bar-links div:nth-child(2) button{
+    color: white;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    background-color: tomato;
+    width: 90%;
+    padding: 10px 0px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.profile-detail-side-bar-links div:nth-child(2) button:hover{
+    background-color: rgb(255, 48, 48);
+}

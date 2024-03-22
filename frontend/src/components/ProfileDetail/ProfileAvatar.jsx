@@ -66,6 +66,7 @@ const ProfileAvatar = ({setEditorOpen,  avatar, setAvatar }) => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log("response?.data.", response?.data?.avatarUrl)
             if(response?.data.success === true) {
                 toast.success("Image Uploaded")
                 setAvatar(response?.data.avatarUrl)
