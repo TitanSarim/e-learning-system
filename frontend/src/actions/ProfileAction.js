@@ -21,26 +21,24 @@ export const getMyProfile = () => async (dispatch) => {
 
         const {data} = await axios.get(`/api/v1/get-my-profile`)
 
-        dispatch({type: GET_MY_PROFILE_SUCCESS, payload: data.myProfile});
+        dispatch({type: GET_MY_PROFILE_SUCCESS, payload: data?.myProfile});
         
     } catch (error) {
-        dispatch({type: GET_MY_PROFILE_FAIL, payload: error.response.data.message});
+        dispatch({type: GET_MY_PROFILE_FAIL, payload: error?.response?.data.message});
     }
 
 }
 
 
 // Update profile
-export const updateMyProfile = (formData, oldResume) => async (dispatch) => {
+export const updateMyProfile = (formData, oldResume, NewAvatar) => async (dispatch) => {
+    console.log("newAvatar234", NewAvatar)
 
     try {
 
-        const {avatar, cv, ...restFormData } = formData;
+        const {cv, ...restFormData } = formData;
 
-        
         dispatch({type: UPDATE_MY_PROFILE_REQUEST});
-
-        console.log("oldResume", oldResume)
 
         let uploadedResumeUrl = cv;
         if (cv && cv.name) {
@@ -64,10 +62,10 @@ export const updateMyProfile = (formData, oldResume) => async (dispatch) => {
             config
         )
 
-        dispatch({type: UPDATE_MY_PROFILE_SUCCESS, payload: data.myProfile});
+        dispatch({type: UPDATE_MY_PROFILE_SUCCESS, payload: data?.myProfile});
         
     } catch (error) {
-        dispatch({type: UPDATE_MY_PROFILE_FAIL, payload: error?.response.data?.message});
+        dispatch({type: UPDATE_MY_PROFILE_FAIL, payload: error?.response?.data?.message});
     }
 
 }

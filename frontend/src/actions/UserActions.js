@@ -33,17 +33,27 @@ import {
 } from "../constants/UserConstants";
 
 import axios from "axios";
+import Cookies from 'js-cookie';
+
 
 const BASE_URL = "http://localhost:3900"
+
 
 // USER ACTIONS
 export const register = (formData) => async (dispatch) => {
   try {
     dispatch({ type: REGISTER_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" } };
+     const token = Cookies.get('token');
 
-    const { data } = await axios.post(`/api/v1/register`, formData, config);
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
+
+    const { data } = await axios.post(`${BASE_URL}/api/v1/register`, formData, config);
 
     dispatch({ type: REGISTER_SUCCESS, payload: data.user });
   } catch (error) {
@@ -55,12 +65,23 @@ export const login = (formData) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" } };
+   
+
+     const token = Cookies.get('token');
+
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
 
     const { data } = await axios.post(`${BASE_URL}/api/v1/loggedIn`, formData, config);
 
     setTokenCookie(data?.token);
     console.log(data.token);
+
+
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
   } catch (error) {
     dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
@@ -71,7 +92,14 @@ export const ForgetPassword = (email) => async (dispatch) => {
   try {
     dispatch({ type: FORGET_PASSWORD_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" } };
+     const token = Cookies.get('token');
+
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
 
     const { data } = await axios.post(`${BASE_URL}/api/v1/password/forget`, email, config);
 
@@ -86,7 +114,14 @@ export const ResetPasswordAction = (formData) => async (dispatch) => {
   try {
     dispatch({ type: RESET_PASSWORD_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" } };
+     const token = Cookies.get('token');
+
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
 
     const { data } = await axios.post(`${BASE_URL}/api/v1/reset/password`, formData, config);
 
@@ -119,10 +154,17 @@ export const UpdateUser = (formData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_USER_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" } };
+     const token = Cookies.get('token');
+
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
 
     const { data } = await axios.put(
-      `/api/v1/usernameupdate`,
+      `${BASE_URL}/api/v1/usernameupdate`,
       formData,
       config
     );
@@ -136,12 +178,36 @@ export const UpdateUser = (formData) => async (dispatch) => {
   }
 };
 
+// working on it
+export const AdminRequestUserUpdate = (formData, id) => async (dispatch) =>{
+    try {
+    const { data } = await axios.put(
+      `${BASE_URL}/api/v1/request/user/${id}`,
+      formData
+    );
+    console.log(data);
+
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
 // ADMIN ACTIONS
 export const AdminGetUsers = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_USERS_ADMIN_REQUEST });
 
-    const { data } = await axios.get(`/api/v1/getAll/users`);
+    const token = Cookies.get('token');
+
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
+
+    const { data } = await axios.get(`${BASE_URL}/api/v1/getAll/users`, config);
 
     dispatch({ type: GET_ALL_USERS_ADMIN_SUCCESS, payload: data.users });
   } catch (error) {
@@ -156,10 +222,18 @@ export const AdmincreateNewUser = (formData) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_NEW_USER_ADMIN_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" } };
+    const token = Cookies.get('token');
 
-    const { data } = await axios.post(`/api/v1/create/user`, formData, config);
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
 
+    const { data } = await axios.post(`${BASE_URL}/api/v1/create/user`, formData, config);
+
+    // will work
     dispatch({ type: CREATE_NEW_USER_ADMIN_SUCCESS, payload: [data] });
   } catch (error) {
     console.log(error);
@@ -174,10 +248,17 @@ export const AdminUpdateNewUser = (formData, id) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_USER_ADMIN_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" } };
+      const token = Cookies.get('token');
+
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
 
     const { data } = await axios.put(
-      `/api/v1/update/user/${id}`,
+      `${BASE_URL}/api/v1/update/user/${id}`,
       formData,
       config
     );
@@ -196,10 +277,17 @@ export const adminDeleteUser = (userId) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_USER_ADMIN_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" } };
+     const token = Cookies.get('token');
+
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
 
     const { data } = await axios.delete(
-      `/api/v1/delete/user/${userId}`,
+      `${BASE_URL}/api/v1/delete/user/${userId}`,
       config
     );
 
@@ -222,3 +310,6 @@ export const clearErrors = () => async (dispatch) => {
 const setTokenCookie = (token) => {
   document.cookie = `token=${token}`;
 };
+
+
+

@@ -11,10 +11,13 @@ import { toast } from "react-toastify";
 const Auth = () => {
   const dispatch = useDispatch();
   const naviagte = useNavigate();
+    console.log("azeem");
+
 
   const { error, isAuthenticated, user } = useSelector((state) => state.user);
 
   console.log("user", user);
+  console.log("azeem");
 
   const [email, setEmail] = useState("");
   const [username, setUserName] = useState("");

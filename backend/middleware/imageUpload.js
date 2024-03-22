@@ -19,7 +19,7 @@ const resolveContentSettings = (req, file) => {
 const azureStorageConfig = {
     connectionString: `DefaultEndpointsProtocol=${process.env.AZURE_STORAGE_DEFAULT_ENDPOINTS_PROTOCOL};AccountName=${process.env.AZURE_STORAGE_ACCOUNT_NAME};AccountKey=${process.env.AZURE_STORAGE_ACCOUNT_KEY};EndpointSuffix=${process.env.AZURE_STORAGE_ENDPOINT_SUFFIX}`,
     accountName: process.env.AZURE_STORAGE_ACCOUNT_NAME,
-    containerName: process.env.AZURE_STORAGE_IMAGE_CONTAINER_NAME,
+    containerName: 'avatar',
     containerAccessLevel: 'blob',
     blobName: resolveBlobName,
     metadata: resolveMetadata,

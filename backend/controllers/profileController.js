@@ -44,22 +44,22 @@ const getUserProfile = catchAsyncError(async(req, res, next) => {
       if(userProfileTable){
         myProfile = {
           ...myProfile,
-          avatar: JSON.parse(userProfileTable.avatar).url,
-          location: userProfileTable.location,
-          firstname: userProfileTable.firstname,
-          lastname: userProfileTable.lastname,
-          phoneno: userProfileTable.phoneno,
-          Headline: JSON.parse(userProfileTable.Headline),
-          about: JSON.parse(userProfileTable.about),
-          education: JSON.parse(userProfileTable.education),
-          skills: JSON.parse(userProfileTable.skills).data,
-          experience: JSON.parse(userProfileTable.experience),
-          social: JSON.parse(userProfileTable.social),
-          cv: JSON.parse(userProfileTable.cv).url,
-          coverletter: JSON.parse(userProfileTable.coverletter),
+          avatar: userProfileTable.avatar?.url || '',
+          location: userProfileTable.location || '',
+          firstname: userProfileTable.firstname || '',
+          lastname: userProfileTable.lastname || '',
+          phoneno: userProfileTable.phoneno || '',
+          Headline: userProfileTable.Headline?.data || '',
+          about: userProfileTable.about?.data || '',
+          education: userProfileTable.education?.data || [],
+          skills: userProfileTable.skills?.data || [],
+          experience: userProfileTable.experience?.data || [],
+          social: userProfileTable.social?.data || {},
+          cv: userProfileTable.cv?.url || '',
+          coverletter: userProfileTable.coverletter?.data || '',
         }
       }
-      
+
       res.status(201).json({
         success: true,
         message: 'Profile retrived',
@@ -81,50 +81,104 @@ const createUpdateUserProfile = catchAsyncError(async (req, res, next) => {
     const {avatar, location, firstname, lastname, phoneno, Headline, about,  education, skills, experience, social, cv, coverletter} = req.body;
 
     try {
-        let myProfile = await UserProfile.findOne({
+
+        let myProfileUpdate = await UserProfile.findOne({
             where: {
                 userId: userId
             }
         });
 
-        if (!myProfile) {
-            myProfile = await UserProfile.create({
+        if (!myProfileUpdate) {
+            myProfileUpdate = await UserProfile.create({
                 userId: userId,
                 avatar: {url: avatar},
                 location: location,
                 firstname: firstname,
                 lastname: lastname,
                 phoneno: phoneno,
-                Headline: Headline,
-                about: about,
-                education: education,
+                Headline: {data: Headline},
+                about: {data: about},
+                education: {data: education},
                 skills: {data: skills},
-                experience: experience,
-                social: social,
+                experience: {data: experience},
+                social: {data: social},
                 cv: {url: cv},
-                coverletter: coverletter
+                coverletter: {data: coverletter}
             });
         } else {
-            myProfile = await UserProfile.update({
+            myProfileUpdate = await UserProfile.update({
               userId: userId,
               avatar: {url: avatar},
               location: location,
               firstname: firstname,
               lastname: lastname,
               phoneno: phoneno,
-              Headline: Headline,
-              about: about,
-              education: education,
+              Headline: {data: Headline},
+              about: {data: about},
+              education: {data: education},
               skills: {data: skills},
-              experience: experience,
-              social: social,
+              experience: {data: experience},
+              social: {data: social},
               cv: {url: cv},
-              coverletter: coverletter
+              coverletter: {data: coverletter}
             },
             {
               where: { userId: userId } 
         })
       }
+
+      const  userTable = await User.findOne({
+        where: {
+            id: userId
+        }
+      });
+      let myProfile = {
+        userId: userTable.id,
+        username: userTable.username,
+        email:userTable.email,
+        avatar: '',
+        location: '',
+        firstname: '',
+        lastname: '',
+        phoneno: '',
+        Headline: '',
+        about: '',
+        education: '',
+        skills: '',
+        experience: '',
+        social: '',
+        cv: '',
+        coverletter: '',
+      }
+
+      const userProfileTable = await UserProfile.findOne({
+        where: { 
+          userId: userId 
+        },
+      })
+
+      if(userProfileTable){
+        myProfile = {
+          userId: userTable.id,
+          username: userTable.username,
+          email:userTable.email,
+          avatar: userProfileTable.avatar?.url || '',
+          location: userProfileTable.location || '',
+          firstname: userProfileTable.firstname || '',
+          lastname: userProfileTable.lastname || '',
+          phoneno: userProfileTable.phoneno || '',
+          Headline: userProfileTable.Headline?.data || '',
+          about: userProfileTable.about?.data || '',
+          education: userProfileTable.education?.data || [],
+          skills: userProfileTable.skills?.data || [],
+          experience: userProfileTable.experience?.data || [],
+          social: userProfileTable.social?.data || {},
+          cv: userProfileTable.cv?.url || '',
+          coverletter: userProfileTable.coverletter?.data || '',
+        }
+      }
+
+
       res.status(201).json({
         success: true,
         message: 'Profile updated',
@@ -136,7 +190,34 @@ const createUpdateUserProfile = catchAsyncError(async (req, res, next) => {
   });
 
 
+const updateUserAvatar = catchAsyncError(async(req, res, next) => {
+
+  try {
+    const userId = req.user.userid
+    const fileUrl = req.file.url
+
+    const parsedUrl = new URL(fileUrl);
+    const cleanFileUrl = parsedUrl.origin + parsedUrl.pathname;
+
+    await UserProfile.update(
+      { avatar: { url: cleanFileUrl } },
+      { where: { userId: userId } }
+    );
+    
+    res.status(201).json({
+      success: true,
+      message: 'Image Uploaded',
+      avatarUrl: cleanFileUrl
+    });
+
+  } catch (error) {
+    return next(new errorHandler(error, 500));
+
+  }
+})
+
   module.exports = {
     getUserProfile,
-    createUpdateUserProfile
+    createUpdateUserProfile,
+    updateUserAvatar
   }

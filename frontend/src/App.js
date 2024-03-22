@@ -15,6 +15,7 @@ import CreateCourse from "./components/Admin/Courses/CreateCourse";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 import ResetPassword from "./components/Auth/ResetPassword";
 import ProfileDetail from "./components/ProfileDetail/ProfileDetail";
+import UserForm from "./components/Admin/User/UserForm";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/all-users" element={<AllUsers />} />
             <Route path="/admin/create-users" element={<CreateUser />} />
+            
             <Route path="/admin/update-users/:id" element={<UpdateUser />} />
 
             <Route path="/admin/all-courses" element={<AllCourses />} />
@@ -49,7 +51,8 @@ function App() {
             path="/reset/password/:token/:id"
             element={<ResetPassword />}
           />
-
+          {/* will shift to admin or other route soon */}
+          <Route path="/create/new/user/:token/:id" element={<UserForm />}/>
           {/* Route Path is Temporary */}
           <Route path="/class" element={<ClassRoom />} />
         </Routes>

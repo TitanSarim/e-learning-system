@@ -28,7 +28,9 @@ const CreateUser = () => {
     const dispatch = useDispatch()
 
     const registerSubmit = () => {
-        if (!email || !username || !age || !gender || !password || !confirmPassword) {
+        
+
+         if (!email) {
             setIsRegisteFormEmpty('Please Fill All The Required Fields')
             return;
           }
@@ -40,30 +42,16 @@ const CreateUser = () => {
             return;
           }
       
-          if (password.length < 8) {
-            setIsRegisteFormEmpty('Password Must Be Greater Then 8 Alphabats')
-            toast.error(isRegisteFormEmpty)
-            return;
-          }
-      
-          if (password !== confirmPassword) {
-            setIsRegisteFormEmpty('Password Did Not Matched')
-            toast.error(isRegisteFormEmpty)
-            return;
-          }
+        
         
           const FormData = {
             email: email,
-            username: username,
             role: role,
-            age: parseInt(age),
-            gender: gender,
-            password: password,
             status: status
           }
           
           dispatch(AdmincreateNewUser(FormData));
-          toast.success('User Created')
+          toast.success('Please, check Your Email')
 
             setUserName('')
             setEmail('')
@@ -96,30 +84,14 @@ const CreateUser = () => {
                     <p>Add New User</p>
 
                     <div className='admin-createuser-form-username-email'>
-                        <div>
-                            <p>Username <span>*</span></p>
-                            <input type='text' placeholder='Username' value={username} onChange={(e) => setUserName(e.target.value)}/>
-                        </div>
+                      
                         <div>
                             <p>Email <span>*</span></p>
                             <input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                     </div>
 
-                    <div className='admin-createuser-form-gender-age'>
-                        <div>
-                            <p>Age <span>*</span></p>
-                            <input type='number' placeholder='Age' value={age} onChange={(e) => setAge(e.target.value)}/>
-                        </div>
-                        <div>
-                            <p>Gender <span>*</span></p>
-                            <select value={gender} onChange={(e) => setGender(e.target.value)}>
-                                <option disabled>Select</option>
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                        </div>
-                    </div>
+                   
 
                     <div className='admin-createuser-form-role-status'>
                         <div>
@@ -129,7 +101,7 @@ const CreateUser = () => {
                                 <option>Student</option>
                                 <option>Job Seeker</option>
                                 <option>HR</option>
-                                <option>Admin</option>
+                                <option>admin</option>
                             </select>
                         </div>
                         <div>
@@ -142,16 +114,7 @@ const CreateUser = () => {
                         </div> 
                     </div>
 
-                    <div className='admin-createuser-form-passwords'>
-                        <div>
-                            <p>Password <span>*</span></p>
-                            <input value={password} type='text' placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
-                        </div>
-                        <div>
-                            <p>Confirm Password <span>*</span></p>
-                            <input value={confirmPassword} type='text' placeholder='Confirm Password' onChange={(e) => setConfirmPassword(e.target.value)}/>
-                        </div>
-                    </div>
+                  
                     <strong>{isRegisteFormEmpty}</strong>
                     <button onClick={registerSubmit}>Create</button>
                 </div>

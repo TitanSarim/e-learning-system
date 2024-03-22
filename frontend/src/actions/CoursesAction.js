@@ -10,6 +10,8 @@ import {
 import axios from "axios";
 import { uploadVideosToAzure } from "../middlewares/VideoUpload";
 import { uploadImageToAzure } from "../middlewares/ImageUplaod";
+import Cookies from 'js-cookie';
+
 
 const BASE_URL = "http://localhost:3900";
 
@@ -63,8 +65,17 @@ export const AdminGetCourses = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_ADMIN_COURSES_REQUEST });
 
+    const token = Cookies.get('token');
+
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
+
     const { data } = await axios.get(
-      `${BASE_URL}/api/v1/get-all-admin-courses`
+      `${BASE_URL}/api/v1/get-all-admin-courses`, config
     );
 
     dispatch({
