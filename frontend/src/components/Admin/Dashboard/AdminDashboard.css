@@ -10,19 +10,19 @@
     background-color: #0A2647;
 }
 
-.admin-dashboard-sidebar{
-    width: 15%;
-    position: fixed;
+.admin-dashboard-sidebar {
+  width: 15%;
+  position: fixed;
 }
 
-.admin-wrapper{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 82%;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    margin-top: 0%;
-    left: 160px;
+.admin-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 82%;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-top: 0%;
+  left: 160px;
 }

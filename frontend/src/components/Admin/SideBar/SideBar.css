@@ -5,27 +5,27 @@
     box-shadow: rgba(161, 161, 161, 0.15) 2.4px 2.4px 3.2px;
 }
 
-.admin-sidebar-container{
-    position: relative;
-    top: 70px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 50px;
+.admin-sidebar-container {
+  position: relative;
+  top: 70px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 50px;
 }
 
-.admin-sidebar-container>p{
-    color: rgb(53, 53, 53);
-    font-size: 40px;
-    font-weight: 700;
+.admin-sidebar-container > p {
+  color: white;
+  font-size: 40px;
+  font-weight: 700;
 }
 
-.admin-sidebar-tabs{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.admin-sidebar-tabs {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .admin-sidebar-tabs a{

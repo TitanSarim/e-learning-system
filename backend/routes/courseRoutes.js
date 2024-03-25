@@ -6,8 +6,9 @@ const {filesUpload} = require('../middleware/videoUpload')
 
 const router = express.Router();
 
+router.route("/createCourse").post(isAuthenticatedUser, createCourse);
 
-router.route("/createCourse").post(isAuthenticatedUser, createCourse)
+
 
 router.route("/get-all-admin-courses").get(isAuthenticatedUser, GetAllCourseAdmin)
 
@@ -20,4 +21,4 @@ module.exports = router
 // filesUpload.fields([{
 //     name: "videoFile",
 //     maxCount: 100,
-// }]), 
+// }]),

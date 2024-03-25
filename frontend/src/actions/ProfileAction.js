@@ -10,16 +10,28 @@ import{
 
 } from '../constants/ProfileConstants'
 import {uploadResumeToAzure} from '../middlewares/ResumeUpload'
-import {uploadAvatarToAzure} from '../middlewares/AvatarUpload'
+import Cookies from 'js-cookie';
 
 import axios from 'axios'
+const BASE_URL = "http://localhost:3900"
+
 
 export const getMyProfile = () => async (dispatch) => {
 
     try {
         dispatch({type: GET_MY_PROFILE_REQUEST});
+        console.log("profile request");
 
-        const {data} = await axios.get(`/api/v1/get-my-profile`)
+        const token = Cookies.get('token');
+
+         const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
+
+        const {data} = await axios.get(`${BASE_URL}/api/v1/get-my-profile`, config)
 
         dispatch({type: GET_MY_PROFILE_SUCCESS, payload: data?.myProfile});
         
@@ -55,12 +67,21 @@ export const updateMyProfile = (formData, oldResume, NewAvatar) => async (dispat
         const jsonString = JSON.stringify(jsonData);
 
 
-        const config = { headers: { "Content-Type": "application/json" } };
+        const token = Cookies.get('token');
 
-        const {data} = await axios.post(`/api/v1/update-my-profile`, 
+         const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
+
+        const {data} = await axios.post(`${BASE_URL}/api/v1/update-my-profile`, 
             jsonString,
             config
         )
+
+
 
         dispatch({type: UPDATE_MY_PROFILE_SUCCESS, payload: data?.myProfile});
         

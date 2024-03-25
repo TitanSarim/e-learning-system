@@ -223,3 +223,14 @@
     background-color: tomato;
     color: white;
 }
+
+.admin-user-form{
+        position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 82%;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    margin-top: 0%;
+}

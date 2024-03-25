@@ -20,6 +20,9 @@ const ProfileAvatar = ({setEditorOpen,  avatar, setAvatar }) => {
         }
     }, [newPhoto]);
 
+    const BASE_URL = "http://localhost:3900"
+
+
     const dataURLToBlob = (dataURL) => {
         const byteString = atob(dataURL.split(',')[1]);
         const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
@@ -61,7 +64,7 @@ const ProfileAvatar = ({setEditorOpen,  avatar, setAvatar }) => {
         }
 
         try {
-            const response = await axios.post('/api/v1/upload-avatar', fileFormData, {
+            const response = await axios.post(`${BASE_URL}/api/v1/upload-avatar`, fileFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

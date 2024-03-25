@@ -1,15 +1,16 @@
-const { Course } = require('../models'); // Adjust the path based on your project structure
-const bcrypt = require('bcryptjs');
-const generatedToken = require("../utils/jwtToken")
-const setTokenCookie = require("../utils/sendToken")
-const errorHandler = require('../utils/errorHandler');
-const catchAsyncError = require('../middleware/catchAsyncError');
-const {generateSlug} = require('../middleware/GenerateSlug');
+const { Course } = require("../models"); // Adjust the path based on your project structure
+const bcrypt = require("bcryptjs");
+const generatedToken = require("../utils/jwtToken");
+const setTokenCookie = require("../utils/sendToken");
+const errorHandler = require("../utils/errorHandler");
+const catchAsyncError = require("../middleware/catchAsyncError");
+const { generateSlug } = require("../middleware/GenerateSlug");
 
 
 // admin
 const createCourse  = catchAsyncError(async (req, res, next) => {
 
+    const slug = generateSlug(courseTitle, userId);
 
     try {
         

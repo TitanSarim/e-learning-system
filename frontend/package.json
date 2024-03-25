@@ -13,7 +13,9 @@
     "axios": "^1.6.5",
     "cropperjs": "^1.6.1",
     "dotenv": "^16.4.5",
+    "js-cookie": "^3.0.5",
     "js-md5": "^0.8.3",
+    "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",
     "p-limit": "^5.0.0",
     "react": "^18.2.0",
@@ -61,5 +63,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://192.168.1.5:3900"
+  "proxy": "http://192.168.42.161:3900"
 }

@@ -4,13 +4,15 @@ import {thunk} from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import {userReducer, AdminUserReducer} from './redcuers/UserReducer'
+import {userReducer, AdminUserReducer, ForgetPasswordReducer} from './redcuers/UserReducer'
 import {AdminCourseReducer} from './redcuers/CourseReducer'
 import {myPorfileReducer} from './redcuers/ProfileReducer'
 
 const reducer = combineReducers({
 
     user: userReducer,
+    forgetPassword: ForgetPasswordReducer,
+    adminUsers: AdminUserReducer,
 
     myPorfile: myPorfileReducer,
 

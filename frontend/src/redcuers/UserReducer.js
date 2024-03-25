@@ -31,6 +31,15 @@ import{
     DELETE_USER_ADMIN_SUCCESS,
     DELETE_USER_ADMIN_FAIL,
 
+    FORGET_PASSWORD_SUCESS,
+    FORGET_PASSWORD_REQUEST,
+
+    RESET_PASSWORD_REQUEST,
+    RESET_PASSWORD_SUCESS,
+
+    RESET_PASSWORD_FAIL,
+    FORGET_PASSWORD_FAIL,
+
     CLEAR_ERRORS
 
 } from '../constants/UserConstants'
@@ -94,6 +103,51 @@ export const userReducer = (state = {user: []}, action) =>{
 
         default:
             return state;    
+    }
+}
+
+export const ForgetPasswordReducer = (state = { }, action) =>{
+
+    switch(action.type){
+     
+        case FORGET_PASSWORD_REQUEST:
+        case RESET_PASSWORD_REQUEST:    
+            return {
+                ...state,
+                loading: true
+            }
+         
+        case FORGET_PASSWORD_SUCESS:
+            return {
+                 ...state,
+                loading: false,
+                message: action.payload,
+            }  
+    
+
+        case RESET_PASSWORD_SUCESS: 
+            return {
+                 ...state,
+                loading: false,
+                message: action.payload
+            }  
+            
+        case RESET_PASSWORD_FAIL:
+        case FORGET_PASSWORD_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+            
+        case  CLEAR_ERRORS:
+            return{
+                ...state,
+                error: null,
+            }    
+        
+        default: 
+            return state    
     }
 }
 

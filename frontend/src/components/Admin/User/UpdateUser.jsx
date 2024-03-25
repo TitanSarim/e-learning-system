@@ -41,17 +41,6 @@ const UpdateUser = () => {
           return;
         }
     
-        // if (password.length < 8) {
-        //   setIsRegisteFormEmpty('Password Must Be Greater Then 8 Alphabats')
-        //   toast.error(isRegisteFormEmpty)
-        //   return;
-        // }
-    
-        // if (password !== confirmPassword) {
-        //   setIsRegisteFormEmpty('Password Did Not Matched')
-        //   toast.error(isRegisteFormEmpty)
-        //   return;
-        // }
       
         const FormData = {
           email: email,
@@ -138,16 +127,7 @@ const UpdateUser = () => {
                       </div> 
                   </div>
 
-                  {/* <div className='admin-createuser-form-passwords'>
-                      <div>
-                          <p>Password <span>*</span></p>
-                          <input type='text' placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
-                      </div>
-                      <div>
-                          <p>Confirm Password <span>*</span></p>
-                          <input  type='text' placeholder='Confirm Password' onChange={(e) => setConfirmPassword(e.target.value)}/>
-                      </div>
-                  </div> */}
+                  
                   <strong>{isRegisteFormEmpty}</strong>
                   <button onClick={updateSubmit}>Update</button>
               </div>

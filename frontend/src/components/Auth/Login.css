@@ -302,3 +302,77 @@
 .auth-login-container>a{
     color: tomato;
 }
+
+
+/* ------------------ Forget Password ------------------- */
+
+.auth-forget-password{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.auth-forget-password > div> form{
+ 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.auth-forget-password > div{
+    background-color: rgb(42, 36, 95);
+    color: white;
+    padding: 4rem;
+    border-radius: 10px;
+    width: 20rem;
+}
+
+.auth-forget-password > div > h2{
+    font-size: 22px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 1rem 1rem ;
+}
+
+.auth-forget-password > div > form > input{
+    padding: 10px 1rem 10px 1rem;
+}
+
+.auth-reset-password > div > form > div {
+    color: black 
+}
+
+.auth-reset-password > div > form > div > input {
+    padding: 10px 1rem 10px 1rem;
+    width: 83%;
+    border: none;
+}
+
+.auth-reset-password > div > form > div > input:focus {
+    outline: none;
+}
+
+.auth-forget-password > div > form > button{
+    background-color: rgb(179, 171, 252);
+    color: white;
+    border: none;
+    padding: 18px 60px;
+    font-size: 17px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.auth-forget-password > div > form > button:hover{
+        background-color: rgb(255, 255, 255);
+    color: black;
+    transform: scale(1.02);
+}
+
+.auth-forget-password > div > strong{
+    color: #db4444;
+    font-size: 12px;
+}
