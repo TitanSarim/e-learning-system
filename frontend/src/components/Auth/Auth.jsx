@@ -65,6 +65,11 @@ const Auth = () => {
     dispatch(login(FormData));
   }
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleLoginSubmit();
+    }
+  };
 
   const handleRegisterSubmit = () => {
 
@@ -202,13 +207,13 @@ const Auth = () => {
 
             <div className='auth-login-email'>
               <p>Email <span>*</span></p>
-              <input type='email' placeholder='Your Email' value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)}/>
+              <input type='email' placeholder='Your Email' value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} onKeyPress={handleKeyPress}/>
             </div>
 
             <div className='auth-login-password'>
               <p>Password <span>*</span></p>
               <div>
-                <input type={showLoginPassword ? 'text' : 'password'} placeholder='Your Password' value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}/>
+                <input type={showLoginPassword ? 'text' : 'password'} placeholder='Your Password' value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} onKeyPress={handleKeyPress}/>
                 {showLoginPassword ? <RxEyeNone onClick={handleLoginTogglePassword} /> : <RxEyeClosed onClick={handleLoginTogglePassword} />}
               </div>
             </div>

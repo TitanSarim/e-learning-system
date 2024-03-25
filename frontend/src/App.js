@@ -13,6 +13,7 @@ import ClassRoom from './components/Students/ClassRoom/ClassRoom';
 import AllCourses from './components/Admin/Courses/AllCourses';
 import CreateCourse from './components/Admin/Courses/CreateCourse';
 import ProfileDetail from './components/ProfileDetail/ProfileDetail';
+import EditCourse from './components/Admin/Courses/EditCourse';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
 
             <Route path='/admin/all-courses' element={<AllCourses/>}/>
             <Route path='/admin/create-course' element={<CreateCourse />}/>
+            <Route path='/admin/edit-course/:slug' element={<EditCourse/>}/>
           </Route>
 
           

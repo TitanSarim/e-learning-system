@@ -60,8 +60,30 @@ const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
     try {
 
-        const Admincourses  = await Course.findAll();
+        const AdminAllcourses  = await Course.findAll();
 
+        const Admincourses = AdminAllcourses.map(course => ({
+            id: course.id || '',
+            teacherId: course.teacherId || '',
+            slug: course.slug || '',
+            course_title: course.course_title || '',
+            category: course.category || '',
+            tags: course.tags || '',
+            timeline: course.timeline || '',
+            course_desc: course.course_desc || '',
+            course_thumbnail: course.course_thumbnail.url || '',
+            course_content: course.course_content || '',
+            views: course.views || '',
+            price: course.price || '',
+            inrolled_by: course.inrolled_by || '',
+            teacher_name: course.teacher_name || '',
+            comments: course.comments || '',
+            reviews: course.reviews || '',
+            status: course.status || '',
+            createdAt: course.createdAt || '',
+            updatedAt: course.updatedAt || ''
+          }));
+          
         res.status(201).json({
             success: true,
             message: 'Course retrived successfully',
