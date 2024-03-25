@@ -8,6 +8,8 @@ const ProfileDetailSideBar = ({profileData}) => {
 
     const [completionRate, setCompletionRate] = useState(0);
 
+    console.log(profileData);
+
     useEffect(() => {
       const calculateCompletionRate = () => {
         const fields = [

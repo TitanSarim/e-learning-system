@@ -38,14 +38,18 @@ export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
 
     const jsonString = JSON.stringify(jsonData);
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+     const token = Cookies.get('token');
+
+    const config = { headers: 
+                      { 
+                        "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}` 
+                      }
+                    }
+
 
     const { data } = await axios.post(
-      `/api/v1/createCourse`,
+      `${BASE_URL}/api/v1/createCourse`,
       jsonString,
       config
     );

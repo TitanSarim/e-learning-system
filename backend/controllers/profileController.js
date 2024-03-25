@@ -6,6 +6,8 @@ const azure = require('azure-storage');
 
 const getUserProfile = catchAsyncError(async(req, res, next) => {
 
+  console.log("sending data");
+
     try {
 
       const userId = req.user.userid

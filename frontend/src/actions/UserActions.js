@@ -54,6 +54,7 @@ export const register = (formData) => async (dispatch) => {
                     }
 
     const { data } = await axios.post(`${BASE_URL}/api/v1/register`, formData, config);
+    
 
     dispatch({ type: REGISTER_SUCCESS, payload: data.user });
   } catch (error) {
