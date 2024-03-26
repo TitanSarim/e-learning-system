@@ -33,6 +33,8 @@ export const getMyProfile = () => async (dispatch) => {
 
         const {data} = await axios.get(`${BASE_URL}/api/v1/get-my-profile`, config)
 
+        console.log(data);
+
         dispatch({type: GET_MY_PROFILE_SUCCESS, payload: data?.myProfile});
         
     } catch (error) {
