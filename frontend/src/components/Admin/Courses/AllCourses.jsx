@@ -15,6 +15,8 @@ import { BsCalendar2Date } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { CiFilter } from "react-icons/ci";
 import Select from 'react-select';
+import { FiEdit2 } from "react-icons/fi";
+import { AiOutlineDelete } from "react-icons/ai";
 
 const selectStatus = [
   { value: 'none', label: 'None' },
@@ -99,6 +101,8 @@ const AllCourses = () => {
       }),
     };
 
+    console.log("itemcourse_thumbnail", AllAdmincourses)
+
   return (
     
     <div className='admin-container'>
@@ -146,7 +150,7 @@ const AllCourses = () => {
                       {filterCourses()?.map((item) => (
                         <div key={item.id} className='admin-allcourses-card-container'>
 
-                        <LazyLoadImage src={JSON.parse(item.course_thumbnail).url} alt={'Course Thumbnail'}/>
+                        <LazyLoadImage src={item.course_thumbnail} alt={'Course Thumbnail'}/>
                           {/* <img src={JSON.parse(item.course_thumbnail).url} alt="Course Thumbnail" /> */}
                           <div className='admin-allcourses-card-header'>
                             {item.status === 'active' ? <span className='admin-allcourses-card-header-status-acitve'>{item.status}</span> : <span className='admin-allcourses-card-header-status-inacitve'>{item.status}</span>}
@@ -163,7 +167,10 @@ const AllCourses = () => {
                           </div>
                           <div className='admin-allcourses-card-footer'>
                             <p><BsCalendar2Date size={25}/> {moment(item.updatedAt).format("MMM Do YY")}</p>
-                            <Link>View</Link>
+                            <div>
+                              <Link to={`/admin/edit-course/${item.slug}`}><FiEdit2 size={24}/></Link>
+                              <button><AiOutlineDelete size={24}/></button>
+                            </div>
                           </div>
                         </div>
                       ))}

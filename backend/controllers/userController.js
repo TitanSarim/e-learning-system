@@ -64,20 +64,21 @@ const createUser = catchAsyncError(async (req, res, next) => {
   }
 });
 
+
 const loginUser = catchAsyncError(async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({
+    const userData = await User.findOne({
       where: { email },
     });
-    console.log(user);
+    console.log(userData);
 
-    if (!user) {
+    if (!userData) {
       return next(new errorHandler("Invalid Email", 400));
     }
 
-    const passwordMatches = await bcrypt.compare(password, user.password);
+    const passwordMatches = await bcrypt.compare(password, userData.password);
 
     if (!passwordMatches) {
       return next(new errorHandler("Invalid Password", 400));
@@ -85,8 +86,22 @@ const loginUser = catchAsyncError(async (req, res, next) => {
 
     console.log("User Logged in Successfully");
 
-    const token = generatedToken(user.id, user.email, user.username, user.role);
+    const token = generatedToken(userData.id, userData.email, userData.username, userData.role);
     setTokenCookie(res, token);
+
+    const user = {
+      id: userData.id,
+      username: userData.username,
+      role: userData.role,
+      email: userData.email,
+      age: userData.age,
+      gender: userData.gender,
+      password: userData.password,
+      token: token,
+      status: userData.status,
+      createdAt: userData.createdAt,
+      updatedAt: userData.updatedAt,
+    }
 
     res.status(201).json({
       success: true,
@@ -99,9 +114,9 @@ const loginUser = catchAsyncError(async (req, res, next) => {
   }
 });
 
+
 const createNewUser = catchAsyncError(async (req, res, next) => {
   
-  console.log("askld");
   const { email, role, status } = req.body;
 
     const existingUser = await User.findOne({
@@ -192,6 +207,7 @@ const forgetPassword = catchAsyncError(async (req, res, next) => {
   }
 });
 
+
 const ResetPassword = catchAsyncError(async (req, res, next) => {
   const { newPassword, id } = req.body;
 
@@ -207,7 +223,7 @@ const ResetPassword = catchAsyncError(async (req, res, next) => {
   });
 });
 
-/// working 
+
 const adminRequestUserUpdate = catchAsyncError(async (req, res, next) => {
 
   console.log(req.body, "new");
@@ -260,8 +276,7 @@ const adminRequestUserUpdate = catchAsyncError(async (req, res, next) => {
 
 const updateUser = catchAsyncError(async (req, res, next) => {
 
-  console.log(req.body);
-  console.log(req.params);
+
   const { userId } = req.params;
   const { username, email, age, gender, role, password, status } = req.body;
 

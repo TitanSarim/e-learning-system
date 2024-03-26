@@ -63,6 +63,12 @@ const Auth = () => {
     };
 
     dispatch(login(FormData));
+  }
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleLoginSubmit();
+    }
   };
 
   const handleRegisterSubmit = () => {

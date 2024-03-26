@@ -10,8 +10,6 @@ const { generateSlug } = require("../middleware/GenerateSlug");
 // admin
 const createCourse  = catchAsyncError(async (req, res, next) => {
 
-    const slug = generateSlug(courseTitle, userId);
-
     try {
         
         const userId = req.user.userid
@@ -55,14 +53,37 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
 
 })
 
+
 // admin
 const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
 
     try {
 
-        const Admincourses  = await Course.findAll();
+        const AdminAllcourses  = await Course.findAll();
 
+        const Admincourses = AdminAllcourses.map(course => ({
+            id: course.id || '',
+            teacherId: course.teacherId || '',
+            slug: course.slug || '',
+            course_title: course.course_title || '',
+            category: course.category || '',
+            tags: course.tags || '',
+            timeline: course.timeline || '',
+            course_desc: course.course_desc || '',
+            course_thumbnail: course.course_thumbnail.url || '',
+            course_content: course.course_content || '',
+            views: course.views || '',
+            price: course.price || '',
+            inrolled_by: course.inrolled_by || '',
+            teacher_name: course.teacher_name || '',
+            comments: course.comments || '',
+            reviews: course.reviews || '',
+            status: course.status || '',
+            createdAt: course.createdAt || '',
+            updatedAt: course.updatedAt || ''
+          }));
+          
         res.status(201).json({
             success: true,
             message: 'Course retrived successfully',
@@ -75,7 +96,57 @@ const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
 })
 
+// admin
+const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
+
+    const slug = req.params.slug;
+
+    console.log("slug", slug)
+
+    try {
+
+        const AdminSinglecourses  = await Course.findOne({ where: { slug: slug } });;
+
+        if (!AdminSinglecourses) {
+            return res.status(404).json({ error: "Course not found" });
+        }
+
+        const AdminSinglecourse = {
+            id: AdminSinglecourses.id || '',
+            teacherId: AdminSinglecourses.teacherId || '',
+            slug: AdminSinglecourses.slug || '',
+            course_title: AdminSinglecourses.course_title || '',
+            category: AdminSinglecourses.category || '',
+            tags: AdminSinglecourses.tags || '',
+            timeline: AdminSinglecourses.timeline || '',
+            course_desc: AdminSinglecourses.course_desc.desc || '',
+            course_thumbnail: AdminSinglecourses.course_thumbnail.url || '',
+            course_content: AdminSinglecourses.course_content.data || '',
+            views: AdminSinglecourses.views || '',
+            price: AdminSinglecourses.price || '',
+            inrolled_by: AdminSinglecourses.inrolled_by || '',
+            teacher_name: AdminSinglecourses.teacher_name || '',
+            comments: AdminSinglecourses.comments || '',
+            reviews: AdminSinglecourses.reviews || '',
+            status: AdminSinglecourses.status || '',
+            createdAt: AdminSinglecourses.createdAt || '',
+            updatedAt: AdminSinglecourses.updatedAt || ''
+          };
+          
+        res.status(201).json({
+            success: true,
+            message: 'Course retrived successfully',
+            AdminSinglecourse: AdminSinglecourse,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
 module.exports = {
     createCourse,
-    GetAllCourseAdmin
+    GetAllCourseAdmin,
+    GetSingleCourseAdmin
 }

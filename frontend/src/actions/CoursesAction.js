@@ -5,19 +5,27 @@ import {
   GET_ALL_ADMIN_COURSES_REQUEST,
   GET_ALL_ADMIN_COURSES_SUCCESS,
   GET_ALL_ADMIN_COURSES_FAIL,
+  GET_SINGLE_ADMIN_COURSES_REQUEST,
+  GET_SINGLE_ADMIN_COURSES_SUCCESS,
+  GET_SINGLE_ADMIN_COURSES_FAIL,
+  UPDATE_ADMIN_COURSES_REQUEST,
+  UPDATE_ADMIN_COURSES_SUCCESS,
+  UPDATE_ADMIN_COURSES_FAIL,
+  DELETE_ADMIN_COURSES_REQUEST,
+  DELETE_ADMIN_COURSES_SUCCESS,
+  DELETE_ADMIN_COURSES_FAIL,
   CLEAR_ERRORS,
 } from "../constants/CoursesConstants";
 import axios from "axios";
 import { uploadVideosToAzure } from "../middlewares/VideoUpload";
 import { uploadImageToAzure } from "../middlewares/ImageUplaod";
-import Cookies from 'js-cookie';
+import {ConfigApplicationJson} from './Config'
 
 
-const BASE_URL = "http://localhost:3900";
+const BASE_URL = 'http://localhost:3900';
 
 // CREATE COURSES ACTIONS
 export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
-  const { thumbnailFile, videoDivsArray, ...restFormData } = formData;
 
   try {
     dispatch({ type: CREATE_COURSES_REQUEST });
@@ -38,20 +46,11 @@ export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
 
     const jsonString = JSON.stringify(jsonData);
 
-     const token = Cookies.get('token');
-
-    const config = { headers: 
-                      { 
-                        "Content-Type": "application/json",
-                         Authorization: `Bearer ${token}` 
-                      }
-                    }
-
 
     const { data } = await axios.post(
       `${BASE_URL}/api/v1/createCourse`,
       jsonString,
-      config
+      ConfigApplicationJson
     );
 
     dispatch({ type: CREATE_COURSES_SUCCESS, payload: data.Admincourses });
@@ -69,17 +68,10 @@ export const AdminGetCourses = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_ADMIN_COURSES_REQUEST });
 
-    const token = Cookies.get('token');
 
-    const config = { headers: 
-                      { 
-                        "Content-Type": "application/json",
-                         Authorization: `Bearer ${token}` 
-                      }
-                    }
 
     const { data } = await axios.get(
-      `${BASE_URL}/api/v1/get-all-admin-courses`, config
+      `${BASE_URL}/api/v1/get-all-admin-courses`, ConfigApplicationJson
     );
 
     dispatch({
@@ -89,6 +81,28 @@ export const AdminGetCourses = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_ALL_ADMIN_COURSES_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// GET ADMIN COURSE ACTION
+export const AdminGetSingleCourses = (slug) => async (dispatch) => {
+
+
+  try {
+
+    dispatch({ type:   GET_SINGLE_ADMIN_COURSES_REQUEST});
+
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/v1//get-single-admin-courses/${slug}`, ConfigApplicationJson
+    );
+
+    dispatch({ type: GET_SINGLE_ADMIN_COURSES_SUCCESS, payload: data.AdminSinglecourse});
+  } catch (error) {
+    dispatch({
+      type: GET_SINGLE_ADMIN_COURSES_FAIL,
       payload: error.response.data.message,
     });
   }

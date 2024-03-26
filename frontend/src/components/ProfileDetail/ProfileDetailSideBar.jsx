@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
-
+import { Link } from 'react-router-dom';
+import store from "../../Store";
+import {userLogOut } from "../../actions/UserActions";
 
 import './ProfileDetailSideBar.css'
-import { Link } from 'react-router-dom';
 
 const ProfileDetailSideBar = ({profileData}) => {
 
     const [completionRate, setCompletionRate] = useState(0);
 
-    console.log(profileData);
+    const handleLogOut = () => {
+      store.dispatch(userLogOut());
+    }
 
     useEffect(() => {
       const calculateCompletionRate = () => {
@@ -96,7 +99,7 @@ const ProfileDetailSideBar = ({profileData}) => {
 
            <div className='profile-detail-side-bar-links'>
                 <div>
-                    <button>Logout</button>
+                    <button onClick={handleLogOut}>Logout</button>
                 </div>
 
                 <div>

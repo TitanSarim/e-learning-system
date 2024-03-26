@@ -15,7 +15,10 @@ import CreateCourse from "./components/Admin/Courses/CreateCourse";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 import ResetPassword from "./components/Auth/ResetPassword";
 import ProfileDetail from "./components/ProfileDetail/ProfileDetail";
+
+// user register form userside
 import UserForm from "./components/Admin/User/UserForm";
+import EditCourse from "./components/Admin/Courses/EditCourse";
 
 function App() {
 
@@ -41,8 +44,9 @@ function App() {
             
             <Route path="/admin/update-users/:id" element={<UpdateUser />} />
 
-            <Route path="/admin/all-courses" element={<AllCourses />} />
-            <Route path="/admin/create-course" element={<CreateCourse />} />
+            <Route path='/admin/all-courses' element={<AllCourses/>}/>
+            <Route path='/admin/create-course' element={<CreateCourse />}/>
+            <Route path='/admin/edit-course/:slug' element={<EditCourse/>}/>
           </Route>
 
           <Route path="/login" element={<Auth />} />

@@ -2,15 +2,15 @@ const nodemailer = require("nodemailer")
 
 
 // Create a transporter object using SMTP transport
-       const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 587,
-            secure: false,
-            auth: {
-                user: 'siggmaalimiteds@gmail.com',
-                pass: 'ltlbykvtgfryrqav'
-            }
-        });
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+        user: 'siggmaalimiteds@gmail.com',
+        pass: 'ltlbykvtgfryrqav'
+    }
+});
 
 const sendEmail = async ({email, subject, payload}) =>{
 
