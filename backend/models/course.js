@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Course.init({
     teacherId: DataTypes.INTEGER,
-    slug: DataTypes.JSON,
+    slug: DataTypes.TEXT,
     course_title: DataTypes.STRING,
     category: DataTypes.STRING,
     tags: DataTypes.STRING,

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SideBar from '../SideBar/SideBar'
 import NavBar from '../NavBar/NavBar'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { IoAdd } from "react-icons/io5";
@@ -9,7 +9,7 @@ import { CiCircleRemove } from "react-icons/ci";
 import { BsCloudUpload } from "react-icons/bs";
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import {adminCreateCourse, clearErrors} from '../../../actions/CoursesAction' 
+import {AdminGetSingleCourses, adminCreateCourse, clearErrors} from '../../../actions/CoursesAction' 
 import ProgressLoader from '../../Utils/ProgressLoader';
 import { MdErrorOutline } from "react-icons/md";
 import { RiArrowRightSLine } from "react-icons/ri";
@@ -20,12 +20,22 @@ import './CreateCourse.css'
 
 const EditCourse = () => {
 
+    const { slug } = useParams();
+    const courseSlug = slug.substring(slug.lastIndexOf('/') + 1);
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const {error, loading, isSuccess} = useSelector((state)=>state.adminCourses);
+    const {error, loading, AdminSinglecourse, isSuccess} = useSelector((state)=>state.adminCourses);
 
-    const [uploadProgress, setUploadProgress] = useState(0); // set upload progress
+
+    // temp state
+    const [isloading, setIsloading] = useState(false)
+
+    const [courseData, setCourseData] = useState(AdminSinglecourse)
+    console.log('courseData', courseData)
+
+    const [uploadProgress, setUploadProgress] = useState(0); 
 
     const [courseTitle, setCourseTitle] = useState('');
     const [courseCategory, setCourseCategory] = useState('Design');
@@ -38,7 +48,7 @@ const EditCourse = () => {
 
     const createEmptyWeek = () => ({
         weekTitle: '',
-        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null }],
+        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null, videoFileName: null,}],
       });
     
     const [videoDivsArray, setVideoDivsArray] = useState(
@@ -73,7 +83,7 @@ const EditCourse = () => {
         }
 
 
-        const titleLength = title.length;
+        const titleLength = title?.length;
 
         const specialCharsRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
         const hasSpecialChars = specialCharsRegex.test(title);
@@ -188,7 +198,7 @@ const EditCourse = () => {
                     ? {
                         ...week,
                         videos: week.videos.map((video) =>
-                            video.id === divId ? { ...video, videoFile: vidFile } : video
+                            video.id === divId ? { ...video, videoFile: vidFile, videoFileName:vidFile?.name } : video
                         ),
                     }
                     : week
@@ -380,7 +390,7 @@ const EditCourse = () => {
         if(isSuccess === true){
             // window.location.reload()
             // navigate("/admin/all-courses")
-            toast.success("Course Created")
+            toast.success("Course Updated")
         }
     }
 
@@ -389,7 +399,43 @@ const EditCourse = () => {
             toast.error(error);
             dispatch(clearErrors());
         }
-    })
+    }, [])
+
+    useEffect(() => {
+        dispatch(AdminGetSingleCourses(courseSlug));
+    }, [courseSlug, dispatch])
+
+    useEffect(() => {
+        if (AdminSinglecourse && Object.keys(AdminSinglecourse).length > 0) {
+            setCourseData(AdminSinglecourse);
+        }
+      }, [AdminSinglecourse]);
+
+    useEffect(() => {
+        setCourseTitle(courseData?.course_title)
+        setCourseCategory(courseData?.category)
+        setTags(courseData?.tags)
+        setPrice(courseData?.price)
+        setWeeks(courseData?.timeline)
+        setCourseDesc(courseData?.course_desc)
+        setThumbnailFile(courseData?.course_thumbnail)
+    
+        if (courseData?.course_content && courseData?.course_content.length > 0) {
+            const mappedData = courseData?.course_content?.map(week => ({
+                weekTitle: week.weekTitle,
+                videos: week.videos.map(video => ({
+                    id: video.id,
+                    videoDesc: video.videoDesc,
+                    videoTitle: video.videoTitle,
+                    videoFile: video.videoFile,
+                    videoFileName: video.videoFileName
+                }))
+            }));
+    
+            setVideoDivsArray(mappedData);
+        }
+    
+    }, [courseData]);
 
   return (
     <div className='admin-container'>
@@ -405,7 +451,7 @@ const EditCourse = () => {
                 
                 <Link to={'/admin/all-courses'}>All Course</Link>
                 
-                {loading  ? (
+                {isloading  ? (
                     <div className='admin-allcourses-container-progress-loader'>
                         <ProgressLoader/>
                         <p className='admin-allcourses-container-progress-loader-progressbar'>
@@ -486,17 +532,17 @@ const EditCourse = () => {
                                     </label>
                                     <input type='file' id="file-input-thumbnail" accept='image/*'  onChange={handleThumbnailChange}/>
                                 </span>
-                                {!thumbnailFile ? 
-                                    <p>No File <span>Image height greater then 450px and smaller then 3200px, image width greater then 700px and smaller then 5000px</span> </p> 
-                                    : 
+                                {thumbnailFile?.name ? 
                                     <img src={URL.createObjectURL(thumbnailFile)} alt='Thumbnail'/>
+                                    : 
+                                    <img src={thumbnailFile} alt='Thumbnail'/>
                                 }
                             </div>
                         </div>
                         
-                        {Array?.from({ length: weeks }, (_, weekIndex) => {
+                        {videoDivsArray.map((week, weekIndex) => (
 
-                            return(   
+                           
                                 <div key={weekIndex} className='admin-create-course-adding-videos-container'>
                                     
                                     <div className='admin-create-course-adding-videos-addition'>
@@ -513,16 +559,14 @@ const EditCourse = () => {
 
                                         <div className='admin-create-course-adding-videos-input'>
                                             <p>Week Title <span>*</span></p>
-                                            <input type="text" placeholder='Title for week' onChange={(e) => handleWeekTitleChange(weekIndex, e)}/>
+                                            <input type="text" value={week.weekTitle} placeholder='Title for week' onChange={(e) => handleWeekTitleChange(weekIndex, e)}/>
                                         </div>
                                     </div>
                 
 
                                     <>
-                                        {videoDivsArray[weekIndex]?.videos.map((video) => {
-
-                                            
-                                            return(
+                                        {week.videos.map((video, videoIndex) => (
+ 
                                             <div key={video.id} className='admin-create-course-adding-videos-wrapper'>
                                                 <div className='admin-create-course-adding-video'>
                                                     <div className='admin-create-course-adding-videos-file-video'>
@@ -533,11 +577,11 @@ const EditCourse = () => {
                                                                 accept='.mov, .mp4'
                                                                 onChange={(event) => handleFileInputChange(weekIndex, video.id, event)}                                               
                                                             />
-                                                            {!video.videoFile ? 
+                                                            {!video?.videoFile ? 
                                                             
                                                             <p>No File</p> 
                                                             :
-                                                            <p><span>{video.videoFile?.name.substring(0, 3)}...</span> <span>{getExtension(video.videoFile?.name)}</span></p>
+                                                            <p><span>{video?.videoFileName.substring(0, 3)}...</span> <span>{getExtension(video?.videoFileName)}</span></p>
                                                             }
                                                             
                                                         </div>
@@ -573,13 +617,13 @@ const EditCourse = () => {
                                                     />
                                                 </div>
                                             </div>
-                                            )
-                                        })}
+                                            
+                                        ))}
                                     </>
 
                                 </div>
-                            )
-                        })}
+                            
+                        ))}
 
                         { courseTitleAuthError.error === true || tagsAuthError.error === true || courseDescAuthError.error === true || thumbnailFileAuthError.error === true  || priceAuthError.error === true? 
                             (

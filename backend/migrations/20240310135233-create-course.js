@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       slug:{
-        type: Sequelize.JSON
+        type: Sequelize.TEXT
       },
       course_title: {
         type: Sequelize.STRING

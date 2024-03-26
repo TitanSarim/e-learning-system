@@ -259,8 +259,7 @@ const adminRequestUserUpdate = catchAsyncError(async (req, res, next) => {
 
 const updateUser = catchAsyncError(async (req, res, next) => {
 
-  console.log(req.body);
-  console.log(req.params);
+
   const { userId } = req.params;
   const { username, email, age, gender, role, password, status } = req.body;
 
