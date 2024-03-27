@@ -391,6 +391,12 @@ const CreateCourse = () => {
         }
     })
 
+    useEffect(() => {
+        if (loading) {
+            window.scrollTo(0, 0);
+        }
+    }, [loading]);
+
   return (
     <div className='admin-container'>
 

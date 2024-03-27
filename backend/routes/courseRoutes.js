@@ -1,11 +1,13 @@
 const express = require('express')
 const {isAuthenticatedUser} = require('../middleware/auth')
-const {createCourse, GetAllCourseAdmin, GetSingleCourseAdmin} = require('../controllers/CourseController')
+const {createCourse, UpdateCourse, GetAllCourseAdmin, GetSingleCourseAdmin} = require('../controllers/CourseController')
 
 
 const router = express.Router();
 
 router.route("/createCourse").post(isAuthenticatedUser, createCourse);
+
+router.route("/updateCourse/:slug").put(isAuthenticatedUser, UpdateCourse);
 
 router.route("/get-all-admin-courses").get(isAuthenticatedUser, GetAllCourseAdmin)
 

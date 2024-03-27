@@ -35,6 +35,14 @@ export const AdminCourseReducer = (state = {Admincourses: []}, action) =>{
                 isAuthenticated: false,
             }
 
+        case UPDATE_ADMIN_COURSES_REQUEST:
+            return{
+                ...state,
+                updateLoading: true,
+                loading: true,
+                isAuthenticated: false,
+            }
+
 
         case CREATE_COURSES_SUCCESS:
             return {
@@ -44,6 +52,16 @@ export const AdminCourseReducer = (state = {Admincourses: []}, action) =>{
                 Admincourses: state.Admincourses,
                 isSuccess: true,
             };
+
+        case UPDATE_ADMIN_COURSES_SUCCESS:
+            return{
+                ...state,
+                updateLoading: false,
+                loading: false,
+                isAuthenticated: true,
+                Admincourses: state.Admincourses,
+                isSuccess: true,
+            }
 
         case GET_ALL_ADMIN_COURSES_SUCCESS:
             return{
@@ -72,6 +90,18 @@ export const AdminCourseReducer = (state = {Admincourses: []}, action) =>{
                 isSuccess: true,
                 error: action.payload,
             };
+            
+
+        case UPDATE_ADMIN_COURSES_FAIL:
+            return{
+                ...state,
+                updateLoading: false,
+                loading: false,
+                isAuthenticated: false,
+                Admincourses: null,
+                isSuccess: true,
+                error: action.payload,
+            }
 
         case GET_ALL_ADMIN_COURSES_FAIL:
             return{

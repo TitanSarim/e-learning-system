@@ -53,6 +53,77 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
 
 })
 
+// admin
+const UpdateCourse  = catchAsyncError(async (req, res, next) => {
+
+    try {
+        const CourseUrlslug = req.params.slug;
+
+        const userId = req.user.userid
+        const teacherName = req.user.username
+        const {courseTitle, courseCategory, courseDesc, price, tags, weeks, thumbnailUrl, videoUrls, status} = req.body;
+
+        const slug = generateSlug(courseTitle, userId)
+
+        const updatedCourses  = await Course.update({
+            teacherId: userId,
+            slug: slug,
+            course_title: courseTitle,
+            category: courseCategory,
+            tags: tags,
+            timeline: weeks,
+            course_desc: {desc: courseDesc},
+            course_thumbnail: {
+                url: thumbnailUrl,
+            },
+            course_content: {
+                data: videoUrls
+            },
+            views: "0",
+            price: price,
+            inrolled_by: { id: ["1", "2"]},
+            teacher_name: teacherName,
+            comments: "0",
+            reviews: "0",
+            status: status
+        }, {where: {slug: CourseUrlslug}})
+
+        const AdminSinglecourses  = await Course.findOne({ where: { slug: slug } });
+
+        const Admincourses = {
+            id: AdminSinglecourses.id || '',
+            teacherId: AdminSinglecourses.teacherId || '',
+            slug: AdminSinglecourses.slug || '',
+            course_title: AdminSinglecourses.course_title || '',
+            category: AdminSinglecourses.category || '',
+            tags: AdminSinglecourses.tags || '',
+            timeline: AdminSinglecourses.timeline || '',
+            course_desc: AdminSinglecourses.course_desc.desc || '',
+            course_thumbnail: AdminSinglecourses.course_thumbnail.url || '',
+            course_content: AdminSinglecourses.course_content.data || '',
+            views: AdminSinglecourses.views || '',
+            price: AdminSinglecourses.price || '',
+            inrolled_by: AdminSinglecourses.inrolled_by || '',
+            teacher_name: AdminSinglecourses.teacher_name || '',
+            comments: AdminSinglecourses.comments || '',
+            reviews: AdminSinglecourses.reviews || '',
+            status: AdminSinglecourses.status || '',
+            createdAt: AdminSinglecourses.createdAt || '',
+            updatedAt: AdminSinglecourses.updatedAt || ''
+          };
+
+        res.status(201).json({
+            success: true,
+            message: 'Course Updated successfully',
+            Admincourses: Admincourses,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
 
 // admin
 const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
@@ -148,5 +219,6 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
 module.exports = {
     createCourse,
     GetAllCourseAdmin,
-    GetSingleCourseAdmin
+    GetSingleCourseAdmin,
+    UpdateCourse
 }

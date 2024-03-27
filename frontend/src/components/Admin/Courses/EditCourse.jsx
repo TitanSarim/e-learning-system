@@ -9,7 +9,7 @@ import { CiCircleRemove } from "react-icons/ci";
 import { BsCloudUpload } from "react-icons/bs";
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import {AdminGetSingleCourses, adminCreateCourse, clearErrors} from '../../../actions/CoursesAction' 
+import {AdminGetSingleCourses, adminUpdateCourse, clearErrors} from '../../../actions/CoursesAction' 
 import ProgressLoader from '../../Utils/ProgressLoader';
 import { MdErrorOutline } from "react-icons/md";
 import { RiArrowRightSLine } from "react-icons/ri";
@@ -26,11 +26,8 @@ const EditCourse = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const {error, loading, AdminSinglecourse, isSuccess} = useSelector((state)=>state.adminCourses);
+    const {error, loading, updateLoading, AdminSinglecourse, isSuccess} = useSelector((state)=>state.adminCourses);
 
-
-    // temp state
-    const [isloading, setIsloading] = useState(false)
 
     const [courseData, setCourseData] = useState(AdminSinglecourse)
     console.log('courseData', courseData)
@@ -48,7 +45,7 @@ const EditCourse = () => {
 
     const createEmptyWeek = () => ({
         weekTitle: '',
-        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null, videoFileName: null,}],
+        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null, videoFileName: null, oldUrl: null}],
       });
     
     const [videoDivsArray, setVideoDivsArray] = useState(
@@ -350,33 +347,19 @@ const EditCourse = () => {
         
         setUploadProgress(0)
 
-        let formData;
-
-        if(action === 'save'){
-            formData = {
-                courseTitle,
-                courseCategory,
-                courseDesc,
-                price,
-                tags,
-                weeks,
-                thumbnailFile,
-                videoDivsArray,
-                status: 'inactive'
-            }
-        }else if(action === 'create'){
-            formData = {
-                courseTitle,
-                courseCategory,
-                courseDesc,
-                price,
-                tags,
-                weeks,
-                thumbnailFile,
-                videoDivsArray,
-                status: 'active'
-            }
+      
+        const formData = {
+            courseTitle,
+            courseCategory,
+            courseDesc,
+            price,
+            tags,
+            weeks,
+            thumbnailFile,
+            videoDivsArray,
+            status: 'active'
         }
+    
 
         console.log("formData", formData)
 
@@ -385,7 +368,7 @@ const EditCourse = () => {
         };
       
         
-        dispatch(adminCreateCourse(formData, onVideoUploadProgress, ))
+        dispatch(adminUpdateCourse(formData, onVideoUploadProgress, courseSlug, courseData?.course_thumbnail))
 
         if(isSuccess === true){
             // window.location.reload()
@@ -409,7 +392,7 @@ const EditCourse = () => {
         if (AdminSinglecourse && Object.keys(AdminSinglecourse).length > 0) {
             setCourseData(AdminSinglecourse);
         }
-      }, [AdminSinglecourse]);
+    }, [AdminSinglecourse]);
 
     useEffect(() => {
         setCourseTitle(courseData?.course_title)
@@ -428,7 +411,8 @@ const EditCourse = () => {
                     videoDesc: video.videoDesc,
                     videoTitle: video.videoTitle,
                     videoFile: video.videoFile,
-                    videoFileName: video.videoFileName
+                    videoFileName: video.videoFileName,
+                    oldUrl: video.videoFile,
                 }))
             }));
     
@@ -436,6 +420,12 @@ const EditCourse = () => {
         }
     
     }, [courseData]);
+
+    useEffect(() => {
+        if (updateLoading) {
+            window.scrollTo(0, 0);
+        }
+    }, [updateLoading]);
 
   return (
     <div className='admin-container'>
@@ -451,7 +441,7 @@ const EditCourse = () => {
                 
                 <Link to={'/admin/all-courses'}>All Course</Link>
                 
-                {isloading  ? (
+                {updateLoading  ? (
                     <div className='admin-allcourses-container-progress-loader'>
                         <ProgressLoader/>
                         <p className='admin-allcourses-container-progress-loader-progressbar'>
@@ -472,7 +462,7 @@ const EditCourse = () => {
                             <div>
                                 {titleHasSpecialChar ? (<span>{titleHasSpecialChar}</span>) : ""}
                                 {errorTitleMessage === "Short Title" || errorTitleMessage === "Long Title" ? <p className='admin-create-course-input-title-short'>{errorTitleMessage}</p> : <p className='admin-create-course-input-title-excellent'>{errorTitleMessage}</p>}
-                                <p>{errorTitleMessage === "Short Title" || errorTitleMessage === "Long Title" ? <span className='admin-create-course-input-title-short-ln'>{courseTitle.length}</span> : <span className='admin-create-course-input-title-good-ln'>{courseTitle.length}</span>}/75</p>
+                                <p>{errorTitleMessage === "Short Title" || errorTitleMessage === "Long Title" ? <span className='admin-create-course-input-title-short-ln'>{courseTitle?.length}</span> : <span className='admin-create-course-input-title-good-ln'>{courseTitle?.length}</span>}/75</p>
                             </div>
                         </div>
 
@@ -655,10 +645,10 @@ const EditCourse = () => {
                             : ""
                         }
                         
-                        <div className='admin-create-course-checkbox'>
+                        {/* <div className='admin-create-course-checkbox'>
                             <input type='checkbox' checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}/>
                             <p>Check this box if you just want to save the course, you can make it active later.</p>
-                        </div>
+                        </div> */}
                         <div className='admin-create-course-submit-btn'>
                             {isChecked ? (
                                 <button onClick={() => handleSubmit('save')} className='admin-create-course-submit-btn-save'>

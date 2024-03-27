@@ -17,8 +17,10 @@ import {
   CLEAR_ERRORS,
 } from "../constants/CoursesConstants";
 import axios from "axios";
-import { uploadVideosToAzure } from "../middlewares/VideoUpload";
-import { uploadImageToAzure } from "../middlewares/ImageUplaod";
+import { uploadVideosToAzure } from "../middlewares/CourseVideoUpload";
+import { uploadImageToAzure } from "../middlewares/CourseImageUplaod";
+import {updateUploadImageToAzure} from '../middlewares/CourseImageUpdate';
+import {updateUploadVideosToAzure} from '../middlewares/CourseVideoUpdate'
 import {ConfigApplicationJson} from './Config'
 
 
@@ -62,6 +64,54 @@ export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
     console.log("error", error);
   }
 };
+
+
+
+
+
+// CREATE UPDATE COURSES ACTIONS
+export const adminUpdateCourse = (formData, onProgress, slug, imgUrl) => async (dispatch) => {
+
+  try {
+    dispatch({ type: UPDATE_ADMIN_COURSES_REQUEST });
+
+    const { thumbnailFile, videoDivsArray, ...restFormData } = formData;
+
+    let uploadedImageUrl = imgUrl
+    if(thumbnailFile && thumbnailFile.name) {
+      uploadedImageUrl = await updateUploadImageToAzure(formData, imgUrl);
+    }
+
+    const uploadedVideoUrls = await updateUploadVideosToAzure(
+      videoDivsArray,
+      onProgress
+    );
+
+    const jsonData = {
+      ...restFormData,
+      thumbnailUrl: uploadedImageUrl,
+      videoUrls: uploadedVideoUrls,
+    };
+
+    const jsonString = JSON.stringify(jsonData);
+
+
+    const { data } = await axios.put( `${BASE_URL}/api/v1/updateCourse/${slug}`, jsonString, ConfigApplicationJson);
+
+    dispatch({ type: UPDATE_ADMIN_COURSES_SUCCESS, payload: data?.Admincourses });
+
+  } catch (error) {
+    dispatch({
+      type: UPDATE_ADMIN_COURSES_FAIL,
+      payload: error?.response?.data.message,
+    });
+    console.log("error", error);
+  }
+};
+
+
+
+
 
 // GET ADMIN COURSES ACTIONS
 export const AdminGetCourses = () => async (dispatch) => {
