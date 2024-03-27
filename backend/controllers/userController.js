@@ -26,7 +26,7 @@ const createUser = catchAsyncError(async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create the user
-    const user = await User.create({
+    const createUser = await User.create({
       username,
       email,
       age,
@@ -36,22 +36,12 @@ const createUser = catchAsyncError(async (req, res, next) => {
       status,
     });
 
-    // await UserProfile.create({
-    //   userId: user.id,
-    //   firstname: "null",
-    //   lastname: "null",
-    //   avatar: "null",
-    //   tagline: "null",
-    //   about: "null",
-    //   experience: "null",
-    //   education: "null",
-    //   skills: "null",
-    //   social: "null",
-    //   certificates: "null"
-    // })
-
-    const token = generatedToken(user.id, user.email, user.username, user.role);
+    const token = generatedToken(createUser.id, createUser.email, createUser.username, createUser.role);
     setTokenCookie(res, token);
+
+    const user = await User.update(
+      {where : {loginToken: token}}, {where: {id: createUser.id}}
+    )
 
     res.status(201).json({
       success: true,
@@ -72,7 +62,6 @@ const loginUser = catchAsyncError(async (req, res, next) => {
     const userData = await User.findOne({
       where: { email },
     });
-    console.log(userData);
 
     if (!userData) {
       return next(new errorHandler("Invalid Email", 400));
@@ -84,23 +73,30 @@ const loginUser = catchAsyncError(async (req, res, next) => {
       return next(new errorHandler("Invalid Password", 400));
     }
 
-    console.log("User Logged in Successfully");
-
     const token = generatedToken(userData.id, userData.email, userData.username, userData.role);
     setTokenCookie(res, token);
 
+    console.log("token", token)
+
+    userData.loginToken = token;
+    await userData.save();
+
+    const userDataNew = await User.findOne({
+      where: { id: userData.id },
+    });
+
     const user = {
-      id: userData.id,
-      username: userData.username,
-      role: userData.role,
-      email: userData.email,
-      age: userData.age,
-      gender: userData.gender,
-      password: userData.password,
-      token: token,
-      status: userData.status,
-      createdAt: userData.createdAt,
-      updatedAt: userData.updatedAt,
+      id: userDataNew.id,
+      username: userDataNew.username,
+      role: userDataNew.role,
+      email: userDataNew.email,
+      age: userDataNew.age,
+      gender: userDataNew.gender,
+      password: userDataNew.password,
+      token: userDataNew.loginToken,
+      status: userDataNew.status,
+      createdAt: userDataNew.createdAt,
+      updatedAt: userDataNew.updatedAt,
     }
 
     res.status(201).json({
@@ -169,6 +165,7 @@ try {
     return next(new errorHandler(error, 500));
   }
 });
+
 
 const forgetPassword = catchAsyncError(async (req, res, next) => {
   const { email } = req.body;
@@ -325,7 +322,7 @@ const updateUser = catchAsyncError(async (req, res, next) => {
 });
 
 const getAllUsers = catchAsyncError(async (req, res, next) => {
-  console.log("Log");
+
   try {
     const users = await User.findAll();
 

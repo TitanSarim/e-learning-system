@@ -138,6 +138,8 @@ export const ResetPasswordAction = (formData) => async (dispatch) => {
 
 export const userLogOut = () => async (dispatch) => {
   try {
+
+    
     await axios.get(`${BASE_URL}/api/v1/logout`);
 
     dispatch({

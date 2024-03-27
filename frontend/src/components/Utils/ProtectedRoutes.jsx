@@ -11,6 +11,17 @@ const ProtectedRoutes = () => {
     useEffect(() => {
       if (user && user.token) {
           Cookies.set('token', user.token);
+      }else{
+          const persistData = localStorage.getItem('persist:root');
+          const parsedPersistData = JSON.parse(persistData);
+          const userData = JSON.parse(parsedPersistData.user);
+          if(userData.isAuthenticated === true){
+            const token = userData.user.token;
+            console.log("token", token)
+            if (token) {
+              Cookies.set('token', token);
+            }
+          }
       }
   }, [user]);
   
