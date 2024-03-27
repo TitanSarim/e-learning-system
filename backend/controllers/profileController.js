@@ -189,7 +189,7 @@ const createUpdateUserProfile = catchAsyncError(async (req, res, next) => {
     } catch (error) {
       return next(new errorHandler(error, 500));
     }
-  });
+});
 
 
 const updateUserAvatar = catchAsyncError(async(req, res, next) => {
@@ -204,10 +204,7 @@ const updateUserAvatar = catchAsyncError(async(req, res, next) => {
       },
     })
 
-    const OldUrl =  userProfile.avatar?.url
-
-    console.log("OldUrl", OldUrl)
-    
+    const OldUrl =  userProfile.avatar?.url    
 
     if(OldUrl){
       
@@ -261,6 +258,7 @@ const updateUserAvatar = catchAsyncError(async(req, res, next) => {
 
   }
 })
+
 
 const deleteUserAvatar = catchAsyncError(async(req, res, next) => {
   try {

@@ -174,6 +174,25 @@ const UpdateCourseStatus  = catchAsyncError(async (req, res, next) => {
 
 })
 
+// admin delete course
+const deleteCourse = catchAsyncError(async (req, res, next) => {
+
+    try {
+
+        const slug = req.params.slug
+
+        await Course.destroy({where: {slug: slug}});
+
+        res.status(201).json({
+            success: true,
+            message: 'Course deleted successfully',
+        });
+    
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+})
+
 // admin
 const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
@@ -270,5 +289,6 @@ module.exports = {
     GetAllCourseAdmin,
     GetSingleCourseAdmin,
     UpdateCourse,
-    UpdateCourseStatus
+    UpdateCourseStatus,
+    deleteCourse
 }

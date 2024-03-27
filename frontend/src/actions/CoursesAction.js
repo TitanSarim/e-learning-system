@@ -21,6 +21,7 @@ import { uploadVideosToAzure } from "../middlewares/CourseVideoUpload";
 import { uploadImageToAzure } from "../middlewares/CourseImageUplaod";
 import {updateUploadImageToAzure} from '../middlewares/CourseImageUpdate';
 import {updateUploadVideosToAzure} from '../middlewares/CourseVideoUpdate'
+import {deleteVideosFromAzure, deleteImageFromAzure} from '../middlewares/DeleteCourseDataAzure'
 import {ConfigApplicationJson} from './Config'
 
 
@@ -100,6 +101,29 @@ export const adminUpdateCourse = (formData, onProgress, slug, imgUrl) => async (
   } catch (error) {
     dispatch({
       type: UPDATE_ADMIN_COURSES_FAIL,
+      payload: error?.response?.data.message,
+    });
+    console.log("error", error);
+  }
+};
+
+
+// DELETE COURSES ACTIONS
+export const adminDeleteCourse = (formData, slug) => async (dispatch) => {
+
+  try {
+    dispatch({ type: DELETE_ADMIN_COURSES_REQUEST });
+
+    await deleteVideosFromAzure(formData[0].course_content.data)
+    await deleteVideosFromAzure(formData[0].course_thumbnail)
+
+    const { data } = await axios.delete( `${BASE_URL}/api/v1/delete-admin-course/${slug}`, ConfigApplicationJson);
+
+    dispatch({ type: DELETE_ADMIN_COURSES_SUCCESS, payload: slug });
+
+  } catch (error) {
+    dispatch({
+      type: DELETE_ADMIN_COURSES_FAIL,
       payload: error?.response?.data.message,
     });
     console.log("error", error);

@@ -1,13 +1,16 @@
 import React from 'react'
 import { GiTireIronCross } from "react-icons/gi";
 import ConfirmAnimation from '../../../../assets/icons8-confirm.gif'
+import { adminDeleteCourse } from '../../../../actions/CoursesAction';
+import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 
+const DeleteCourse = ({slug, setDeleteConfirmationOpen, filteredCourse}) => {
 
-const DeleteCourse = ({slug, setDeleteConfirmationOpen}) => {
-
-
+    const dispatch = useDispatch()
     const handleSubmit= () => {
-        
+        dispatch(adminDeleteCourse(filteredCourse, slug))
+        setDeleteConfirmationOpen(false)
     }
 
   return (

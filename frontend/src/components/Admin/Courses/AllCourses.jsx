@@ -42,6 +42,7 @@ const AllCourses = () => {
     const {AllAdmincourses, error, loading, message} = useSelector((state)=>state.adminCourses);
 
     const [allCourses, setAllCourses] = useState([])
+    const [filteredCourse, setFilteredCourse] = useState([])
     const [selectedStatusOption, setSelectedStatusOption] = useState('none');
     const [selectedCategoryOption, setSelectedCategoryOption] = useState('none');
     const [searchQuery, setSearchQuery] = useState('');
@@ -110,6 +111,8 @@ const AllCourses = () => {
   };
 
     const hanldeDeleteModelOpen = (slug) => {
+      const filteredSlug = allCourses.filter(course => course.slug === slug);
+      setFilteredCourse(filteredSlug)
       setCourseSlug(slug)
       setDeleteConfirmationOpen(true)
     }
@@ -213,7 +216,7 @@ const AllCourses = () => {
             onClose={() => setDeleteConfirmationOpen(false)}
             className='admin-courses-dialogue-boxex'
         >
-          <DeleteCourse slug={courseSlug} setDeleteConfirmationOpen={setDeleteConfirmationOpen}/>
+          <DeleteCourse slug={courseSlug} setDeleteConfirmationOpen={setDeleteConfirmationOpen} filteredCourse={filteredCourse}/>
         </Popup>
         
         <Popup
