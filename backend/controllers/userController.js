@@ -25,8 +25,8 @@ const createUser = catchAsyncError(async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user
-    const createUser = await User.create({
+   // Create the user
+    const user = await User.create({
       username,
       email,
       age,
@@ -39,16 +39,15 @@ const createUser = catchAsyncError(async (req, res, next) => {
     const token = generatedToken(createUser.id, createUser.email, createUser.username, createUser.role);
     setTokenCookie(res, token);
 
-    const user = await User.update(
-      {where : {loginToken: token}}, {where: {id: createUser.id}}
-    )
+    user.loginToken = token;
+    await user.save();
 
     res.status(201).json({
       success: true,
       message: "User created successfully",
-      user: user,
+      user: user, 
       token,
-    });
+  });
   } catch (error) {
     return next(new errorHandler(error, 500));
   }
@@ -75,8 +74,6 @@ const loginUser = catchAsyncError(async (req, res, next) => {
 
     const token = generatedToken(userData.id, userData.email, userData.username, userData.role);
     setTokenCookie(res, token);
-
-    console.log("token", token)
 
     userData.loginToken = token;
     await userData.save();
