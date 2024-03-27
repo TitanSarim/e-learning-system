@@ -124,6 +124,55 @@ const UpdateCourse  = catchAsyncError(async (req, res, next) => {
 
 })
 
+// admin course status
+const UpdateCourseStatus  = catchAsyncError(async (req, res, next) => {
+
+    try {
+        const CourseUrlslug = req.params.slug;
+        const {status} = req.body;
+
+        console.log("status", CourseUrlslug)
+
+        const updatedCoursesStatus  = await Course.update(
+            {status: status}, 
+            {where: {slug: CourseUrlslug}}
+        )
+
+        const AdminSinglecourses  = await Course.findOne({ where: { slug: CourseUrlslug } });
+
+        const Admincourses = {
+            id: AdminSinglecourses.id || '',
+            teacherId: AdminSinglecourses.teacherId || '',
+            slug: AdminSinglecourses.slug || '',
+            course_title: AdminSinglecourses.course_title || '',
+            category: AdminSinglecourses.category || '',
+            tags: AdminSinglecourses.tags || '',
+            timeline: AdminSinglecourses.timeline || '',
+            course_desc: AdminSinglecourses.course_desc.desc || '',
+            course_thumbnail: AdminSinglecourses.course_thumbnail.url || '',
+            course_content: AdminSinglecourses.course_content.data || '',
+            views: AdminSinglecourses.views || '',
+            price: AdminSinglecourses.price || '',
+            inrolled_by: AdminSinglecourses.inrolled_by || '',
+            teacher_name: AdminSinglecourses.teacher_name || '',
+            comments: AdminSinglecourses.comments || '',
+            reviews: AdminSinglecourses.reviews || '',
+            status: AdminSinglecourses.status || '',
+            createdAt: AdminSinglecourses.createdAt || '',
+            updatedAt: AdminSinglecourses.updatedAt || ''
+          };
+
+        res.status(201).json({
+            success: true,
+            message: 'Course Updated successfully',
+            Admincourses: Admincourses,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
 
 // admin
 const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
@@ -220,5 +269,6 @@ module.exports = {
     createCourse,
     GetAllCourseAdmin,
     GetSingleCourseAdmin,
-    UpdateCourse
+    UpdateCourse,
+    UpdateCourseStatus
 }

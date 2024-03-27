@@ -241,63 +241,6 @@
     margin: auto;
 }
 
-.admin-allcourses-card-footer>div{
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.admin-allcourses-card-footer>div>a{
-    position: relative;
-    background-image: linear-gradient(to right, #B24592 0%, #F15F79  51%, #B24592  100%);
-    margin: 1px;
-    padding: 8px 12px;
-    text-align: center;
-    text-transform: uppercase;
-    transition: 0.5s;
-    background-size: 200% auto;
-    color: white;            
-    box-shadow: 0 0 20px #4b4747;
-    border-radius: 10px;
-    display: block;
-    text-decoration: none;
-}
-
-.admin-allcourses-card-footer>div>a:hover{
-    transform: scale(1.01);
-    background-position: right center;
-    color: #fff;
-    text-decoration: none;
-}
-
-.admin-allcourses-card-footer>div>button{
-    position: relative;
-    background-color: tomato;
-    margin: 1px;
-    padding: 8px 12px;
-    text-align: center;
-    text-transform: uppercase;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    transition: 0.5s;
-    background-size: 200% auto;
-    color: white;            
-    box-shadow: 0 0 20px #4b4747;
-    border-radius: 10px;
-    display: block;
-    text-decoration: none;
-}
-
-.admin-allcourses-card-footer>div>button:hover{
-    transform: scale(1.01);
-    background: rgb(255, 81, 50);
-    color: #fff;
-    text-decoration: none;
-}
 
 .admin-allcourses-card-footer>p{
     position: relative;
@@ -307,4 +250,57 @@
     justify-content: center;
     gap: 10px;
     color: white;
+}
+
+.admin-allcourses-card-footer-more-options>svg{
+    color: white;
+    cursor: pointer;
+}
+
+.admin-allcourses-card-footer-more-options:hover .admin-allcourses-card-footer-more-options-show {
+    position: absolute;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    right: -25px;
+    padding: 12px 8px;
+    height: 100px;
+    border-radius: 12px;
+}
+
+.admin-allcourses-card-footer-more-options-show{
+   display: none;
+}
+
+.admin-allcourses-card-footer-more-options-show button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    width: 120px;
+    font-size: 17px;
+    border-bottom: 1px solid rgb(168, 168, 168);
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.admin-allcourses-card-footer-more-options-show a{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    width: 100px;
+    text-align: center;
+    font-size: 17px;
+    border-bottom: 1px solid rgb(168, 168, 168);
+    cursor: pointer;
+    transition: all 500ms;
+    text-decoration: none;
+}
+
+.admin-allcourses-card-footer-more-options-show button:hover, .admin-allcourses-card-footer-more-options-show a:hover{
+    background-color: rgb(255, 243, 174);
 }

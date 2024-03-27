@@ -15,8 +15,13 @@ import { BsCalendar2Date } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { CiFilter } from "react-icons/ci";
 import Select from 'react-select';
-import { FiEdit2 } from "react-icons/fi";
-import { AiOutlineDelete } from "react-icons/ai";
+// import { FiEdit2 } from "react-icons/fi";
+// import { AiOutlineDelete } from "react-icons/ai";
+import { IoMdMore } from "react-icons/io";
+import Popup from 'reactjs-popup';
+import DeleteCourse from './DialogueBoxes/DeleteCourse';
+import ActivateCourse from './DialogueBoxes/ActivateCourse';
+import DeActivate from './DialogueBoxes/DeActivate';
 
 const selectStatus = [
   { value: 'none', label: 'None' },
@@ -41,9 +46,12 @@ const AllCourses = () => {
     const [selectedCategoryOption, setSelectedCategoryOption] = useState('none');
     const [searchQuery, setSearchQuery] = useState('');
 
+    const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+    const [activateConfirmationOpen, setActivateConfirmationOpen] = useState(false);
+    const [deActivateConfirmationOpen, setDeActivateConfirmationOpen] = useState(false);
+    const [courseSlug, setCourseSlug] = useState(null);
 
-    console.log("allCourses", allCourses)
-    useEffect(() => {
+  useEffect(() => {
 
       if(error){
           toast.error(error);
@@ -99,9 +107,22 @@ const AllCourses = () => {
         ...provided,
         color: 'rgb(163, 163, 163)', 
       }),
-    };
+  };
 
-    console.log("itemcourse_thumbnail", AllAdmincourses)
+    const hanldeDeleteModelOpen = (slug) => {
+      setCourseSlug(slug)
+      setDeleteConfirmationOpen(true)
+    }
+
+    const hanldeActivateModelOpen = (slug) => {
+      setCourseSlug(slug)
+      setActivateConfirmationOpen(true)
+    }
+
+    const hanldeDeActivateModelOpen = (slug) => {
+      setCourseSlug(slug)
+      setDeActivateConfirmationOpen(true)
+    }
 
   return (
     
@@ -167,9 +188,13 @@ const AllCourses = () => {
                           </div>
                           <div className='admin-allcourses-card-footer'>
                             <p><BsCalendar2Date size={25}/> {moment(item.updatedAt).format("MMM Do YY")}</p>
-                            <div>
-                              <Link to={`/admin/edit-course/${item.slug}`}><FiEdit2 size={24}/></Link>
-                              <button><AiOutlineDelete size={24}/></button>
+                            <div className='admin-allcourses-card-footer-more-options'>
+                              <IoMdMore size={24}/>
+                              <div className='admin-allcourses-card-footer-more-options-show'>
+                                {item?.status === 'active' ? <button onClick={() => hanldeDeActivateModelOpen(item.slug)}>DeActivate</button> : <button onClick={() => hanldeActivateModelOpen(item.slug)}>Activate</button>}
+                                <Link to={`/admin/edit-course/${item.slug}`}>Update</Link>
+                                <button onClick={() => hanldeDeleteModelOpen(item.slug)}>Delete</button>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -181,6 +206,33 @@ const AllCourses = () => {
             </div>
 
         </div>
+
+        <Popup
+            open={deleteConfirmationOpen}
+            closeOnDocumentClick
+            onClose={() => setDeleteConfirmationOpen(false)}
+            className='admin-courses-dialogue-boxex'
+        >
+          <DeleteCourse slug={courseSlug} setDeleteConfirmationOpen={setDeleteConfirmationOpen}/>
+        </Popup>
+        
+        <Popup
+            open={activateConfirmationOpen}
+            closeOnDocumentClick
+            onClose={() => setActivateConfirmationOpen(false)}
+            className='admin-courses-dialogue-boxex'
+        >
+          <ActivateCourse slug={courseSlug} setActivateConfirmationOpen={setActivateConfirmationOpen}/>
+        </Popup>
+
+        <Popup
+            open={deActivateConfirmationOpen}
+            closeOnDocumentClick
+            onClose={() => setDeActivateConfirmationOpen(false)}
+            className='admin-courses-dialogue-boxex'
+        >
+          <DeActivate slug={courseSlug} setDeActivateConfirmationOpen={setDeActivateConfirmationOpen}/>
+        </Popup>
 
     </div>
   )

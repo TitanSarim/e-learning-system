@@ -66,9 +66,6 @@ export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
 };
 
 
-
-
-
 // CREATE UPDATE COURSES ACTIONS
 export const adminUpdateCourse = (formData, onProgress, slug, imgUrl) => async (dispatch) => {
 
@@ -110,7 +107,27 @@ export const adminUpdateCourse = (formData, onProgress, slug, imgUrl) => async (
 };
 
 
+// CREATE UPDATE COURSES ACTIONS
+export const adminUpdateCourseStatus = (formData, slug) => async (dispatch) => {
 
+
+  console.log("slug123", slug)
+  try {
+    dispatch({ type: UPDATE_ADMIN_COURSES_REQUEST });
+
+
+    const { data } = await axios.put( `${BASE_URL}/api/v1/updateCourseStatus/${slug}`, formData, ConfigApplicationJson);
+
+    dispatch({ type: UPDATE_ADMIN_COURSES_SUCCESS, payload: data?.Admincourses });
+
+  } catch (error) {
+    dispatch({
+      type: UPDATE_ADMIN_COURSES_FAIL,
+      payload: error?.response?.data.message,
+    });
+    console.log("error", error);
+  }
+};
 
 
 // GET ADMIN COURSES ACTIONS
@@ -136,6 +153,7 @@ export const AdminGetCourses = () => async (dispatch) => {
   }
 };
 
+
 // GET ADMIN COURSE ACTION
 export const AdminGetSingleCourses = (slug) => async (dispatch) => {
 
@@ -157,6 +175,7 @@ export const AdminGetSingleCourses = (slug) => async (dispatch) => {
     });
   }
 };
+
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
