@@ -14,7 +14,10 @@ import ProgressLoader from '../../Utils/ProgressLoader';
 import { MdErrorOutline } from "react-icons/md";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { TfiSave } from "react-icons/tfi";
-
+import Select from 'react-select';
+import {commonSpokenLanguages} from '../../../Jsons/Language'
+import {CourseHoursLength} from '../../../Jsons/HoursLength'
+import {SkillsLevel} from '../../../Jsons/SkillLevel'
 import './CreateCourse.css'
 
 
@@ -35,10 +38,13 @@ const CreateCourse = () => {
     const [seqByWeek, setSeqByWeek] = useState();
     const [courseDesc, setCourseDesc] = useState('')
     const [thumbnailFile, setThumbnailFile] = useState(null);
+    const [language, setLanguage] = useState('');
+    const [level, setLevel] = useState('')
+    const [hours, setHours] = useState('');
 
     const createEmptyWeek = () => ({
         weekTitle: '',
-        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null, videoFileName: null, }],
+        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null, videoFileName: null, isFeatured: false}],
       });
     
     const [videoDivsArray, setVideoDivsArray] = useState(
@@ -54,6 +60,9 @@ const CreateCourse = () => {
     const [thumbnailFileAuthError, setThumbnailFileAuthError] = useState({ value: null, error: false });
     const [videoDivsArrayError, setVideoDivsArrayError] = useState(false);
     const [videoDivsArrayAuthError, setVideoDivsArrayAuthError] = useState([]);
+    const [skillError, setSkillError] = useState({ value: null, error: false });
+    const [lengthError, setLengthError] = useState({ value: null, error: false });
+    const [languageError, setLanguageError] = useState({ value: null, error: false });
     const [isChecked, setIsChecked] = useState(false);
 
 
@@ -129,7 +138,6 @@ const CreateCourse = () => {
     const handleSeqByWeekChange = (weekIndex, e) => {
         
         setSeqByWeek(weekIndex)
-        console.log("Dynamic weekIndex:", weekIndex);
     };
 
     const handleThumbnailChange = (e) => {
@@ -140,8 +148,6 @@ const CreateCourse = () => {
 
             image.onload = () => {
                 const { naturalWidth, naturalHeight } = image;
-
-                console.log("naturalWidth", naturalWidth, 'h', naturalHeight)
 
                 // Check if dimensions are within the specified ranges
                 if (
@@ -230,6 +236,29 @@ const CreateCourse = () => {
         }));
     };
 
+    const handleVideoFeaturedChange = (weekIndex, divId, e) => {
+
+        const featured = e.target.checked;
+
+        setVideoDivsArray((prevVideoDivsArray) =>
+            prevVideoDivsArray.map((week, wIndex) =>
+                wIndex === weekIndex
+                    ? {
+                        ...week,
+                        videos: week.videos.map((video) =>
+                            video.id === divId ? { ...video, isFeatured: featured } : video
+                        ),
+                    }
+                    : week
+            )
+        );
+
+        setVideoDivsArrayAuthError((prevErrors) => ({
+            ...prevErrors,
+            error: false,
+        }));
+    };
+
     const handleVideoEditorChange = (weekIndex, divId, value) => {
         setVideoDivsArray((prevVideoDivsArray) =>
             prevVideoDivsArray.map((week, wIndex) =>
@@ -304,6 +333,16 @@ const CreateCourse = () => {
         }else if(!price){
             setPriceAuthError({ value: "Price is required", error: true });
             return
+        }else if(!level){
+            setSkillError({ value: "Skills is required", error: true });
+            return
+        }else if (!language){
+            setLanguageError({ value: "Language is required", error: true });
+            return
+        }
+        else if (!hours){
+            setLengthError({ value: "Duration is required", error: true });
+            return
         }
         
 
@@ -350,6 +389,9 @@ const CreateCourse = () => {
                 price,
                 tags,
                 weeks,
+                language,
+                level,
+                hours,
                 thumbnailFile,
                 videoDivsArray,
                 status: 'inactive'
@@ -362,6 +404,9 @@ const CreateCourse = () => {
                 price,
                 tags,
                 weeks,
+                language,
+                level,
+                hours,
                 thumbnailFile,
                 videoDivsArray,
                 status: 'active'
@@ -396,6 +441,27 @@ const CreateCourse = () => {
             window.scrollTo(0, 0);
         }
     }, [loading]);
+
+    const customStyles = {
+        control: (provided, state) => ({
+          ...provided,
+          width: 320,
+          height: 48,
+          backgroundColor: 'transparent',
+          border: state.isFocused ? '1px solid rgb(14, 18, 37)' : '1px solid rgb(14, 18, 37)',
+          outline: "none",
+          borderRadius: 4, 
+          cursour: "pointer"
+          }),
+          singleValue: (provided) => ({
+            ...provided,
+            color: 'black', 
+          }),  
+          placeholder: (provided) => ({
+            ...provided,
+            color: 'rgb(163, 163, 163)', 
+          }),
+      };
 
   return (
     <div className='admin-container'>
@@ -470,6 +536,51 @@ const CreateCourse = () => {
                             <div className='admin-create-course-input' >
                                 <p>Price <span>*</span></p>
                                 <input type='number' placeholder='Course Price in US Doller' value={price} onChange={(e) => handlePriceChange(e)}/>
+                            </div>
+
+                        </div>
+
+                        <div className='admin-create-course-input-containers'>
+                            <div className='admin-create-course-input'> 
+                                <p>Language <span>*</span></p>
+                                <Select
+                                    defaultValue={language}
+                                    onChange={(selectedOption) => {
+                                        setLanguage(selectedOption.value)
+                                        setLanguageError({value: null, error: false})
+                                    }}
+                                    options={commonSpokenLanguages}
+                                    styles={customStyles}
+                                    // placeholder="English"
+                                />
+                            </div>
+
+                            <div className='admin-create-course-input'> 
+                                <p>Duration <span>*</span></p>
+                                <Select
+                                    defaultValue={hours}
+                                    onChange={(selectedOption) => {
+                                        setHours(selectedOption.value);
+                                        setLengthError({value: null, error: false})
+                                    }}
+                                    options={CourseHoursLength}
+                                    styles={customStyles}
+                                    // placeholder="Total Duration"
+                                />
+                            </div>
+
+                            <div className='admin-create-course-input'> 
+                                <p>Level <span>*</span></p>
+                                <Select
+                                    defaultValue={level}
+                                    onChange={(selectedOption) => {
+                                        setLevel(selectedOption.value);
+                                        setSkillError({ value: null, error: false });
+                                    }}
+                                    options={SkillsLevel}
+                                    styles={customStyles}
+                                    // placeholder="Intermediate"
+                                />
                             </div>
 
                         </div>
@@ -570,6 +681,10 @@ const CreateCourse = () => {
                                                         <p>{video.videoTitle.length}/75</p>
                                                     </div>
                                                 </div>
+                                                <div className='admin-create-course-adding-videos-featured'>
+                                                    <p>Feature your video to show user before purchase</p>
+                                                    <input type='checkbox' value={video.isFeatured} onChange={(e) => handleVideoFeaturedChange(weekIndex, video.id, e)}/>
+                                                </div>
                                                 <div className='admin-create-course-adding-videos-text-area'>
                                                     <p>Add video description <span>*</span></p>
                                                     <ReactQuill
@@ -587,7 +702,7 @@ const CreateCourse = () => {
                             )
                         })}
 
-                        { courseTitleAuthError.error === true || tagsAuthError.error === true || courseDescAuthError.error === true || thumbnailFileAuthError.error === true  || priceAuthError.error === true? 
+                        { courseTitleAuthError.error === true || tagsAuthError.error === true || courseDescAuthError.error === true || thumbnailFileAuthError.error === true  || priceAuthError.error === true  || languageError.error === true || skillError.error === true || lengthError.error === true? 
                             (
                                <div className='admin-create-course-errors'>
                                     {courseTitleAuthError.error === true ?  (<p><MdErrorOutline size={24}/> {courseTitleAuthError?.value}</p>) : ""}

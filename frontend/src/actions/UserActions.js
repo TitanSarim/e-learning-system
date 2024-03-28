@@ -150,6 +150,8 @@ export const userLogOut = () => async (dispatch) => {
       type: LOGOUT_USER_SUCCESS,
     });
 
+    Cookies.remove('token')
+
   } catch (error) {
     dispatch({ type: LOGOUT_USER_FAIL, payload: error.response.data.message });
   }
