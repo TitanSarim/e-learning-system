@@ -160,3 +160,4 @@ export const uploadVideosToAzure = async (videoDivsArray, onProgress) => {
 
   return updatedVideoDivsArray;
 };
+

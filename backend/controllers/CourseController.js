@@ -1,7 +1,6 @@
 const { Course } = require("../models"); // Adjust the path based on your project structure
 const bcrypt = require("bcryptjs");
 const generatedToken = require("../utils/jwtToken");
-const setTokenCookie = require("../utils/sendToken");
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
