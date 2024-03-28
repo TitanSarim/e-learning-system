@@ -9,11 +9,15 @@ const ProfileTabsSkills = ({setSelectSkills, selectSkills, handleSubmit}) => {
       ...provided,
       width: 1000,
       height: 200,
-      backgroundColor: '#1B1D29',
+      backgroundColor: '#1b1d29',
       border: state.isFocused ? 'none' : 'none',
       outline: "none",
       borderRadius: 7, 
-      cursour: "pointer"
+      cursour: "pointer",
+      border: "1px solid #686868",
+      borderRadius: 8,
+      border: "1px solid rgba(255, 255, 255, 0.281)"
+
       }),
       singleValue: (provided) => ({
         ...provided,

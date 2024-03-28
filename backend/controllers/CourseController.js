@@ -57,7 +57,7 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
 // admin
 const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
-
+    console.log("jkhfksjdhfkjh");
     try {
 
         const AdminAllcourses  = await Course.findAll();

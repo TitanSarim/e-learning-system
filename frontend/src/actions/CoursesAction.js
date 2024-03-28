@@ -78,6 +78,7 @@ export const AdminGetCourses = () => async (dispatch) => {
       type: GET_ALL_ADMIN_COURSES_SUCCESS,
       payload: data.Admincourses,
     });
+    
   } catch (error) {
     dispatch({
       type: GET_ALL_ADMIN_COURSES_FAIL,

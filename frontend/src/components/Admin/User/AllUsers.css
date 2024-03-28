@@ -44,8 +44,6 @@
 
 .admin-allusers-table-container table{
     border: 1px solid rgb(179, 179, 179);
-    border-radius: 4px;
-    padding: 0px 4px;
 }
 
 .admin-allusers-table-container table thead tr th{
@@ -61,6 +59,7 @@
     color: rgb(65, 65, 65);
     padding: 0px 20px;
     text-align: center;
+    background-color: #e9dbc1;
 }
 
 .admin-allusers-table-container table tbody tr:nth-child(even){
@@ -232,5 +231,5 @@
     align-items: center;
     justify-content: center;
     margin: auto;
-    margin-top: 0%;
+    /* margin-top: 0%; */
 }

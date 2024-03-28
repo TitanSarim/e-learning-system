@@ -7,7 +7,6 @@ const ProtectedRoutes = () => {
 
     const {isAuthenticated, user} = useSelector((state)=>state.user)
 
-    console.log('user', user.token)
 
     useEffect(() => {
       if (user && user.token) {
