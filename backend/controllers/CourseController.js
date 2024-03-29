@@ -13,7 +13,7 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
         
         const userId = req.user.userid
         const teacherName = req.user.username
-        const {courseTitle, courseCategory, courseDesc, price, tags, weeks, thumbnailUrl, videoUrls, status} = req.body;
+        const {courseTitle, courseCategory, courseDesc, price, language, level, hours, tags, weeks, thumbnailUrl, videoUrls, status} = req.body;
 
         const slug = generateSlug(courseTitle, userId)
 
@@ -33,6 +33,9 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
             },
             views: "0",
             price: price,
+            language:language,
+            level:level,
+            hours:hours,
             inrolled_by: { id: ["1", "2"]},
             teacher_name: teacherName,
             comments: "0",
@@ -60,7 +63,7 @@ const UpdateCourse  = catchAsyncError(async (req, res, next) => {
 
         const userId = req.user.userid
         const teacherName = req.user.username
-        const {courseTitle, courseCategory, courseDesc, price, tags, weeks, thumbnailUrl, videoUrls, status} = req.body;
+        const {courseTitle, courseCategory, courseDesc, price, language, level, hours, tags, weeks, thumbnailUrl, videoUrls, status} = req.body;
 
         const slug = generateSlug(courseTitle, userId)
 
@@ -80,6 +83,9 @@ const UpdateCourse  = catchAsyncError(async (req, res, next) => {
             },
             views: "0",
             price: price,
+            language:language,
+            level:level,
+            hours:hours,
             inrolled_by: { id: ["1", "2"]},
             teacher_name: teacherName,
             comments: "0",
@@ -102,6 +108,9 @@ const UpdateCourse  = catchAsyncError(async (req, res, next) => {
             course_content: AdminSinglecourses.course_content.data || '',
             views: AdminSinglecourses.views || '',
             price: AdminSinglecourses.price || '',
+            language: AdminSinglecourses.language || '',
+            level: AdminSinglecourses.level || '',
+            hours: AdminSinglecourses.hours || '',
             inrolled_by: AdminSinglecourses.inrolled_by || '',
             teacher_name: AdminSinglecourses.teacher_name || '',
             comments: AdminSinglecourses.comments || '',
@@ -152,6 +161,9 @@ const UpdateCourseStatus  = catchAsyncError(async (req, res, next) => {
             course_content: AdminSinglecourses.course_content.data || '',
             views: AdminSinglecourses.views || '',
             price: AdminSinglecourses.price || '',
+            language: AdminSinglecourses.language || '',
+            level: AdminSinglecourses.level || '',
+            hours: AdminSinglecourses.hours || '',
             inrolled_by: AdminSinglecourses.inrolled_by || '',
             teacher_name: AdminSinglecourses.teacher_name || '',
             comments: AdminSinglecourses.comments || '',
@@ -213,6 +225,9 @@ const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
             course_content: course.course_content || '',
             views: course.views || '',
             price: course.price || '',
+            language: course.language || '',
+            level: course.level || '',
+            hours: course.hours || '',
             inrolled_by: course.inrolled_by || '',
             teacher_name: course.teacher_name || '',
             comments: course.comments || '',
@@ -262,6 +277,9 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
             course_content: AdminSinglecourses.course_content.data || '',
             views: AdminSinglecourses.views || '',
             price: AdminSinglecourses.price || '',
+            language: AdminSinglecourses.language || '',
+            level: AdminSinglecourses.level || '',
+            hours: AdminSinglecourses.hours || '',
             inrolled_by: AdminSinglecourses.inrolled_by || '',
             teacher_name: AdminSinglecourses.teacher_name || '',
             comments: AdminSinglecourses.comments || '',

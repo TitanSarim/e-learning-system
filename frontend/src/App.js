@@ -1,8 +1,7 @@
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
+import AllPublicCourses from './components/Courses/AllPublicCourses'
 import ProtectedRoutes from "./components/Utils/ProtectedRoutes";
-import Cookies from 'js-cookie';
 
 import "./App.css";
 import Auth from "./components/Auth/Auth";
@@ -29,6 +28,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+
+          <Route path="/courses" element={<AllPublicCourses/>} />
 
           <Route path="/Student" element={<ProtectedRoutes />}>
             <Route path="/Student/Profile" element={<StudentProfile />} />

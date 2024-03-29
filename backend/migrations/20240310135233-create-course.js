@@ -42,6 +42,15 @@ module.exports = {
       price:{
         type: Sequelize.STRING
       },
+      language:{
+        type: Sequelize.STRING
+      },
+      level:{
+        type: Sequelize.STRING
+      },
+      hours:{
+        type: Sequelize.STRING
+      },
       inrolled_by:{
         type: Sequelize.JSON
       },

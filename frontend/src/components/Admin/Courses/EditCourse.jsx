@@ -578,7 +578,7 @@ const EditCourse = () => {
                             <div className='admin-create-course-input'> 
                                 <p>Language <span>*</span></p>
                                 <Select
-                                    defaultValue={language}
+                                    defaultValue={commonSpokenLanguages.find(option => option.value === language)}
                                     onChange={(selectedOption) => {
                                         setLanguage(selectedOption.value)
                                         setLanguageError({value: null, error: false})
@@ -592,7 +592,7 @@ const EditCourse = () => {
                             <div className='admin-create-course-input'> 
                                 <p>Duration <span>*</span></p>
                                 <Select
-                                    defaultValue={hours}
+                                    defaultValue={CourseHoursLength.find(option => option.value === hours)}
                                     onChange={(selectedOption) => {
                                         setHours(selectedOption.value);
                                         setLengthError({value: null, error: false})
