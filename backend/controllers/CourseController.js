@@ -354,7 +354,6 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
         };
 
         function customSort(a, b) {
-
             const randomA = Math.random();
             const randomB = Math.random();
         
@@ -363,11 +362,20 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
             const reviewsA = parseFloat(a.reviews);
             const reviewsB = parseFloat(b.reviews);
         
-            const scoreA = Math.abs(priceA - midPrice) + reviewsA; 
-            const scoreB = Math.abs(priceB - midPrice) + reviewsB;
+            // If the price filter is set to ASC or DESC, prioritize sorting by price
+            if (price === 'ASC') {
+                if (priceA < priceB) return -1;
+                if (priceA > priceB) return 1;
+            } else if (price === 'DESC') {
+                if (priceA > priceB) return -1;
+                if (priceA < priceB) return 1;
+            }
         
-            if (scoreA < scoreB) return -1;
-            if (scoreA > scoreB) return 1;
+            // If prices are equal or no price filter is applied, sort by reviews
+            if (reviewsA > reviewsB) return -1;
+            if (reviewsA < reviewsB) return 1;
+        
+            // If reviews are equal or no reviews available, apply random sorting
             if (randomA < randomB) return -1;
             if (randomA > randomB) return 1;
             return 0;
