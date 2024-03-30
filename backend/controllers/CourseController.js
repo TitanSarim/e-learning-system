@@ -301,11 +301,81 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
 })
 
+
+// Public All Courses
+const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
+
+
+    try {
+        const page = parseInt(req.query.page) || 1; // Default page 1
+        const limit = parseInt(req.query.limit) || 4; // Default limit 10
+
+        const skip = (page - 1) * limit;
+
+
+        const totalCount = await Course.count();
+
+        const allPublicCourses = await Course.findAll({
+            offset: skip,
+            limit: limit
+        });
+
+        const totalPages = Math.ceil(totalCount / limit);
+
+        const pagination = {
+            totalPages: totalPages,
+            currentPage: page,
+            totalCourses: totalCount
+        };
+        
+
+        const PubliccoursesObject = allPublicCourses.map(course => ({
+            id: course.id || '',
+            teacherId: course.teacherId || '',
+            slug: course.slug || '',
+            course_title: course.course_title || '',
+            category: course.category || '',
+            tags: course.tags || '',
+            timeline: course.timeline || '',
+            course_desc: course.course_desc || '',
+            course_thumbnail: course.course_thumbnail.url || '',
+            course_content: course.course_content || '',
+            views: course.views || '',
+            price: course.price || '',
+            language: course.language || '',
+            level: course.level || '',
+            hours: course.hours || '',
+            inrolled_by: course.inrolled_by || '',
+            teacher_name: course.teacher_name || '',
+            comments: course.comments || '',
+            reviews: course.reviews || '',
+            status: course.status || '',
+            createdAt: course.createdAt || '',
+            updatedAt: course.updatedAt || ''
+          }));
+          
+          const Publiccourses = {
+            Publiccourses: PubliccoursesObject,
+            pagination: pagination
+          }
+        res.status(201).json({
+            success: true,
+            message: 'Course retrived successfully',
+            Publiccourses: Publiccourses,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
 module.exports = {
     createCourse,
     GetAllCourseAdmin,
     GetSingleCourseAdmin,
     UpdateCourse,
     UpdateCourseStatus,
-    deleteCourse
+    deleteCourse,
+    GetAllPublicCourses,
 }

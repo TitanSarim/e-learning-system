@@ -19,6 +19,15 @@ import {
     DELETE_ADMIN_COURSES_SUCCESS,
     DELETE_ADMIN_COURSES_FAIL,
 
+
+    GET_ALL_PUBLIC_COURSES_REQUEST,
+    GET_ALL_PUBLIC_COURSES_SUCCESS,
+    GET_ALL_PUBLIC_COURSES_FAIL,
+
+    GET_SINGLE_PUBLIC_COURSES_REQUEST,
+    GET_SINGLE_PUBLIC_COURSES_SUCCESS,
+    GET_SINGLE_PUBLIC_COURSES_FAIL,
+
     CLEAR_ERRORS,
 } from '../constants/CoursesConstants' 
 
@@ -158,4 +167,42 @@ export const AdminCourseReducer = (state = {Admincourses: []}, action) =>{
         default:
             return state;    
     }
+}
+
+export const PublicCourseReducer = (state = {Publiccourses: []}, action) => {
+
+    switch(action.type){
+
+
+        case GET_ALL_PUBLIC_COURSES_REQUEST:
+            return{
+                loading: true,
+            }
+
+        case GET_ALL_PUBLIC_COURSES_SUCCESS:
+            return{
+                ...state,
+                loading: false,
+                Publiccourses: action.payload, 
+            }
+    
+        case GET_ALL_PUBLIC_COURSES_FAIL:
+            return{
+                ...state,
+                loading: false,
+                Publiccourses: null,
+                error: action.payload,
+            }
+
+        case  CLEAR_ERRORS:
+            return{
+                ...state,
+                error: null,
+            }
+
+        default:
+            return state;    
+
+        }
+
 }
