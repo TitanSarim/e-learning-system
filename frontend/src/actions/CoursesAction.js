@@ -208,13 +208,18 @@ export const AdminGetSingleCourses = (slug) => async (dispatch) => {
 
 
 // Get All Public Courses
-export const PublicGetCourses = (page) => async (dispatch) => {
+export const PublicGetCourses = (page, filters) => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_PUBLIC_COURSES_REQUEST });
 
+    let queryString = `?page=${page}`;
+    if (filters) {
+      Object.keys(filters).forEach(key => {
+        queryString += `&${key}=${filters[key]}`;
+      });
+    }
 
-
-    const { data } = await axios.get(`${BASE_URL}/api/v1/get-all-public-courses?page=${page}`);
+    const { data } = await axios.get(`${BASE_URL}/api/v1/get-all-public-courses${queryString}`);
 
     dispatch({
       type: GET_ALL_PUBLIC_COURSES_SUCCESS,

@@ -7,9 +7,7 @@ import StarRatings from 'react-star-ratings'
 import { IoIosArrowForward } from "react-icons/io";
 import { CiCircleList } from "react-icons/ci";
 import { TbCategoryMinus } from "react-icons/tb";
-import courseImg from '../../assets/laura-rivera-ArH3dtoDQc0-unsplash.jpg'
-import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
-import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
+import Select from 'react-select';
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,6 +17,14 @@ import {PublicGetCourses, clearErrors} from '../../actions/CoursesAction'
 import './AllPublicCourses.css'
 import { toast } from 'react-toastify';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+const selectPriceFilter = [
+  { value: 'ASC', label: 'Low To High' },
+  { value: 'DESC', label: 'High To Low' },
+  { value: '', label: 'None' },
+];
+
+
 const AllPublicCourses = () => {
 
   const dispatch = useDispatch()
@@ -28,6 +34,7 @@ const AllPublicCourses = () => {
   const [courses, setCourses] = useState([])
   const [pagination, setPagination] = useState([])
   const [showDiv, setShowDiv] = useState('tbCategoryMinus');
+  const [filters, setFilters] = useState({price: ''});
 
   const handleTbCategoryMinusClick = () => {
       setShowDiv('tbCategoryMinus');
@@ -42,8 +49,8 @@ const AllPublicCourses = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
-    dispatch(PublicGetCourses())
-  }, [dispatch, error])
+    dispatch(PublicGetCourses(1, filters))
+  }, [dispatch, error, filters])
 
   useEffect(() => {
     setCourses(Publiccourses)
@@ -109,6 +116,36 @@ const AllPublicCourses = () => {
     );
   };
 
+  const applyFilters = (selectedFilters) => {
+    setFilters(selectedFilters);
+  };
+
+  const handlePriceFilterChange = (selectedOption) => {
+    setFilters({ ...filters, price: selectedOption.value });
+  };
+
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: 180,
+      height: 50,
+      backgroundColor: '#311c5c',
+      border: state.isFocused ? '1px solid rgb(105, 105, 105)' : '1px solid rgb(105, 105, 105)',
+      outline: "none",
+      borderRadius: 4, 
+      cursour: "pointer"
+      }),
+      singleValue: (provided) => ({
+        ...provided,
+        color: 'white', 
+      }),  
+      placeholder: (provided) => ({
+        ...provided,
+        color: 'rgb(163, 163, 163)', 
+      }),
+  };
+
   return (
     <div className='pubic-all-courses'>
       
@@ -125,7 +162,7 @@ const AllPublicCourses = () => {
       <div className='pubic-all-courses-container'>
         
         {/* filters */}
-        <AllPublicCoursesFilters/>
+        <AllPublicCoursesFilters applyFilters={applyFilters} courses={courses}/>
 
         {/* Content */}
         <div className='pubic-all-courses-list'>
@@ -134,11 +171,18 @@ const AllPublicCourses = () => {
             <p>Showing {pagination?.totalCourses} Total Results</p>
 
               <div>
+                <Select
+                  defaultValue={selectPriceFilter.find(option => option.value === filters.price)}
+                  onChange={handlePriceFilterChange}
+                  options={selectPriceFilter}
+                  placeholder="Price"
+                  styles={customStyles}
+                />
                 <div onClick={handleTbCategoryMinusClick}>
-                  <TbCategoryMinus size={25}/>
+                  <TbCategoryMinus size={27}/>
                 </div>
                 <div onClick={handleCiCircleListClick}>
-                  <CiCircleList size={25} />
+                  <CiCircleList size={27} />
                 </div>
               </div>
           </div>

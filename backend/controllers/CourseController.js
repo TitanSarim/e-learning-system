@@ -1,6 +1,4 @@
 const { Course } = require("../models"); // Adjust the path based on your project structure
-const bcrypt = require("bcryptjs");
-const generatedToken = require("../utils/jwtToken");
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
@@ -307,18 +305,45 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
 
 
     try {
+        const { category, rating, level, language, price } = req.query;
+
         const page = parseInt(req.query.page) || 1; // Default page 1
         const limit = parseInt(req.query.limit) || 4; // Default limit 10
-
         const skip = (page - 1) * limit;
 
 
-        const totalCount = await Course.count();
+        const filter = {};
+        if (category) filter.category = category;
+        if (level) filter.level = level;
+        if (language) filter.language = language;
+        
+        let orderOption = []; // Initialize order option
 
+        if (price === 'ASC' || price === 'DESC') {
+            orderOption.push(['price', price]); // Construct order option array
+        }
+
+        // if (ratingStringfy >= '1') {
+        //     filter.reviews = { $gt: ratingStringfy };
+        // }else if (ratingStringfy >= '2') {
+        //     filter.reviews = { $gt: ratingStringfy };
+        // }else if (ratingStringfy >= '3') {
+        //     filter.reviews = { $gt: ratingStringfy };
+        // }if (ratingStringfy >= '4') {
+        //     filter.reviews = { $gt: ratingStringfy };
+        // }
+
+        const totalCount = await Course.count({
+            where: filter, // Apply filters
+          });
+          
         const allPublicCourses = await Course.findAll({
             offset: skip,
-            limit: limit
+            limit: limit,
+            where: filter,
+            order: orderOption,
         });
+
 
         const totalPages = Math.ceil(totalCount / limit);
 
@@ -327,9 +352,42 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
             currentPage: page,
             totalCourses: totalCount
         };
-        
 
-        const PubliccoursesObject = allPublicCourses.map(course => ({
+        function customSort(a, b) {
+
+            const randomA = Math.random();
+            const randomB = Math.random();
+        
+            const priceA = parseFloat(a.price);
+            const priceB = parseFloat(b.price);
+            const reviewsA = parseFloat(a.reviews);
+            const reviewsB = parseFloat(b.reviews);
+        
+            const scoreA = Math.abs(priceA - midPrice) + reviewsA; 
+            const scoreB = Math.abs(priceB - midPrice) + reviewsB;
+        
+            if (scoreA < scoreB) return -1;
+            if (scoreA > scoreB) return 1;
+            if (randomA < randomB) return -1;
+            if (randomA > randomB) return 1;
+            return 0;
+        }
+        
+        const prices = allPublicCourses.map(course => parseFloat(course.price));
+        const midPrice = Math.max(...prices) / 2; 
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const shuffledCourses = shuffleArray(allPublicCourses);
+        const sortedCourses = shuffledCourses.sort(customSort);
+        
+        const PubliccoursesObject = sortedCourses.map(course => ({
             id: course.id || '',
             teacherId: course.teacherId || '',
             slug: course.slug || '',
@@ -352,7 +410,8 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
             status: course.status || '',
             createdAt: course.createdAt || '',
             updatedAt: course.updatedAt || ''
-          }));
+        }));
+        
           
           const Publiccourses = {
             Publiccourses: PubliccoursesObject,

@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     course_thumbnail: DataTypes.JSON,
     course_content: DataTypes.JSON,
     views: DataTypes.STRING,
-    price: DataTypes.STRING,
+    price: DataTypes.INTEGER,
     language: DataTypes.STRING,
     level: DataTypes.STRING,
     hours: DataTypes.STRING,

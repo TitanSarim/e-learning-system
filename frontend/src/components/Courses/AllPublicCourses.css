@@ -107,7 +107,7 @@
     color: rgb(219, 219, 219);
 }
 
-.pubic-all-courses-filters-wrapper div input[type="checkbox"] {
+.pubic-all-courses-filters-wrapper div input[type="radio"] {
     background-color: rgb(202, 202, 202) !important;
     appearance: none; /* Remove default checkbox appearance */
     -webkit-appearance: none; /* For Safari */
@@ -118,7 +118,7 @@
     border: 1px solid transparent;
     cursor: pointer;
 }
-.pubic-all-courses-filters-wrapper div input[type="checkbox"]:checked{
+.pubic-all-courses-filters-wrapper div input[type="radio"]:checked{
     background-color: #500cda !important;
     background-image: url('../../assets/icons8-tick-24.png');
     position: relative;
