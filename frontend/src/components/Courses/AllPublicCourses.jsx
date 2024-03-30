@@ -191,7 +191,7 @@ const AllPublicCourses = () => {
             {showDiv === 'tbCategoryMinus' && (
               <div className='pubic-all-courses-boxes-view'>
                 {courses?.Publiccourses?.map((course) => (
-                  <div className='pubic-single-course-box-view'>
+                  <div className='pubic-single-course-box-view' key={course.id}>
                     <LazyLoadImage src={course.course_thumbnail} alt='Course'/>
                     <div className='pubic-single-course-box-view-header'>
                       <p>{course.category}</p>
@@ -222,7 +222,7 @@ const AllPublicCourses = () => {
             {showDiv === 'ciCircleList' && (
               <div className='pubic-all-courses-list-view'>
               {courses?.Publiccourses?.map((course) => (
-                <div className='pubic-single-course-list-view'>
+                <div className='pubic-single-course-list-view' key={course.id}>
                   <LazyLoadImage src={course.course_thumbnail} alt='Course'/>
 
                   <div className='pubic-single-course-list-view-container'>
