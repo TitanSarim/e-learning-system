@@ -6,6 +6,7 @@ import {userLogOut } from "../../actions/UserActions";
 import './ProfileDetailSideBar.css'
 
 const ProfileDetailSideBar = ({profileData}) => {
+  console.log(profileData);
 
     const [completionRate, setCompletionRate] = useState(0);
 

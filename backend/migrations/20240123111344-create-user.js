@@ -30,6 +30,9 @@ module.exports = {
       status:{
         type: Sequelize.STRING
       },
+      loginToken: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -20,7 +20,6 @@ export const getMyProfile = () => async (dispatch) => {
 
     try {
         dispatch({type: GET_MY_PROFILE_REQUEST});
-        console.log("profile request");
 
         const token = Cookies.get('token');
 

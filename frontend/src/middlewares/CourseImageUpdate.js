@@ -2,14 +2,16 @@ import { BlobServiceClient, AnonymousCredential, newPipeline } from '@azure/stor
 import { v4 } from 'uuid';
 
 
-export const ResumeUploadToAzureContainer = async (file) => {
+export const ImageUploadToAzureContainer = async (file) => {
     const storageAccountName = "elearningplateform";
     const sasToken = "sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2026-04-03T08:22:38Z&st=2024-03-11T00:22:38Z&spr=https,http&sig=7qqNArRh8%2B5JS48YXTtOE62xcw9PGTvGJA9czS3diuA%3D";
-    const containerName = "resume";
+    const containerName = "courses-thumnials";
 
     const blobService = new BlobServiceClient(`https://${storageAccountName}.blob.core.windows.net/?${sasToken}`,  newPipeline(new AnonymousCredential()));
     const container = blobService.getContainerClient(containerName);
     const blobClient = container.getBlockBlobClient(file.name);
+
+    // const options = { blobHTTPHeaders: { blobContentType: file.type } };
     
     const response  = await blobClient.uploadBrowserData(file)
 
@@ -18,19 +20,18 @@ export const ResumeUploadToAzureContainer = async (file) => {
 }
 
 
-// example oldResume=  https://elearningplateform.blob.core.windows.net/resume/1710893466695_6b5b4b57-2764-48d2-8214-925c44a8251a_sarim_resume.pdf
-export const uploadResumeToAzure = async (file, oldResume) => {
+
+export const updateUploadImageToAzure = async (file, imgUrl) => {
 
     const storageAccountName = "elearningplateform";
-    const containerName = "resume";
+    const containerName = "courses-thumnials";
     const sasToken = "sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2026-04-03T08:22:38Z&st=2024-03-11T00:22:38Z&spr=https,http&sig=7qqNArRh8%2B5JS48YXTtOE62xcw9PGTvGJA9czS3diuA%3D";
 
-     // Check if oldResume exists and delete it if it does
-    if (oldResume && oldResume.length) {
-        const oldResumeName = oldResume.split('/').pop();
+    if (imgUrl && imgUrl.length) {
+        const oldImageName = imgUrl.split('/').pop();
         const blobService = new BlobServiceClient(`https://${storageAccountName}.blob.core.windows.net/?${sasToken}`, newPipeline(new AnonymousCredential()));
         const container = blobService.getContainerClient(containerName);
-        const blobClient = container.getBlockBlobClient(oldResumeName);
+        const blobClient = container.getBlockBlobClient(oldImageName);
         await blobClient.deleteIfExists();
     }
 
@@ -40,9 +41,9 @@ export const uploadResumeToAzure = async (file, oldResume) => {
 
     const renamedFile = new File([file], newFileName, { type: file.type });
 
-    await ResumeUploadToAzureContainer(renamedFile);
+    await ImageUploadToAzureContainer(renamedFile);
     
-    const uploadedResumeUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${newFileName}`;
+    const uploadedImageUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${newFileName}`;
 
-    return uploadedResumeUrl;
+    return uploadedImageUrl;
 }
