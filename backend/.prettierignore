@@ -1,0 +1,15 @@
+build
+coverage
+
+*.jsx
+*.js
+
+**/controllers
+**/middleware
+**/migrations
+**/models
+**/controllers
+**/config
+**/seeders
+**/utils
+**/node_modules

@@ -54,6 +54,10 @@ export const register = (formData) => async (dispatch) => {
                     }
 
     const { data } = await axios.post(`${BASE_URL}/api/v1/register`, formData, config);
+
+    if(data.token){
+      Cookies.set('token', data.token, { expires: 365 });
+    }
     
 
     dispatch({ type: REGISTER_SUCCESS, payload: data.user });
@@ -79,9 +83,9 @@ export const login = (formData) => async (dispatch) => {
 
     const { data } = await axios.post(`${BASE_URL}/api/v1/loggedIn`, formData, config);
 
-    setTokenCookie(data?.token);
-    console.log(data.token);
-
+    if(data.token){
+      Cookies.set('token', data.token, { expires: 365 });
+    }
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
   } catch (error) {
@@ -145,6 +149,8 @@ export const userLogOut = () => async (dispatch) => {
     dispatch({
       type: LOGOUT_USER_SUCCESS,
     });
+
+    Cookies.remove('token')
 
   } catch (error) {
     dispatch({ type: LOGOUT_USER_FAIL, payload: error.response.data.message });
@@ -306,11 +312,6 @@ export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
 };
 
-// coookies function
-
-const setTokenCookie = (token) => {
-  document.cookie = `token=${token}`;
-};
 
 
 

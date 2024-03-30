@@ -5,7 +5,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import {userReducer, AdminUserReducer, ForgetPasswordReducer} from './redcuers/UserReducer'
-import {AdminCourseReducer} from './redcuers/CourseReducer'
+import {AdminCourseReducer, PublicCourseReducer} from './redcuers/CourseReducer'
 import {myPorfileReducer} from './redcuers/ProfileReducer'
 
 const reducer = combineReducers({
@@ -13,11 +13,11 @@ const reducer = combineReducers({
     user: userReducer,
     forgetPassword: ForgetPasswordReducer,
     adminUsers: AdminUserReducer,
+    adminCourses: AdminCourseReducer,
 
     myPorfile: myPorfileReducer,
-
-    adminUsers: AdminUserReducer,
-    adminCourses: AdminCourseReducer,
+    
+    PublicCourse: PublicCourseReducer
 
 });
 

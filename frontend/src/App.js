@@ -1,8 +1,7 @@
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
+import AllPublicCourses from './components/Courses/AllPublicCourses'
 import ProtectedRoutes from "./components/Utils/ProtectedRoutes";
-import Cookies from 'js-cookie';
 
 import "./App.css";
 import Auth from "./components/Auth/Auth";
@@ -24,26 +23,13 @@ import EditCourse from "./components/Admin/Courses/EditCourse";
 
 function App() {
 
-
-
-  useEffect(() => {
-    const persistData = localStorage.getItem('persist:root');
-    const parsedPersistData = JSON.parse(persistData);
-    const userData = JSON.parse(parsedPersistData.user);
-    if(userData.isAuthenticated === true){
-      const token = userData.user.token;
-      console.log("token", token)
-      if (token) {
-        Cookies.set('token', token);
-      }
-    }
-  }, [])
-
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+
+          <Route path="/courses" element={<AllPublicCourses/>} />
 
           <Route path="/Student" element={<ProtectedRoutes />}>
             <Route path="/Student/Profile" element={<StudentProfile />} />

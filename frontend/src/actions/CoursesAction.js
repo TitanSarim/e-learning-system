@@ -14,6 +14,12 @@ import {
   DELETE_ADMIN_COURSES_REQUEST,
   DELETE_ADMIN_COURSES_SUCCESS,
   DELETE_ADMIN_COURSES_FAIL,
+  GET_ALL_PUBLIC_COURSES_REQUEST,
+  GET_ALL_PUBLIC_COURSES_SUCCESS,
+  GET_ALL_PUBLIC_COURSES_FAIL,
+  GET_SINGLE_PUBLIC_COURSES_REQUEST,
+  GET_SINGLE_PUBLIC_COURSES_SUCCESS,
+  GET_SINGLE_PUBLIC_COURSES_FAIL,
   CLEAR_ERRORS,
 } from "../constants/CoursesConstants";
 import axios from "axios";
@@ -200,6 +206,34 @@ export const AdminGetSingleCourses = (slug) => async (dispatch) => {
     });
   }
 };
+
+
+// Get All Public Courses
+export const PublicGetCourses = (page, filters) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ALL_PUBLIC_COURSES_REQUEST });
+
+    let queryString = `?page=${page}`;
+    if (filters) {
+      Object.keys(filters).forEach(key => {
+        queryString += `&${key}=${filters[key]}`;
+      });
+    }
+
+    const { data } = await axios.get(`${BASE_URL}/api/v1/get-all-public-courses${queryString}`);
+
+    dispatch({
+      type: GET_ALL_PUBLIC_COURSES_SUCCESS,
+      payload: data.Publiccourses,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_PUBLIC_COURSES_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 
 
 export const clearErrors = () => async (dispatch) => {
