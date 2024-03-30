@@ -130,6 +130,14 @@
 }
 
 
+.pubic-all-courses-loader{
+    position: relative;
+    display: flex;
+    width: 75%;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+}
 .pubic-all-courses-list{
     position: relative;
     display: flex;

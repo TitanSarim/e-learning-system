@@ -165,71 +165,36 @@ const AllPublicCourses = () => {
         <AllPublicCoursesFilters applyFilters={applyFilters} courses={courses}/>
 
         {/* Content */}
-        <div className='pubic-all-courses-list'>
+        {loading ? <div className='pubic-all-courses-loader'><Loader/></div> : (
+          <div className='pubic-all-courses-list'>
 
-          <div className='pubic-all-courses-list-style'>
-            <p>Showing {pagination?.totalCourses} Total Results</p>
+            <div className='pubic-all-courses-list-style'>
+              <p>Showing {pagination?.totalCourses} Total Results</p>
 
-              <div>
-                <Select
-                  defaultValue={selectPriceFilter.find(option => option.value === filters.price)}
-                  onChange={handlePriceFilterChange}
-                  options={selectPriceFilter}
-                  placeholder="Price"
-                  styles={customStyles}
-                />
-                <div onClick={handleTbCategoryMinusClick}>
-                  <TbCategoryMinus size={27}/>
-                </div>
-                <div onClick={handleCiCircleListClick}>
-                  <CiCircleList size={27} />
-                </div>
-              </div>
-          </div>
-
-          {showDiv === 'tbCategoryMinus' && (
-            <div className='pubic-all-courses-boxes-view'>
-              {courses?.Publiccourses?.map((course) => (
-                <div className='pubic-single-course-box-view'>
-                  <LazyLoadImage src={course.course_thumbnail} alt='Course'/>
-                  <div className='pubic-single-course-box-view-header'>
-                    <p>{course.category}</p>
-                    <span>
-                      <StarRatings 
-                        rating={JSON.parse(course.reviews)}
-                        starDimension="20px"
-                        starSpacing="2px"
-                        numberOfStars={1}
-                        starRatedColor="#FFFF00"
-                      />
-                      ({JSON.parse(course.reviews)} Reviews)
-                    </span>
+                <div>
+                  <Select
+                    defaultValue={selectPriceFilter.find(option => option.value === filters.price)}
+                    onChange={handlePriceFilterChange}
+                    options={selectPriceFilter}
+                    placeholder="Price"
+                    styles={customStyles}
+                  />
+                  <div onClick={handleTbCategoryMinusClick}>
+                    <TbCategoryMinus size={27}/>
                   </div>
-                    <p className='pubic-single-course-box-view-title'>{course.course_title}</p>
-                    <p className='pubic-single-course-box-view-teacher'><span>By </span> {course.teacher_name}</p>
-                  <div className='pubic-single-course-box-view-price'>
-                    <Link>Enroll Now</Link>
-                    <p>${course.price}.00</p>
+                  <div onClick={handleCiCircleListClick}>
+                    <CiCircleList size={27} />
                   </div>
                 </div>
-              ))}
-              
             </div>
-          )}
 
-          {/* list view */}
-          {showDiv === 'ciCircleList' && (
-            <div className='pubic-all-courses-list-view'>
-            {courses?.Publiccourses?.map((course) => (
-              <div className='pubic-single-course-list-view'>
-                <LazyLoadImage src={course.course_thumbnail} alt='Course'/>
-
-                <div className='pubic-single-course-list-view-container'>
-
-                  <div className='pubic-single-course-list-view-header'>
-                    <p className='pubic-single-course-list-view-title'>{course.course_title}</p>
-                    <div>
-                      <p className='pubic-single-course-list-view-category'>{course.category}</p>
+            {showDiv === 'tbCategoryMinus' && (
+              <div className='pubic-all-courses-boxes-view'>
+                {courses?.Publiccourses?.map((course) => (
+                  <div className='pubic-single-course-box-view'>
+                    <LazyLoadImage src={course.course_thumbnail} alt='Course'/>
+                    <div className='pubic-single-course-box-view-header'>
+                      <p>{course.category}</p>
                       <span>
                         <StarRatings 
                           rating={JSON.parse(course.reviews)}
@@ -241,26 +206,63 @@ const AllPublicCourses = () => {
                         ({JSON.parse(course.reviews)} Reviews)
                       </span>
                     </div>
-                    <p className='pubic-single-course-list-view-teacher'><span>By </span> {course.teacher_name}</p>
+                      <p className='pubic-single-course-box-view-title'>{course.course_title}</p>
+                      <p className='pubic-single-course-box-view-teacher'><span>By </span> {course.teacher_name}</p>
+                    <div className='pubic-single-course-box-view-price'>
+                      <Link>Enroll Now</Link>
+                      <p>${course.price}.00</p>
+                    </div>
                   </div>
+                ))}
+                
+              </div>
+            )}
 
-                  <div className='pubic-single-course-list-view-price'>
-                    <Link>Enroll Now</Link>
-                    <p>${course.price}.00</p>
+            {/* list view */}
+            {showDiv === 'ciCircleList' && (
+              <div className='pubic-all-courses-list-view'>
+              {courses?.Publiccourses?.map((course) => (
+                <div className='pubic-single-course-list-view'>
+                  <LazyLoadImage src={course.course_thumbnail} alt='Course'/>
+
+                  <div className='pubic-single-course-list-view-container'>
+
+                    <div className='pubic-single-course-list-view-header'>
+                      <p className='pubic-single-course-list-view-title'>{course.course_title}</p>
+                      <div>
+                        <p className='pubic-single-course-list-view-category'>{course.category}</p>
+                        <span>
+                          <StarRatings 
+                            rating={JSON.parse(course.reviews)}
+                            starDimension="20px"
+                            starSpacing="2px"
+                            numberOfStars={1}
+                            starRatedColor="#FFFF00"
+                          />
+                          ({JSON.parse(course.reviews)} Reviews)
+                        </span>
+                      </div>
+                      <p className='pubic-single-course-list-view-teacher'><span>By </span> {course.teacher_name}</p>
+                    </div>
+
+                    <div className='pubic-single-course-list-view-price'>
+                      <Link>Enroll Now</Link>
+                      <p>${course.price}.00</p>
+                    </div>
+
                   </div>
 
                 </div>
-
+              ))}
               </div>
-            ))}
-            </div>
-          )}
+            )}
 
-          <div className='pubic-all-courses-pagination'>
-            {renderPaginationLinks()}
+            <div className='pubic-all-courses-pagination'>
+              {renderPaginationLinks()}
+            </div>
+          
           </div>
-        
-        </div>
+        )}
         
       </div>
 
