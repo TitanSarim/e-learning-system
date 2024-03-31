@@ -20,6 +20,7 @@ import ProfileDetail from "./components/ProfileDetail/ProfileDetail";
 // user register form userside
 import UserForm from "./components/Admin/User/UserForm";
 import EditCourse from "./components/Admin/Courses/EditCourse";
+import PublicCourseDetail from "./components/Courses/PublicCourseDetail";
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/" element={<Home />} />
 
           <Route path="/courses" element={<AllPublicCourses/>} />
+          <Route path="/courses/course/:slug" element={<PublicCourseDetail/>} />
 
           <Route path="/Student" element={<ProtectedRoutes />}>
             <Route path="/Student/Profile" element={<StudentProfile />} />

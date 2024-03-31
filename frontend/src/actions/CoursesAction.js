@@ -194,7 +194,7 @@ export const AdminGetSingleCourses = (slug) => async (dispatch) => {
 
 
     const { data } = await axios.get(
-      `${BASE_URL}/api/v1//get-single-admin-courses/${slug}`, ConfigApplicationJson
+      `${BASE_URL}/api/v1/get-single-admin-courses/${slug}`, ConfigApplicationJson
     );
 
     dispatch({ type: GET_SINGLE_ADMIN_COURSES_SUCCESS, payload: data.AdminSinglecourse});
@@ -228,6 +228,26 @@ export const PublicGetCourses = (page, filters) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_ALL_PUBLIC_COURSES_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const PublicGetSingleCourse = (slug) => async (dispatch) => {
+
+
+  try {
+
+    dispatch({ type:   GET_SINGLE_PUBLIC_COURSES_REQUEST});
+
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/v1/get-single-public-course/${slug}`);
+
+    dispatch({ type: GET_SINGLE_PUBLIC_COURSES_SUCCESS, payload: data.PubliccoursesObject});
+  } catch (error) {
+    dispatch({
+      type: GET_SINGLE_PUBLIC_COURSES_FAIL,
       payload: error.response.data.message,
     });
   }

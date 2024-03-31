@@ -209,7 +209,7 @@ const AllPublicCourses = () => {
                       <p className='pubic-single-course-box-view-title'>{course.course_title}</p>
                       <p className='pubic-single-course-box-view-teacher'><span>By </span> {course.teacher_name}</p>
                     <div className='pubic-single-course-box-view-price'>
-                      <Link>Enroll Now</Link>
+                      <Link to={`/courses/course/${course.slug}`}>Enroll Now</Link>
                       <p>${course.price}.00</p>
                     </div>
                   </div>
@@ -246,7 +246,7 @@ const AllPublicCourses = () => {
                     </div>
 
                     <div className='pubic-single-course-list-view-price'>
-                      <Link>Enroll Now</Link>
+                      <Link to={`/courses/course/${course.slug}`}>Enroll Now</Link>
                       <p>${course.price}.00</p>
                     </div>
 

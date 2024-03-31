@@ -175,6 +175,7 @@ export const PublicCourseReducer = (state = {Publiccourses: []}, action) => {
 
 
         case GET_ALL_PUBLIC_COURSES_REQUEST:
+        case GET_SINGLE_PUBLIC_COURSES_REQUEST:
             return{
                 loading: true,
             }
@@ -185,12 +186,27 @@ export const PublicCourseReducer = (state = {Publiccourses: []}, action) => {
                 loading: false,
                 Publiccourses: action.payload, 
             }
+        
+        case GET_SINGLE_PUBLIC_COURSES_SUCCESS:
+            return{
+                ...state,
+                loading: false,
+                Publiccourse: action.payload, 
+            }
     
         case GET_ALL_PUBLIC_COURSES_FAIL:
             return{
                 ...state,
                 loading: false,
                 Publiccourses: null,
+                error: action.payload,
+            }
+
+        case GET_SINGLE_PUBLIC_COURSES_FAIL:
+            return{
+                ...state,
+                loading: false,
+                Publiccourse: null,
                 error: action.payload,
             }
 
