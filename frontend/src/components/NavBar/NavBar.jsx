@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select';
 import Logo1 from '../../assets/icons8-book.png'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { TbCategoryPlus } from "react-icons/tb";
 import { IoIosSearch } from "react-icons/io";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoMdHeartEmpty } from "react-icons/io";
+import {addToCart, getCart} from '../../actions/cartAction'
 
 import './NavBar.css'
 
@@ -19,10 +20,22 @@ const searchCategory = [
 
 const NavBar = () => {
 
+  const dispatch = useDispatch()
   const { isAuthenticated, user } = useSelector((state) => state.user);
-  const [selectedCategoryOption, setSelectedCategoryOption] = useState(searchCategory[0]);
+  const {cart } = useSelector((state) => state.cart);
 
-  console.log("selectedCategoryOption", selectedCategoryOption)
+  const [selectedCategoryOption, setSelectedCategoryOption] = useState(searchCategory[0]);
+  const [cartItems, setCartItems] = useState([])
+
+  useEffect(() => {
+    dispatch(getCart())
+  }, [dispatch])
+
+  useEffect(() => {
+    setCartItems(cart)
+  }, [cart])
+
+  console.log("cartItems", cartItems?.length)
 
   const customStyles = {
     control: (provided, state) => ({
@@ -80,8 +93,8 @@ const NavBar = () => {
         </div>
 
         <div className='nav-cart'>
-            <Link><IoMdHeartEmpty size={23}/> <span>0</span></Link>
-            <Link><HiOutlineShoppingCart size={23}/> <span>0</span></Link>
+            <Link><IoMdHeartEmpty size={23}/> {cartItems?.length > 0 ? <span>{cartItems?.length}</span>: <span>0</span>}</Link>
+            <Link to="/Student/Cart"><HiOutlineShoppingCart size={23}/> {cartItems?.length > 0 ? <span>{cartItems?.length}</span>: <span>0</span>}</Link>
         </div>
 
         <div className='navbar-login'>

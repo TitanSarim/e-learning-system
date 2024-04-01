@@ -26,10 +26,12 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "5000000mb" }));
 const user = require("./routes/userRoutes");
 const course = require("./routes/courseRoutes");
 const profile = require("./routes/profileRoutes");
+const cart = require("./routes/cartRoutes");
 
 app.use("/api/v1", user);
 app.use("/api/v1", course);
 app.use("/api/v1", profile);
+app.use("/api/v1", cart);
 
 
 app.use(errorMiddleware);

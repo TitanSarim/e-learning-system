@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Utils/Loader';
 import TeacherAvatar from '../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
 import {PublicGetSingleCourse, clearErrors} from '../../actions/CoursesAction'
+import {addToCart, getCart} from '../../actions/cartAction'
 import { toast } from 'react-toastify';
 import NavBar from '../NavBar/NavBar';
 import moment from 'moment'
@@ -25,6 +26,7 @@ import { FaCcPaypal } from "react-icons/fa";
 import { RiMastercardLine } from "react-icons/ri";
 import { CiBitcoin } from "react-icons/ci";
 import { FaFacebookF, FaXTwitter, FaInstagram, FaWhatsapp  } from "react-icons/fa6";
+import { IoMdHeartEmpty } from "react-icons/io";
 
 import './PublicCourseDetail.css'
 import RelatedPublicCourses from './RelatedPublicCourses';
@@ -41,21 +43,36 @@ const PublicCourseDetail = () => {
     const currentUrl = window.location.origin + location.pathname;
 
     const {Publiccourse, error, loading} = useSelector((state)=>state.PublicCourse);
+    const {cart} = useSelector((state)=>state.cart);
 
     const [courseDetails, setCourseDetails] = useState([])
+    const [cartItems, setCartItems] = useState([])
+    const [isInCart, setIsInCart] = useState(false);
     const [activeTab, setActiveTab] = useState('Overview');
+
+    const checkCart = () => {
+      const found = cartItems?.some(item => item.slug === courseSlug);
+      console.log("cartItems", found)
+      setIsInCart(found);
+  }
 
     useEffect(() => {
       if(error){
         toast.error(error);
         dispatch(clearErrors());
       }
+      // if(cartError){
+      //   toast.error(cartError);
+      //   dispatch(cartClearErrors())
+      // }
       dispatch(PublicGetSingleCourse(courseSlug))
+      dispatch(getCart())
     }, [courseSlug, dispatch, error])
   
     useEffect(() => {
       setCourseDetails(Publiccourse)
-    }, [Publiccourse])
+      setCartItems(cart)
+    }, [Publiccourse, cart])
 
     const handleMainTabClick = (tab) => {
       setActiveTab(tab);
@@ -65,7 +82,19 @@ const PublicCourseDetail = () => {
       navigator.clipboard.writeText(currentUrl);
       toast.success('URL Copyed')      
     };
-    
+    useEffect(() => {
+      checkCart();
+  }, [cartItems]);
+
+
+    const handleAddToCart = () => {
+
+      const formData = {
+        slug: courseSlug
+      }
+      dispatch(addToCart(formData))
+      toast.success('Successfully added')
+    }
   
   return (
 
@@ -204,7 +233,8 @@ const PublicCourseDetail = () => {
           </div>
 
           <div className='public-single-course-content-sidebar-cart'>
-            <button><HiOutlineShoppingCart size={25}/>Add to cart</button>
+            {isInCart === true ? <Link to='/Student/Cart'><HiOutlineShoppingCart size={25}/>Go to cart</Link> : <button onClick={handleAddToCart}><HiOutlineShoppingCart size={25}/>Add to cart</button>}
+            <button><IoMdHeartEmpty size={25}/>Add To Wishlist</button>
           </div>
           
 

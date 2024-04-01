@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
 import AllPublicCourses from './components/Courses/AllPublicCourses'
 import ProtectedRoutes from "./components/Utils/ProtectedRoutes";
-
+import Cart from './components/Cart/Cart'
 import "./App.css";
 import Auth from "./components/Auth/Auth";
 import AdminDashboard from "./components/Admin/Dashboard/AdminDashboard";
@@ -35,6 +35,7 @@ function App() {
 
           <Route path="/Student" element={<ProtectedRoutes />}>
             <Route path="/Student/Profile" element={<StudentProfile />} />
+            <Route path="/Student/Cart" element={<Cart/>}/>
           </Route>
 
           <Route path="/Profile" element={<ProtectedRoutes />}>

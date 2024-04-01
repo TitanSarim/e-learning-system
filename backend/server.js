@@ -16,7 +16,7 @@ if (cluster.isMaster) {
 } else {
   const app = require('./app');
 
-  const server = app.listen(process.env.PORT, () => {
+  app.listen(process.env.PORT, () => {
     console.log(`Worker ${process.pid} is running on http://localhost:${process.env.PORT}`);
   });
 

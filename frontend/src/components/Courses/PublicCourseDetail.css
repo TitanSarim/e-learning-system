@@ -480,7 +480,8 @@
     padding-bottom: 10px;
 }
 
-.public-single-course-content-sidebar-cart>button{
+.public-single-course-content-sidebar-cart>button,
+.public-single-course-content-sidebar-cart>a{
     position: relative;
     display: flex;
     flex-direction: row;
@@ -497,9 +498,11 @@
     text-transform: capitalize;
     font-size: 18px;
     transition: all 500ms;
+    text-decoration: none;
 }
 
-.public-single-course-content-sidebar-cart>button:hover{
+.public-single-course-content-sidebar-cart>button:hover,
+.public-single-course-content-sidebar-cart>a:hover{
     background-color: tomato;
     transform: scale(1.02);
 }

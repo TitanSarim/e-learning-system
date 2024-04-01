@@ -24,10 +24,3 @@ router.route('/get-single-public-course/:slug').get(GetSinglePublicCourse)
 
 module.exports = router
 
-
-// imageUpload.single('thumbnailFile'), 
-
-// filesUpload.fields([{
-//     name: "videoFile",
-//     maxCount: 100,
-// }]),
