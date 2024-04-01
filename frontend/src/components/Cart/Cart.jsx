@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from '../NavBar/NavBar'
-import {getCart} from '../../actions/cartAction'
+import {getCart, deleteFromCart} from '../../actions/cartAction'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Utils/Loader'
 import { GiTireIronCross } from "react-icons/gi";
 import { IoBagCheckOutline } from "react-icons/io5";
 import './Cart.css'
 import { Link } from 'react-router-dom'
+import { HiOutlineShoppingCart } from "react-icons/hi2";
 
 const Cart = () => {
     
@@ -36,6 +37,15 @@ const Cart = () => {
         calculateTotalPrice();
     }, [cartItems]);
     
+    const removeFromCart = (slugToRemove) => {
+        const updatedCartItems = cartItems.filter(item => item.slug !== slugToRemove);
+        setCartItems(updatedCartItems);
+        // const formData = {
+        //     slug: slugToRemove
+        // }
+        dispatch(deleteFromCart(slugToRemove))
+    }
+
     return (
         <div className='courses-cart-container'>
 
@@ -45,6 +55,7 @@ const Cart = () => {
             <div className='courses-cart-wrapper'>
                 <p>Cart:</p>
 
+                {cartItems?.length ? (
                 <div className='courses-cart'>
 
                     <div className='courses-cart-items'>
@@ -62,7 +73,7 @@ const Cart = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <button className='courses-cart-item-button'><GiTireIronCross size={22}/></button>
+                                        <button className='courses-cart-item-button' onClick={() => removeFromCart(item.slug)}><GiTireIronCross size={22}/></button>
                                     </div>
                                 ))}
                             </div>
@@ -97,6 +108,11 @@ const Cart = () => {
                     </div>
 
                 </div>
+                ) : 
+                <div className='empty-cart'>
+                    <p>Your Cart Is Empty<HiOutlineShoppingCart size={70}/></p>
+                    <Link to='/courses'>Add Courses</Link>
+                </div>}
 
             </div>
 

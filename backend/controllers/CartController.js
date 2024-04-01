@@ -2,7 +2,6 @@ const { Op } = require('sequelize');
 const { Cart, Course } = require("../models"); // Adjust the path based on your project structure
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
-const { generateSlug } = require("../middleware/GenerateSlug");
 
 
 const AddToCart = catchAsyncError(async (req, res, next) => {
@@ -89,8 +88,24 @@ const GetCart = catchAsyncError(async (req, res, next) => {
 const removeFromCart = catchAsyncError(async (req, res, next) => {
 
     try {
-        
+        const userId = req.user.userid
+        const slug = req.params.slug
 
+        console.log("userId", userId)
+        await Cart.destroy({ where: {userId: userId, slug: slug}})
+
+        const cart = await Course.findAll({
+            where: {
+                userId: userId 
+            },
+            attributes: ['slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
+        });
+
+        res.status(201).json({
+            success: true,
+            message: 'Cart retrived successfully',
+            cart: cart
+          });
 
     } catch (error) {
         return next(new errorHandler(error, 500));

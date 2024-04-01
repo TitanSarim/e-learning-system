@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 const token = Cookies.get('token');
 
 
-
+console.log("token", token)
 export const ConfigApplicationJson = { headers: 
                   { 
                     "Content-Type": "application/json",
@@ -14,19 +14,3 @@ export const ConfigApplicationJson = { headers:
 
 
 
-
-
-
-
-
-
-
-// const persistData = localStorage.getItem('persist:root');
-// const parsedPersistData = JSON.parse(persistData);
-// const userData = JSON.parse(parsedPersistData.user);
-// if(userData.isAuthenticated === true){
-//   token = userData.user.token;
-//   if (token) {
-//     Cookies.set('token', token, { expires: 7 });
-//   }
-// }

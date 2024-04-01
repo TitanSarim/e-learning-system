@@ -9,7 +9,7 @@ router.route("/add-to-cart").post(isAuthenticatedUser, AddToCart);
 
 router.route("/get-cart").get(isAuthenticatedUser, GetCart);
 
-router.route("/remove-to-cart").delete(isAuthenticatedUser, removeFromCart);
+router.route("/remove-to-cart/:slug").delete(isAuthenticatedUser, removeFromCart);
 
 
 module.exports = router

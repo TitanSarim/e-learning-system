@@ -14,6 +14,7 @@ import {
 
 import axios from "axios";
 import {ConfigApplicationJson} from './Config'
+import Cookies from 'js-cookie';
 
 const BASE_URL = 'http://localhost:3900';
 
@@ -61,10 +62,18 @@ export const getCart = () => async (dispatch) => {
 export const deleteFromCart = (slug) => async (dispatch) => {
 
     try {
+
         dispatch({ type: REMOVE_FROM_CART_REQUEST });
+        const token = Cookies.get('token');
 
+        const config = { headers: 
+            { 
+              "Content-Type": "application/json",
+               Authorization: `Bearer ${token}` 
+            }
+          }
 
-        const { data } = await axios.delete( `${BASE_URL}/api/v1/remove-to-cart`, slug, ConfigApplicationJson);
+        const { data } = await axios.delete( `${BASE_URL}/api/v1/remove-to-cart/${slug}`, ConfigApplicationJson);
 
         dispatch({ type: REMOVE_FROM_CART_SUCCESS, payload: data.cart });
 

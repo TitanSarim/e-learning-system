@@ -258,3 +258,53 @@
     transform: scale(1.02);
     background-color: tomato;
 }
+
+
+.empty-cart{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 100px;
+    gap: 50px;
+}
+
+.empty-cart>p{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.empty-cart>p>svg{
+    background-color: #7F56D9;
+    border-radius: 70px;
+    padding: 24px 24px;
+}
+
+.empty-cart>a{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    background-color: #7F56D9;
+    border-radius: 50px;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    gap: 5px;
+    transition: all 500ms;
+}
+
+.empty-cart>a:hover{
+    transform: scale(1.02);
+    background-color: tomato;
+}

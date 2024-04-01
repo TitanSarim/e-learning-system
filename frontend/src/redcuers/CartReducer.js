@@ -19,6 +19,7 @@ export const cartReducer = (state = {cart: []}, action) =>{
 
         case ADD_TO_CART_REQUEST:
         case GET_FROM_CART_REQUEST:
+        case REMOVE_FROM_CART_REQUEST:
             return{
                 loading: true,
                 isAuthenticated: false,
@@ -26,6 +27,7 @@ export const cartReducer = (state = {cart: []}, action) =>{
 
         case ADD_TO_CART_SUCCESS:
         case GET_FROM_CART_SUCCESS:
+        case REMOVE_FROM_CART_SUCCESS:
             return{
                 ...state,
                 loading: false,
@@ -35,6 +37,7 @@ export const cartReducer = (state = {cart: []}, action) =>{
 
         case ADD_TO_CART_FAIL:
         case GET_FROM_CART_FAIL:
+        case REMOVE_FROM_CART_FAIL:
             return{
                 ...state,
                 loading: false,
