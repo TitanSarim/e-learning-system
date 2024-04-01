@@ -226,3 +226,12 @@
     justify-content: center;
 }
 
+.course-preview-video-popup-loader{
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 740px;
+    margin: auto;
+}
