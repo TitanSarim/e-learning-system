@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation  } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Utils/Loader';
 import TeacherAvatar from '../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
@@ -12,28 +12,38 @@ import { CiCalendar } from "react-icons/ci";
 import StarRatings from 'react-star-ratings';
 import { BsDot } from "react-icons/bs";
 import { PiGraduationCapThin } from "react-icons/pi";
-
-import './PublicCourseDetail.css'
 import CourseDetailOverview from './CourseDetailTabs/CourseDetailOverview';
 import CourseDetailCurriculum from './CourseDetailTabs/CourseDetailCurriculum';
 import CourseDetailPreview from './CourseDetailTabs/CourseDetailPreview';
 import CourseDetailReviews from './CourseDetailTabs/CourseDetailReviews';
+import { HiOutlineChartBar, HiOutlineShoppingCart } from "react-icons/hi2";
+import { GoClock } from "react-icons/go";
+import { PiCertificateThin, PiGraduationCapLight  } from "react-icons/pi";
+import { FiBook } from "react-icons/fi";
+import { RiVisaLine } from "react-icons/ri";
+import { FaCcPaypal } from "react-icons/fa";
+import { RiMastercardLine } from "react-icons/ri";
+import { CiBitcoin } from "react-icons/ci";
+import { FaFacebookF, FaXTwitter, FaInstagram, FaWhatsapp  } from "react-icons/fa6";
+
+import './PublicCourseDetail.css'
+import RelatedPublicCourses from './RelatedPublicCourses';
+
 
 
 
 const PublicCourseDetail = () => {
 
     const dispatch = useDispatch()
-
+    const location = useLocation();
     const { slug } = useParams();
     const courseSlug = slug.substring(slug.lastIndexOf('/') + 1);
+    const currentUrl = window.location.origin + location.pathname;
 
     const {Publiccourse, error, loading} = useSelector((state)=>state.PublicCourse);
 
     const [courseDetails, setCourseDetails] = useState([])
     const [activeTab, setActiveTab] = useState('Overview');
-
-    console.log("courseDetails", courseDetails)
 
     useEffect(() => {
       if(error){
@@ -50,7 +60,12 @@ const PublicCourseDetail = () => {
     const handleMainTabClick = (tab) => {
       setActiveTab(tab);
     };
-  
+
+    const handleCopyLink = () => {
+      navigator.clipboard.writeText(currentUrl);
+      toast.success('URL Copyed')      
+    };
+    
   
   return (
 
@@ -66,6 +81,7 @@ const PublicCourseDetail = () => {
 
 
       {/* content */}
+      {loading ? <div className='public-single-course-loader'><Loader/></div> : (
       <div className='public-single-course-content'>
 
         <div className='public-single-course-content-container'>
@@ -134,14 +150,72 @@ const PublicCourseDetail = () => {
 
         </div>
 
-
+        {/* sidebar */}
         <div className='public-single-course-content-sidebar'>
-          {/* sidebar */}
-          asd
+          
+          <div className='public-single-course-content-sidebar-price'>
+            <p>This course fee:</p>
+            <span>$ {courseDetails?.price}.00</span>
+          </div>
+
+          <div className='public-single-course-content-sidebar-offers'>
+            <p>Course includes:</p>
+            <div className='public-single-course-content-sidebar-offer'>
+              <div><HiOutlineChartBar size={24}/> <p>Level</p></div>
+              <p>{courseDetails?.level}</p>
+            </div>
+            <div className='public-single-course-content-sidebar-offer'>
+              <div><GoClock size={24}/> <p>Duration</p></div>
+              <p>{courseDetails?.hours}</p>
+            </div>
+            <div className='public-single-course-content-sidebar-offer'>
+              <div><FiBook size={24}/> <p>Lessons</p></div>
+              <p>{courseDetails?.course_content?.reduce((total, week) => total + week.videos.length, 0)}</p>
+            </div>
+            <div className='public-single-course-content-sidebar-offer'>
+              <div><PiCertificateThin size={25}/> <p>Certification</p></div>
+              <p>Yes</p>
+            </div>
+            <div className='public-single-course-content-sidebar-offer'>
+              <div><PiGraduationCapLight size={24}/> <p>Graduation</p></div>
+              <p>{Array.isArray(courseDetails?.inrolled_by?.id) ? courseDetails?.inrolled_by?.id.length : 0}</p>
+            </div>
+
+          </div>
+
+          <div className='public-single-course-content-sidebar-payment'>
+            <p>Secure Payments:</p>
+            <div>
+              <RiVisaLine size={30}/>
+              <FaCcPaypal size={36}/>
+              <RiMastercardLine size={28}/>
+              <CiBitcoin size={28}/>
+            </div>
+          </div>
+
+          <div className='public-single-course-content-sidebar-social'>
+            <p>Share this course:</p>
+            <div>
+              <button><FaFacebookF size={26} onClick={handleCopyLink}/></button>
+              <button><FaInstagram  size={27} onClick={handleCopyLink}/></button>
+              <button><FaXTwitter size={27} onClick={handleCopyLink}/></button>
+              <button><FaWhatsapp size={27} onClick={handleCopyLink}/></button>
+            </div>
+          </div>
+
+          <div className='public-single-course-content-sidebar-cart'>
+            <button><HiOutlineShoppingCart size={25}/>Add to cart</button>
+          </div>
+          
+
         </div>
-
-
+        
       </div>
+
+      )}
+
+      <RelatedPublicCourses relatedCourses={courseDetails?.relatedCourses}/>
+
 
     </div>
   )
