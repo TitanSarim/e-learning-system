@@ -91,12 +91,17 @@ const removeFromCart = catchAsyncError(async (req, res, next) => {
         const userId = req.user.userid
         const slug = req.params.slug
 
-        console.log("userId", userId)
         await Cart.destroy({ where: {userId: userId, slug: slug}})
+
+        const cartItems = await Cart.findAll({where: {userId: userId}})
+
+        const slugs = cartItems.map(cartItem => cartItem.slug);
 
         const cart = await Course.findAll({
             where: {
-                userId: userId 
+                slug: {
+                    [Op.in]: slugs 
+                }
             },
             attributes: ['slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
         });
