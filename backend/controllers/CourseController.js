@@ -1,4 +1,5 @@
-const { Course } = require("../models"); // Adjust the path based on your project structure
+const { Op, Sequelize } = require('sequelize');
+const { Course, UserProfile } = require("../models"); // Adjust the path based on your project structure
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
@@ -437,6 +438,116 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
 
 })
 
+const GetSinglePublicCourse  = catchAsyncError(async (req, res, next) => {
+
+    const slug = req.params.slug;
+
+    try {
+
+        const PublicSinglecourse  = await Course.findOne({ where: { slug: slug } });
+
+        if (!PublicSinglecourse) {
+            return res.status(404).json({ error: "Course not found" });
+        }
+
+        // ! related course starts
+         // Get the related courses by teacher's name
+         const relatedCoursesByTeacher = await Course.findAll({ 
+            where: { 
+                teacher_name: PublicSinglecourse.teacher_name, 
+                id: { [Op.not]: PublicSinglecourse.id } 
+            },
+            order: Sequelize.literal('rand()'),
+            limit: 2 
+        });
+
+         // Get related courses by category
+         const relatedCoursesByCategory = await Course.findAll({ 
+            where: { 
+                category: PublicSinglecourse.category, 
+                id: { [Op.not]: PublicSinglecourse.id }
+            },
+            order: Sequelize.literal('rand()'), 
+            limit: 2
+        });
+    
+        let additionalCoursesByTeacher = [];
+        if (relatedCoursesByCategory.length < 1) {
+            additionalCoursesByTeacher = await Course.findAll({ 
+                where: { 
+                    teacher_name: PublicSinglecourse.teacher_name, 
+                    id: { [Op.not]: PublicSinglecourse.id } 
+                },
+                order: Sequelize.literal('rand()'), // Randomize the order
+                limit: 2 
+            });
+        }
+
+        const relatedCourses = [...relatedCoursesByTeacher, ...relatedCoursesByCategory, ...additionalCoursesByTeacher];
+
+        // Ensure that exactly 3 courses are sent to the frontend
+        const finalRelatedCourses = relatedCourses.slice(0, 4);
+
+        // Shuffle the final related courses array to randomize the order
+        finalRelatedCourses.sort(() => Math.random() - 0.5);
+
+        //! related course ends
+        
+
+        const TeacherAvatar = await UserProfile.findOne({ 
+            where: { userId: PublicSinglecourse.teacherId },
+            attributes: ['avatar'] 
+        });
+
+        let featuredVideos = [];
+
+        if (PublicSinglecourse && PublicSinglecourse.course_content && PublicSinglecourse.course_content.data) {
+            featuredVideos = PublicSinglecourse.course_content.data.reduce((acc, week) => {
+                const featuredWeekVideos = week.videos.filter(video => video.isFeatured);
+                return acc.concat(featuredWeekVideos);
+            }, []);
+        }
+
+        const PubliccoursesObject = {
+            id: PublicSinglecourse.id || '',
+            teacherId: PublicSinglecourse.teacherId || '',
+            TeacherAvatar: TeacherAvatar || '',
+            slug: PublicSinglecourse.slug || '',
+            course_title: PublicSinglecourse.course_title || '',
+            category: PublicSinglecourse.category || '',
+            tags: PublicSinglecourse.tags || '',
+            timeline: PublicSinglecourse.timeline || '',
+            course_desc: PublicSinglecourse.course_desc.desc || '',
+            course_thumbnail: PublicSinglecourse.course_thumbnail.url || '',
+            course_content: PublicSinglecourse.course_content.data || '',
+            featuredVideos: featuredVideos,
+            views: PublicSinglecourse.views || '',
+            price: PublicSinglecourse.price || '',
+            language: PublicSinglecourse.language || '',
+            level: PublicSinglecourse.level || '',
+            hours: PublicSinglecourse.hours || '',
+            inrolled_by: PublicSinglecourse.inrolled_by || '',
+            teacher_name: PublicSinglecourse.teacher_name || '',
+            comments: PublicSinglecourse.comments || '',
+            reviews: JSON.parse(PublicSinglecourse.reviews) || '',
+            status: PublicSinglecourse.status || '',
+            createdAt: PublicSinglecourse.createdAt || '',
+            updatedAt: PublicSinglecourse.updatedAt || '',
+            relatedCourses: finalRelatedCourses || '',
+          };
+          
+        res.status(201).json({
+            success: true,
+            message: 'Course retrived successfully',
+            PubliccoursesObject: PubliccoursesObject,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
 module.exports = {
     createCourse,
     GetAllCourseAdmin,
@@ -445,4 +556,5 @@ module.exports = {
     UpdateCourseStatus,
     deleteCourse,
     GetAllPublicCourses,
+    GetSinglePublicCourse
 }

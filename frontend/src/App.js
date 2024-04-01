@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
 import AllPublicCourses from './components/Courses/AllPublicCourses'
 import ProtectedRoutes from "./components/Utils/ProtectedRoutes";
-
+import Cart from './components/Cart/Cart'
 import "./App.css";
 import Auth from "./components/Auth/Auth";
 import AdminDashboard from "./components/Admin/Dashboard/AdminDashboard";
@@ -20,6 +20,7 @@ import ProfileDetail from "./components/ProfileDetail/ProfileDetail";
 // user register form userside
 import UserForm from "./components/Admin/User/UserForm";
 import EditCourse from "./components/Admin/Courses/EditCourse";
+import PublicCourseDetail from "./components/Courses/PublicCourseDetail";
 
 function App() {
 
@@ -30,9 +31,11 @@ function App() {
           <Route path="/" element={<Home />} />
 
           <Route path="/courses" element={<AllPublicCourses/>} />
+          <Route path="/courses/course/:slug" element={<PublicCourseDetail/>} />
 
           <Route path="/Student" element={<ProtectedRoutes />}>
             <Route path="/Student/Profile" element={<StudentProfile />} />
+            <Route path="/Student/Cart" element={<Cart/>}/>
           </Route>
 
           <Route path="/Profile" element={<ProtectedRoutes />}>

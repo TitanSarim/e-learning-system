@@ -1,16 +1,62 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import Select from 'react-select';
+import Logo1 from '../../assets/icons8-book.png'
+import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { TbCategoryPlus } from "react-icons/tb";
+import { IoIosSearch } from "react-icons/io";
+import { HiOutlineShoppingCart } from "react-icons/hi2";
+import { IoMdHeartEmpty } from "react-icons/io";
+import {addToCart, getCart} from '../../actions/cartAction'
 
 import './NavBar.css'
 
-import Logo1 from '../../assets/icons8-book.png'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+
+const searchCategory = [
+  { value: 'Courses', label: 'Courses' },
+  { value: 'Jobs', label: 'Jobs' },
+];
+
 
 const NavBar = () => {
 
+  const dispatch = useDispatch()
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const {cart } = useSelector((state) => state.cart);
 
-  console.log("isAuthenticated", isAuthenticated)
+  const [selectedCategoryOption, setSelectedCategoryOption] = useState(searchCategory[0]);
+  const [cartItems, setCartItems] = useState([])
+
+  useEffect(() => {
+    dispatch(getCart())
+  }, [dispatch])
+
+  useEffect(() => {
+    setCartItems(cart)
+  }, [cart])
+
+  console.log("cartItems", cartItems?.length)
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: 120,
+      backgroundColor: 'transparent',
+      border: state.isFocused ? 'none' : 'none',
+      outline: state.isFocused ? 'none' : 'none',
+      borderRadius: 50, 
+      boxShadow: 'none',
+      cursor: "pointer"
+      }),
+      singleValue: (provided) => ({
+        ...provided,
+        color: 'white', 
+      }),  
+      placeholder: (provided) => ({
+        ...provided,
+        color: 'rgb(163, 163, 163)', 
+      }),
+  };
 
   return (
     <div className='navbar-container'>
@@ -27,6 +73,29 @@ const NavBar = () => {
             <Link to='/'>Contact</Link>
         </div>
 
+      <div className='nav-search-cart-login'>
+
+        <div className='nav-search-cart'>
+          <div className='nav-search'>
+            <TbCategoryPlus size={23}/>
+            <Select
+              defaultValue={selectedCategoryOption} 
+              onChange={(selectedOption) => setSelectedCategoryOption(selectedOption.value)}
+              options={searchCategory}
+              styles={customStyles}
+              
+            />
+            <span></span>
+            <input type='text' placeholder={`Search for ${selectedCategoryOption?.value}`}/>
+            <button><IoIosSearch size={23}/></button>
+          </div>
+
+        </div>
+
+        <div className='nav-cart'>
+            <Link><IoMdHeartEmpty size={23}/> {cartItems?.length > 0 ? <span>{cartItems?.length}</span>: <span>0</span>}</Link>
+            <Link to="/Student/Cart"><HiOutlineShoppingCart size={23}/> {cartItems?.length > 0 ? <span>{cartItems?.length}</span>: <span>0</span>}</Link>
+        </div>
 
         <div className='navbar-login'>
           {isAuthenticated && user?.role === 'Student' && (
@@ -39,6 +108,8 @@ const NavBar = () => {
             <Link to='/login'>Login</Link>
           )}
         </div>
+
+      </div>
 
     </div>
   )

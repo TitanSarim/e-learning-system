@@ -1,6 +1,6 @@
 const express = require('express')
 const {isAuthenticatedUser} = require('../middleware/auth')
-const {createCourse, UpdateCourse, GetAllCourseAdmin, GetSingleCourseAdmin, UpdateCourseStatus, deleteCourse, GetAllPublicCourses} = require('../controllers/CourseController')
+const {createCourse, UpdateCourse, GetAllCourseAdmin, GetSingleCourseAdmin, UpdateCourseStatus, deleteCourse, GetAllPublicCourses, GetSinglePublicCourse} = require('../controllers/CourseController')
 
 
 const router = express.Router();
@@ -20,12 +20,7 @@ router.route("/get-single-admin-courses/:slug").get(isAuthenticatedUser, GetSing
 // public routes
 router.route('/get-all-public-courses').get(GetAllPublicCourses)
 
+router.route('/get-single-public-course/:slug').get(GetSinglePublicCourse)
+
 module.exports = router
 
-
-// imageUpload.single('thumbnailFile'), 
-
-// filesUpload.fields([{
-//     name: "videoFile",
-//     maxCount: 100,
-// }]),
