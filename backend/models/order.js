@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     total: DataTypes.INTEGER,
     gst: DataTypes.INTEGER,
     total_amount: DataTypes.INTEGER,
-    payment_method: DataTypes.STRING,
+    payment_method: DataTypes.JSON,
   }, {
     sequelize,
     modelName: 'Order',

@@ -1,0 +1,121 @@
+.make-order-form{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #311c5c;
+    width: 100%;
+}
+
+.make-order-form-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 100px;
+    margin-bottom: 80px;
+    min-height: 80vh;
+}
+
+.make-order-form-container>p{
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: white;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.make-order-form-wrapper{
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 60px;
+}
+
+.make-order-stripe{
+    background-color: #381D74;
+    width: 20%;
+    padding: 20px 20px;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.make-order-stripe>form{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 25px;
+}
+.make-order-stripe-input{
+    position: relative;
+    display: inline;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-bottom: 1px solid white;
+    padding-bottom: 5px;
+}
+
+.make-order-stripe-input>p{
+    color: rgba(255, 255, 255, 0.726);
+    font-size: 15px;
+    
+}
+
+.make-order-stripe-input>input{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.836);
+    font-size: 14px;
+}
+
+.make-order-stripe-input>input::placeholder{
+    color: rgba(255, 255, 255, 0.342);
+}
+
+.make-order-stripe-input-expiry{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 6px;
+}
+
+
+.make-order-stripe>form>button{
+    background-color: #7F56D9;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    color: white;
+    margin: auto;
+    cursor: pointer;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: all 500ms;
+}
+
+.make-order-stripe>form>button:hover{
+    transform: scale(1.03);
+    background-color: #7843eb;
+}

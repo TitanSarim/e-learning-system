@@ -21,6 +21,7 @@ import ProfileDetail from "./components/ProfileDetail/ProfileDetail";
 import UserForm from "./components/Admin/User/UserForm";
 import EditCourse from "./components/Admin/Courses/EditCourse";
 import PublicCourseDetail from "./components/Courses/PublicCourseDetail";
+import MakeOrder from "./components/Cart/MakeOrder.jsx/MakeOrder";
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/Student" element={<ProtectedRoutes />}>
             <Route path="/Student/Profile" element={<StudentProfile />} />
             <Route path="/Student/Cart" element={<Cart/>}/>
+            <Route path="/Student/make-order" element={<MakeOrder/>}/>
           </Route>
 
           <Route path="/Profile" element={<ProtectedRoutes />}>

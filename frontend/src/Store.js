@@ -8,6 +8,7 @@ import {userReducer, AdminUserReducer, ForgetPasswordReducer} from './redcuers/U
 import {AdminCourseReducer, PublicCourseReducer} from './redcuers/CourseReducer'
 import {myPorfileReducer} from './redcuers/ProfileReducer'
 import {cartReducer} from './redcuers/CartReducer'
+import {orderReducer} from './redcuers/OrderReducer'
 
 const reducer = combineReducers({
 
@@ -18,6 +19,7 @@ const reducer = combineReducers({
 
     myPorfile: myPorfileReducer,
     cart: cartReducer,
+    order: orderReducer,
 
     PublicCourse: PublicCourseReducer
 

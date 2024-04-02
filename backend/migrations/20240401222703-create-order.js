@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       payment_method:{
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       createdAt: {
         allowNull: false,

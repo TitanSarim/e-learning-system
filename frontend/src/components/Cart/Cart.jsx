@@ -100,7 +100,7 @@ const Cart = () => {
                                         <span>${totalPrice.toFixed(2)}</span>
                                     </div>
 
-                                    <Link className='courses-cart-checkout-btn'><IoBagCheckOutline size={24}/>Checkout</Link>
+                                    <Link className='courses-cart-checkout-btn' to={'/Student/make-order'}><IoBagCheckOutline size={24}/>Checkout</Link>
                                 </div>
 
                             </div>
