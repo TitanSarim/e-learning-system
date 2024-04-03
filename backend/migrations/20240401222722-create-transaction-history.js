@@ -18,11 +18,8 @@ module.exports = {
       total_amount:{
         type: Sequelize.INTEGER
       },
-      card_number:{
-        type: Sequelize.INTEGER
-      },
-      isSucceeded:{
-        type: Sequelize.STRING
+      payment_method:{
+        type: Sequelize.JSON
       },
       createdAt: {
         allowNull: false,

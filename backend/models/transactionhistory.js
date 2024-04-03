@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     orderId: DataTypes.INTEGER,
     total_amount: DataTypes.INTEGER,
-    card_number: DataTypes.INTEGER,
-    isSucceeded: DataTypes.STRING
+    payment_method: DataTypes.JSON,
+
   }, {
     sequelize,
     modelName: 'TransactionHistory',

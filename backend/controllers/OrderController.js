@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const {Order, TransactionHistory} = require("../models"); 
+const {Order, TransactionHistory, Cart, Course} = require("../models"); 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
@@ -35,7 +35,7 @@ const OrderController = catchAsyncError(async (req, res, next) => {
 
     try {
         const userId = req.user.userid
-        const {course_ids, total, gst, total_amount, fullName, payment_method} = req.body
+        const {slugs, course_ids, total, gst, total_amount, payment_method} = req.body
 
         const orderObject = await Order.create({
             userId: userId,
@@ -43,21 +43,29 @@ const OrderController = catchAsyncError(async (req, res, next) => {
             total: total,
             gst: gst,
             total_amount: total_amount,
-            payment_method: payment_method,
         });
 
         const transctionHistory = await TransactionHistory.create({
             userId: userId,
             orderId: orderObject.id,
             total_amount: total_amount,
-            card_number: 12312313,
-            isSucceeded: true
+            payment_method: payment_method
         })
 
         const order = {
             orderObject: orderObject,
             transctionHistory: transctionHistory
         }
+
+        slugs.forEach(async slug => {
+            await Cart.destroy({ where: { userId: userId, slug: slug }});
+
+            const existingData = await Course.findOne({ where: { slug: slug } });
+            let enrolledByIds = existingData.inrolled_by.id || [];
+            enrolledByIds.push(userId);
+            await Course.update({ inrolled_by: { id: enrolledByIds } }, { where: { slug: slug } });
+        });
+
 
         res.status(201).json({
             success: true,

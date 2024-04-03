@@ -20,16 +20,52 @@
     min-height: 80vh;
 }
 
-.make-order-form-container>p{
-    width: 100%;
+.make-order-form-payment-details{
+    width: 80%;
+    background-color: #381D74;
+    border-radius: 10px;
     position: relative;
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    color: white;
-    font-size: 26px;
-    font-weight: 600;
+    flex-direction: column;
+    padding: 25px 12px;
+    gap: 20px;
 }
+
+.make-order-form-payment-details>p{
+    color: white;
+    font-size: 23px;
+    font-weight: 500;
+}
+
+.make-order-form-payment-details>div{
+    position: relative;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.make-order-form-payment-details>div>div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.make-order-form-payment-details>div>div>p{
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.make-order-form-payment-details>div>div>span{
+    color: white;
+    font-size: 20px;
+    text-transform: capitalize;
+}
+
+/*  */
 
 .make-order-form-wrapper{
     width: 100%;
@@ -42,23 +78,154 @@
 
 .make-order-stripe{
     background-color: #381D74;
-    width: 20%;
+    width: 80%;
     padding: 20px 20px;
     border-radius: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+}
+/*  */
+.make-order-cards-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
 }
 
+.make-order-cards-container>p{
+    font-size: 21px;
+    color: white;
+    font-weight: 500;
+}
 
-.make-order-stripe>form{
+.make-order-cards-container>span{
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.651);
+    font-weight: 400;
+}
+
+.make-order-cards{
     position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    gap: 3px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.801);
+}
+
+.make-order-cards>p{
+    color: rgba(255, 255, 255, 0.815);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.make-order-cards>div{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+.make-order-cards>div button{
+    background-color: transparent;
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 2px 25px;
+    cursor: pointer;
+    transition: ease-in-out 500ms;
+}
+
+.make-order-cards>div button:hover{
+    border: 1px solid tomato !important;
+}
+
+.make-order-cards-active{
+    border: 1px solid tomato !important;
+    background-color: tomato !important;
+}
+
+.make-order-cards>div button>img{
+    width: 100px;
+}
+
+.make-order-e-wallets{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    gap: 3px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.801);
+}
+
+.make-order-e-wallets>p{
+    color: rgba(255, 255, 255, 0.815);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.make-order-e-wallets>div{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+.make-order-e-wallets>div button{
+    background-color: transparent;
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 2px 25px;
+    cursor: pointer;
+    transition: ease-in-out 500ms;
+}
+.make-order-e-wallets>div button:hover{
+    border: 1px solid tomato !important;
+}
+.make-order-e-wallets>div button>img{
+    width: 100px;
+}
+
+/*  */
+
+.make-order-stripe-form-container{
+    width: 100%;
+    margin-top: 40px;
+}
+
+.make-order-stripe-form-container>p{
+    color: rgba(255, 255, 255, 0.815);
+    font-size: 20px;
+    font-weight: 500;
+}
+.make-order-stripe-form-container>span{
+    color: rgba(255, 255, 255, 0.596);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.make-order-stripe-form-container>form{
+    position: relative;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 25px;
+    padding: 40px 2px 10px 2px;
 }
 .make-order-stripe-input{
     position: relative;
@@ -67,7 +234,6 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    border-bottom: 1px solid white;
     padding-bottom: 5px;
 }
 
@@ -77,12 +243,26 @@
     
 }
 
-.make-order-stripe-input>input{
+.make-order-stripe-input>span{
+    border: 1px solid rgba(255, 255, 255, 0.726);
+    border-radius: 10px;
+    padding: 20px 8px;
+    position: relative;
+}
+
+.make-order-stripe-input>span img{
+    position: absolute;
+    left: 90%;
+    bottom: 15px;
+}
+
+.make-order-stripe-input>span>input{
     background-color: transparent;
     outline: none;
     border: none;
     color: rgba(255, 255, 255, 0.836);
-    font-size: 14px;
+    font-size: 16px;
+    width: 100%;
 }
 
 .make-order-stripe-input>input::placeholder{
@@ -98,7 +278,7 @@
 }
 
 
-.make-order-stripe>form>button{
+.make-order-stripe-form-container>form>button{
     background-color: #7F56D9;
     position: relative;
     display: flex;
@@ -110,12 +290,36 @@
     margin: auto;
     cursor: pointer;
     border-radius: 50px;
-    padding: 10px 20px;
-    font-size: 16px;
+    height: 50px;
+    width: 120px;
+    font-size: 18px;
     transition: all 500ms;
 }
 
-.make-order-stripe>form>button:hover{
+
+
+.make-order-stripe-form-container>form>button:hover{
     transform: scale(1.03);
     background-color: #7843eb;
+}
+
+.make-order-stripe-form-container>form>button>span{
+    background-color: #7F56D9;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    color: white;
+    margin: auto;
+    border-radius: 50px;
+    height: 50px;
+    width: 120px;
+    font-size: 18px;
+}
+.make-order-stripe-form-container>form>button>span>p{
+    position: relative;
+    top: 13px;
+    right: 7px;
 }

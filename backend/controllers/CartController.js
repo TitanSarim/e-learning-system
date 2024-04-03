@@ -37,7 +37,7 @@ const AddToCart = catchAsyncError(async (req, res, next) => {
                     [Op.in]: slugs 
                 }
             },
-            attributes: ['slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
+            attributes: ['id', 'slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
         });
 
         res.status(201).json({
@@ -68,7 +68,7 @@ const GetCart = catchAsyncError(async (req, res, next) => {
                     [Op.in]: slugs 
                 }
             },
-            attributes: ['slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
+            attributes: ['id', 'slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
         });
 
         res.status(201).json({
@@ -101,7 +101,7 @@ const removeFromCart = catchAsyncError(async (req, res, next) => {
                     [Op.in]: slugs 
                 }
             },
-            attributes: ['slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
+            attributes: ['id', 'slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
         });
 
         res.status(201).json({

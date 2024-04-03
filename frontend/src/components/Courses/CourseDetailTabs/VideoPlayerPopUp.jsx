@@ -21,9 +21,9 @@ const VideoPlayerPopUp = ({ setVideoPlayerOpen, videoUrl, videoTitle }) => {
     <div className='course-preview-video-popup-container'>
     <p>{videoTitle} <button onClick={handleClose}><GiTireIronCross size={21}/></button></p>
       <div className='course-preview-video-popup-video-player'>
-        {isLoading ? <div className='course-preview-video-popup-loader'><Loader/></div> : (
+        {isLoading && <div className='course-preview-video-popup-loader'><Loader/></div>}
           <MediaPlayer
-            title="Sprite Fight"
+            title={videoTitle}
             src={videoUrl}
             onLoadedData={handleLoadedData}
           >
@@ -33,7 +33,7 @@ const VideoPlayerPopUp = ({ setVideoPlayerOpen, videoUrl, videoTitle }) => {
               controls={['play', 'fast-forward', 'restart', 'duration', 'progress','current-time', 'mute+volume', 'fullscreen', 'settings']}
             />
           </MediaPlayer>
-        )}
+        
       </div>
     </div>
   );

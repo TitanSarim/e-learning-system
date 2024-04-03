@@ -35,6 +35,7 @@ function App() {
           <Route path="/courses/course/:slug" element={<PublicCourseDetail/>} />
 
           <Route path="/Student" element={<ProtectedRoutes />}>
+            <Route path="/Student/class/:slug" element={<ClassRoom />} />
             <Route path="/Student/Profile" element={<StudentProfile />} />
             <Route path="/Student/Cart" element={<Cart/>}/>
             <Route path="/Student/make-order" element={<MakeOrder/>}/>
@@ -62,10 +63,10 @@ function App() {
             path="/reset/password/:token/:id"
             element={<ResetPassword />}
           />
+
           {/* will shift to admin or other route soon */}
           <Route path="/create/new/user/:token/:id" element={<UserForm />}/>
-          {/* Route Path is Temporary */}
-          <Route path="/class" element={<ClassRoom />} />
+
         </Routes>
       </BrowserRouter>
     </>

@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     inrolled_by: DataTypes.JSON,
     teacher_name: DataTypes.STRING,
     comments: DataTypes.JSON,
-    reviews: DataTypes.JSON,
+    reviews: DataTypes.TEXT,
     status: DataTypes.STRING,
   }, {
     sequelize,

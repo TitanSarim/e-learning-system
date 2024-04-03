@@ -22,7 +22,8 @@ const Cart = () => {
         let totalPriceWithoutTax = cartItems?.reduce((acc, item) => acc + item.price, 0);
         let taxAmount = totalPriceWithoutTax * taxRate;
         let totalPriceWithTax = totalPriceWithoutTax + taxAmount;
-        setTotalPrice(totalPriceWithTax);
+        setTotalPrice(Math.floor(totalPriceWithTax));
+
     }
 
     useEffect(() => {
@@ -40,9 +41,6 @@ const Cart = () => {
     const removeFromCart = (slugToRemove) => {
         const updatedCartItems = cartItems.filter(item => item.slug !== slugToRemove);
         setCartItems(updatedCartItems);
-        // const formData = {
-        //     slug: slugToRemove
-        // }
         dispatch(deleteFromCart(slugToRemove))
     }
 

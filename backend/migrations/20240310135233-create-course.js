@@ -61,7 +61,7 @@ module.exports = {
         type: Sequelize.JSON
       },
       reviews:{
-        type: Sequelize.JSON
+        type: Sequelize.TEXT
       },
       status:{
         type: Sequelize.STRING

@@ -35,10 +35,10 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
             language:language,
             level:level,
             hours:hours,
-            inrolled_by: { id: ["1", "2"]},
+            inrolled_by: { id: []},
             teacher_name: teacherName,
             comments: "0",
-            reviews: "0",
+            reviews: 0,
             status: status
         })
 
@@ -66,7 +66,7 @@ const UpdateCourse  = catchAsyncError(async (req, res, next) => {
 
         const slug = generateSlug(courseTitle, userId)
 
-        const updatedCourses  = await Course.update({
+        await Course.update({
             teacherId: userId,
             slug: slug,
             course_title: courseTitle,
@@ -80,15 +80,11 @@ const UpdateCourse  = catchAsyncError(async (req, res, next) => {
             course_content: {
                 data: videoUrls
             },
-            views: "0",
             price: price,
             language:language,
             level:level,
             hours:hours,
-            inrolled_by: { id: ["1", "2"]},
             teacher_name: teacherName,
-            comments: "0",
-            reviews: "0",
             status: status
         }, {where: {slug: CourseUrlslug}})
 
@@ -299,7 +295,6 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
     }
 
 })
-
 
 // Public All Courses
 const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
@@ -547,6 +542,64 @@ const GetSinglePublicCourse  = catchAsyncError(async (req, res, next) => {
     }
 
 })
+
+
+// Get User Inrolled Course --Single Course
+const GetSingleInrolledCourse  = catchAsyncError(async (req, res, next) => {
+
+    const slug = req.params.slug;
+
+    try {
+
+        const SingleInrolledCourse  = await Course.findOne({ where: { slug: slug } });
+
+        if (!SingleInrolledCourse ) {
+            return res.status(404).json({ error: "Course not found" });
+        }
+
+        const TeacherAvatar = await UserProfile.findOne({ 
+            where: { userId: SingleInrolledCourse.teacherId },
+            attributes: ['avatar'] 
+        })
+
+        const InrolledCourses  = {
+            id: SingleInrolledCourse .id || '',
+            teacherId: SingleInrolledCourse .teacherId || '',
+            TeacherAvatar: TeacherAvatar || '',
+            slug: SingleInrolledCourse .slug || '',
+            course_title: SingleInrolledCourse .course_title || '',
+            category: SingleInrolledCourse .category || '',
+            tags: SingleInrolledCourse .tags || '',
+            timeline: SingleInrolledCourse .timeline || '',
+            course_desc: SingleInrolledCourse .course_desc.desc || '',
+            course_thumbnail: SingleInrolledCourse .course_thumbnail.url || '',
+            course_content: SingleInrolledCourse .course_content.data || '',
+            views: SingleInrolledCourse .views || '',
+            price: SingleInrolledCourse .price || '',
+            language: SingleInrolledCourse .language || '',
+            level: SingleInrolledCourse .level || '',
+            hours: SingleInrolledCourse .hours || '',
+            inrolled_by: SingleInrolledCourse .inrolled_by || '',
+            teacher_name: SingleInrolledCourse .teacher_name || '',
+            comments: SingleInrolledCourse .comments || '',
+            reviews: SingleInrolledCourse .reviews || '',
+            status: SingleInrolledCourse .status || '',
+            createdAt: SingleInrolledCourse .createdAt || '',
+            updatedAt: SingleInrolledCourse .updatedAt || '',
+          };
+          
+        res.status(201).json({
+            success: true,
+            message: 'Course retrived successfully',
+            InrolledCourses: InrolledCourses,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
 
 module.exports = {
     createCourse,
