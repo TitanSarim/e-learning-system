@@ -1,5 +1,5 @@
 const { Op, Sequelize } = require('sequelize');
-const { Course, UserProfile } = require("../models"); // Adjust the path based on your project structure
+const { Course, UserProfile, Order } = require("../models"); // Adjust the path based on your project structure
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
@@ -249,7 +249,6 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
     const slug = req.params.slug;
 
-    console.log("slug", slug)
 
     try {
 
@@ -547,9 +546,9 @@ const GetSinglePublicCourse  = catchAsyncError(async (req, res, next) => {
 // Get User Inrolled Course --Single Course
 const GetSingleInrolledCourse  = catchAsyncError(async (req, res, next) => {
 
-    const slug = req.params.slug;
-
     try {
+
+        const {slug} = req.body
 
         const SingleInrolledCourse  = await Course.findOne({ where: { slug: slug } });
 
@@ -600,6 +599,64 @@ const GetSingleInrolledCourse  = catchAsyncError(async (req, res, next) => {
 
 })
 
+// Get User Inrolled Course --Sll Courses
+const GetAllInrolledCourse  = catchAsyncError(async (req, res, next) => {
+
+    const userId = req.user.userid
+
+    try {
+
+        const orders = await Order.findAll({ where: { userId: userId } });
+
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ error: "No orders found for this user" });
+        }
+
+        const courseIds = orders.flatMap(order => order.course_ids);
+
+        const courses = await Course.findAll({ where: { id: courseIds } });
+
+        if (!courses || courses.length === 0) {
+            return res.status(404).json({ error: "No courses found" });
+        }
+
+        const InrolledCourses  = courses.map(course => ({
+            id: course.id || '',
+            teacherId: course.teacherId || '',
+            slug: course.slug || '',
+            course_title: course.course_title || '',
+            category: course.category || '',
+            tags: course.tags || '',
+            timeline: course.timeline || '',
+            course_desc: course.course_desc.desc || '',
+            course_thumbnail: course.course_thumbnail.url || '',
+            course_content: course.course_content.data || '',
+            views: course.views || '',
+            price: course.price || '',
+            language: course.language || '',
+            level: course.level || '',
+            hours: course.hours || '',
+            inrolled_by: course.inrolled_by || '',
+            teacher_name: course.teacher_name || '',
+            comments: course.comments || '',
+            reviews: JSON.parse(course.reviews) || '',
+            status: course.status || '',
+            createdAt: course.createdAt || '',
+            updatedAt: course.updatedAt || '',
+        }));
+          
+        res.status(201).json({
+            success: true,
+            message: 'Course retrived successfully',
+            InrolledCourses: InrolledCourses,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
 
 module.exports = {
     createCourse,
@@ -609,5 +666,7 @@ module.exports = {
     UpdateCourseStatus,
     deleteCourse,
     GetAllPublicCourses,
-    GetSinglePublicCourse
+    GetSinglePublicCourse,
+    GetSingleInrolledCourse,
+    GetAllInrolledCourse
 }

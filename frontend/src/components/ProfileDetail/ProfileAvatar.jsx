@@ -5,6 +5,9 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import ButtonLoader from '../Utils/ButtonLoader'
+import { ConfigApplicationFormData } from '../../actions/Config';
+
+
 const ProfileAvatar = ({setEditorOpen,  avatar, setAvatar }) => {
 
     const imageRef = useRef(null);
@@ -64,11 +67,7 @@ const ProfileAvatar = ({setEditorOpen,  avatar, setAvatar }) => {
         }
 
         try {
-            const response = await axios.post(`${BASE_URL}/api/v1/upload-avatar`, fileFormData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            const response = await axios.post(`${BASE_URL}/api/v1/upload-avatar`, fileFormData, ConfigApplicationFormData);
             console.log("response?.data.", response?.data?.avatarUrl)
             if(response?.data.success === true) {
                 toast.success("Image Uploaded")

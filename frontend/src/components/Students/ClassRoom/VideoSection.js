@@ -4,7 +4,9 @@ import userImage from "../../../assets/profile.png"
 import { IoEyeOutline } from "react-icons/io5";
 
 
-const VideoSection = () => {
+const VideoSection = ({selectVideToPlay, courseDetails}) => {
+
+  console.log("selectVideToPlay", selectVideToPlay)
   return (
     <section className='class-video-container'>
       <div className='class-video-section'>
@@ -17,15 +19,15 @@ const VideoSection = () => {
             <div className='class-video-section-contant-a'>
                 <div className='class-video-section-contant-a-1'>
 
-                  <h2>Introduction to Python Programming</h2>
+                  <h2>{selectVideToPlay?.title}</h2>
 
                     <div className='class-video-section-contant-user'>
-                      <img src={userImage} alt="" />
-                      <p className='class-video-section-contant-user-name'> John smit</p>
+                      <img src={courseDetails?.TeacherAvatar?.avatar?.url} alt="" />
+                      <p className='class-video-section-contant-user-name'> {courseDetails?.teacher_name}</p>
 
-                      <div className='dot'></div>
+                      {/* <div className='dot'></div>
 
-                      <p className='class-video-section-contant-user-rank'>Developer</p>  
+                      <p className='class-video-section-contant-user-rank'>Developer</p>   */}
 
                       <div className='dot'></div>
 
@@ -36,7 +38,7 @@ const VideoSection = () => {
 
                 <div className='class-video-section-contant-a-2'>
                   <IoEyeOutline size={20}/>
-                  <p>830 views</p>
+                  <p>{courseDetails?.views} views</p>
                 </div>
 
             </div>
