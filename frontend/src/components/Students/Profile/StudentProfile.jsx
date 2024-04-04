@@ -29,7 +29,6 @@ const StudentProfile = () => {
 
   const [inrolledCourses, setAllInrolledCourses] = useState([])
   
-  console.log("myProfileData", myProfileData)
 
   const handleLogOut = () => {
     store.dispatch(userLogOut());

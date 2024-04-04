@@ -5,7 +5,6 @@ import StarRatings from 'react-star-ratings';
 
 const RelatedPublicCourses = ({relatedCourses}) => {
 
-    console.log("relatedCourses", relatedCourses)
   return (
     <div className='public-single-course-related-courses'>
 

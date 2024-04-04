@@ -229,6 +229,7 @@
     margin-top: 1rem;
 }
 
+
 .class-video-section-1 img{
     width: 100%;
 }
@@ -538,4 +539,17 @@ text-align: left;
     color: white;
     border-radius: 50%;
     cursor: pointer;
+}
+
+.video-react-has-started .video-react-control-bar{
+    background-color: transparent !important;
+}
+
+
+.video-react-play-progress.video-react-slider-bar{
+    background-color: red !important;
+}
+
+.video-react.video-react-video{
+    border-radius: 13px !important;
 }

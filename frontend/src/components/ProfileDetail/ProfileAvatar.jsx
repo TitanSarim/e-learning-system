@@ -61,7 +61,6 @@ const ProfileAvatar = ({setEditorOpen,  avatar, setAvatar }) => {
             // Revert to file
             const blob = dataURLToBlob(croppedDataUrl);
             const file = blobToFile(blob, "cropped-image.png");
-            console.log('file', file)
 
             fileFormData.append('avatar', file);
         }
@@ -78,7 +77,6 @@ const ProfileAvatar = ({setEditorOpen,  avatar, setAvatar }) => {
         } catch (error) {
             console.error('Error uploading file:', error);
         }finally{
-            console.log('File uploaded successfully');
             setIsLoading(false)
             setEditorOpen(false)
         }

@@ -220,18 +220,6 @@
 
 .course-preview-video-popup-video-player{
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.course-preview-video-popup-loader{
-    position: relative;
-    height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 740px;
-    margin: auto;
+    height: max-content;
+    width: 100%;
 }

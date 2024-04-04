@@ -25,7 +25,6 @@ const ProfileTabsSkills = ({setSelectSkills, selectSkills, handleSubmit}) => {
       }),
     };
 
-    console.log("selectSkills", selectSkills)
 
 
   return (

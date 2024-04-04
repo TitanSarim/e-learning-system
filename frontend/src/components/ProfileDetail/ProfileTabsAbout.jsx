@@ -9,7 +9,6 @@ const ProfileTabsAbout = ({setAboutMe, aboutMe, handleSubmit}) => {
     setAboutMe(value);
   }
 
-  console.log("aboutMe123", aboutMe)
   return (
 
     <form className='general-profile-detail-tabs-about' onSubmit={handleSubmit}>

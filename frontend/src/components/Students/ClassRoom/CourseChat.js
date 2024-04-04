@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import { FaArrowRight } from "react-icons/fa6";
 import { MdOutlineOndemandVideo } from "react-icons/md";
@@ -8,13 +8,14 @@ import { FaRegCircle } from "react-icons/fa";
 import { FaRegSmile } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 
-const CourseChat = ({selectWeek, courseDetails, setSelectVideoToPlay}) => {
+const CourseChat = ({selectWeek, courseDetails, setSelectVideoToPlay, videoPercentage}) => {
 
 
   const handleVideoChange = (id, url, title) => {
     setSelectVideoToPlay({id: id, url: url, title: title});
   }
   
+  console.log("videoPercentage", videoPercentage)
 
   return (
 
@@ -61,7 +62,7 @@ const CourseChat = ({selectWeek, courseDetails, setSelectVideoToPlay}) => {
                           <div className='class-course-content-videos-1' key={item?.id} onClick={() => handleVideoChange(item?.id, item?.videoFile, item?.videoTitle)}>
 
                             <div >
-                             {false ? <FaCheck size={12} style={{backgroundColor: "#007AFF", borderRadius: "50%", color: "white", padding: "4px" }} />: <FaRegCircle size={20} style={{color: "#007AFF"}}/> } 
+                             {item?.id === videoPercentage?.id && videoPercentage?.isCompleted === true ? <FaCheck size={12} style={{backgroundColor: "#007AFF", borderRadius: "50%", color: "white", padding: "4px" }} />: <FaRegCircle size={20} style={{color: "#007AFF"}}/> } 
                             </div>
 
                             <div className='class-course-content-videos-content-1'> 

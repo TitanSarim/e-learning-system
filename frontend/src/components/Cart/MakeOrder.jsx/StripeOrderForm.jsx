@@ -35,7 +35,6 @@ const StripeOrderForm = ({user}) => {
     const [paymentLoading, setPaymentLoading] = useState(false);
     const taxRate = 0.02;
 
-    console.log("cartItems", cartItems)
 
     const calculateTotalPrice = () => {
         let totalPriceWithoutTax = cartItems?.reduce((acc, item) => acc + item.price, 0);

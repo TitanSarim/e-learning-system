@@ -16,21 +16,43 @@ const ClassRoom = () => {
     let { slug } = useParams();
     
     const{InrolledCourse, loading, error} = useSelector((state)=>state.userInrolledCourses);
-    const weekIndex = localStorage.getItem('selectedWeekIndex');
-
     const [courseDetails, setCourseDetails] = useState([])
     const [courseContent, setCourseContent] = useState([])
     const [selectWeek, setSelectWeek] = useState([])
     const [selectWeekIndex, setSelectWeekIndex] = useState(0)
-    const [selectVideoToPlay, setSelectVideoToPlay] = useState([])
-
-    console.log("selectWeek", selectWeek)
+    const [selectVideoToPlay, setSelectVideoToPlay] = useState({})
+    const [videoProgression, setVideoProgression] = useState([])
+    const [videoPercentage, setVideoPercentage] = useState({})
 
     const handleSelectedIndex = (content, index) => {
-        localStorage.setItem('selectedWeekIndex', index);
+        let ActivevideosArray = JSON.parse(localStorage.getItem('selectedWeekIndex')) || [];
+
+        const existingVideoIndex = ActivevideosArray?.findIndex(video => video.slug === courseDetails?.slug);
+
+        const newVideoObject = { 
+            slug: courseDetails?.slug, 
+            weekIndex: index, 
+            videoUrl: courseContent[0]?.videos[0]?.videoFile, 
+            videoId: courseContent[0]?.videos[0]?.id, 
+            videoTitle: courseContent[0]?.videos[0]?.videoTitle 
+        };
+
+        if (existingVideoIndex !== -1) {
+            ActivevideosArray[existingVideoIndex].weekIndex = newVideoObject.weekIndex
+            ActivevideosArray[existingVideoIndex].videoUrl = newVideoObject.videoUrl;
+            ActivevideosArray[existingVideoIndex].videoId = newVideoObject.videoId;
+            ActivevideosArray[existingVideoIndex].videoTitle = newVideoObject.videoTitle;
+        } else {
+            ActivevideosArray.push(newVideoObject);
+        }
+        
+        localStorage.setItem('selectedWeekIndex', JSON.stringify(ActivevideosArray));
         setSelectWeekIndex(index)
         setSelectWeek(content)
+
+        // integrate API
     }
+
 
     useEffect(() => {
         if(error){
@@ -53,13 +75,38 @@ const ClassRoom = () => {
     }, [InrolledCourse])
 
     useEffect(() => {
-        if (weekIndex !== null && courseContent && courseContent.length > 0) {
-          const index = parseInt(weekIndex, 10);
-          if (!isNaN(index) && index >= 0 && index < courseContent.length) {
-            setSelectWeek(courseContent[index]);
-          }
+        const weekIndexArray = JSON.parse(localStorage.getItem('selectedWeekIndex'));
+        let isMounted = true;
+    
+        if (weekIndexArray && courseContent?.length > 0 && isMounted) {
+            const weekIndex = weekIndexArray.find(item => item.slug === courseDetails?.slug);
+            if (weekIndex) {
+                const index = parseInt(weekIndex.weekIndex, 10);
+                if (!isNaN(index) && index >= 0 && index < courseContent?.length) {
+                    setSelectWeek(courseContent[index]);
+                    if (!selectVideoToPlay.id) {
+                        setSelectVideoToPlay({
+                            id: weekIndex.videoId,
+                            url: weekIndex.videoUrl,
+                            title: weekIndex.videoTitle
+                        });
+                    }
+                }
+            } 
+            
+        }else {
+            setSelectWeek(courseContent?.[0]);
+            setSelectVideoToPlay({
+                id: courseContent?.[0]?.videos[0]?.id,
+                url: courseContent?.[0]?.videos[0]?.videoFile ,
+                title: courseContent?.[0]?.videos[0]?.videoTitle
+            });
         }
-    }, [weekIndex, courseContent]);
+    
+        return () => {
+            isMounted = false;
+        };
+    }, [courseContent, courseDetails, selectVideoToPlay]);
 
   return (
     <div className='class-container'>
@@ -105,11 +152,11 @@ const ClassRoom = () => {
 
 
             <div className='class-video-container-1'>
-                <VideoSection selectVideToPlay={selectVideoToPlay} courseDetails={courseDetails}/>
+                <VideoSection selectVideToPlay={selectVideoToPlay} courseDetails={courseDetails} setVideoPercentage={setVideoPercentage} videoPercentage={videoPercentage}/>
             </div>
 
             <div className='class-course-container-1'>
-               <CourseChat selectWeek={selectWeek} courseDetails={courseDetails} setSelectVideoToPlay={setSelectVideoToPlay}/>
+               <CourseChat selectWeek={selectWeek} courseDetails={courseDetails} setSelectVideoToPlay={setSelectVideoToPlay} videoPercentage={videoPercentage}/>
             </div>
 
         </div> 

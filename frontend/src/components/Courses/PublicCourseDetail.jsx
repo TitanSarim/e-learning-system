@@ -53,7 +53,6 @@ const PublicCourseDetail = () => {
     const [isInCart, setIsInCart] = useState(false);
     const [activeTab, setActiveTab] = useState('Overview');
 
-    console.log("courseDetails", courseDetails?.inrolled_by?.id)
 
     const checkCart = () => {
       const found = cartItems?.some(item => item.slug === courseSlug);

@@ -413,8 +413,6 @@ const CreateCourse = () => {
             }
         }
 
-        console.log("formData", formData)
-
         const onVideoUploadProgress = (progress) => {
             setUploadProgress(progress);
         };

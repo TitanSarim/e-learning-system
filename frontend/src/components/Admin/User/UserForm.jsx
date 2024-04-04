@@ -68,8 +68,6 @@ const UserForm = () => {
             password
           }
 
-
-          console.log(FormData);
           
         dispatch(AdminRequestUserUpdate(FormData, id));
         toast.success('profile updated, please login')

@@ -59,7 +59,6 @@ const ProfileEducation = ({setEducationContainers, educationContainers, handleSu
     ));
   };
 
-  console.log("educationContainers", educationContainers)
 
   const customStyles = {
     control: (provided, state) => ({
