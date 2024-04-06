@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
+import ProtectedRoutes from "./components/Utils/ProtectedRoutes";
 import Home from "./components/Home/Home";
 import AllPublicCourses from './components/Courses/AllPublicCourses'
-import ProtectedRoutes from "./components/Utils/ProtectedRoutes";
 import Cart from './components/Cart/Cart'
-import "./App.css";
+import WishList from "./components/Cart/WishList";
 import Auth from "./components/Auth/Auth";
 import AdminDashboard from "./components/Admin/Dashboard/AdminDashboard";
 import StudentProfile from "./components/Students/Profile/StudentProfile";
@@ -37,6 +38,7 @@ function App() {
           <Route path="/Student" element={<ProtectedRoutes />}>
             <Route path="/Student/class/:slug" element={<ClassRoom />} />
             <Route path="/Student/Profile" element={<StudentProfile />} />
+            <Route path="/Student/wishList" element={<WishList/>}/>
             <Route path="/Student/Cart" element={<Cart/>}/>
             <Route path="/Student/make-order" element={<MakeOrder/>}/>
           </Route>

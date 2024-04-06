@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Utils/Loader';
 import TeacherAvatar from '../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
 import {PublicGetSingleCourse, clearErrors} from '../../actions/CoursesAction'
-import {addToCart, getCart} from '../../actions/cartAction'
+import {addToCart, getCart, addToWishList, getWishList} from '../../actions/cartAction'
 import { toast } from 'react-toastify';
 import NavBar from '../NavBar/NavBar';
 import moment from 'moment'
@@ -46,11 +46,14 @@ const PublicCourseDetail = () => {
     const {user} = useSelector((state)=>state.user);
     const {Publiccourse, error, loading} = useSelector((state)=>state.PublicCourse);
     const {cart} = useSelector((state)=>state.cart);
+    const {wishList} = useSelector((state)=>state.wishList);
 
     const [courseDetails, setCourseDetails] = useState([])
     const [userDetail, setUserDetail] = useState([])
     const [cartItems, setCartItems] = useState([])
+    const [wishListItems, setWishListItems] = useState([])
     const [isInCart, setIsInCart] = useState(false);
+    const [isInWishList, setIsInWishList] = useState(false);
     const [activeTab, setActiveTab] = useState('Overview');
 
 
@@ -58,6 +61,11 @@ const PublicCourseDetail = () => {
       const found = cartItems?.some(item => item.slug === courseSlug);
       setIsInCart(found);
     }
+    const checkWishList = () => {
+      const found = wishListItems?.some(item => item.slug === courseSlug);
+      setIsInWishList(found);
+    }
+
     const handleMainTabClick = (tab) => {
       setActiveTab(tab);
     };
@@ -73,6 +81,14 @@ const PublicCourseDetail = () => {
         slug: courseSlug
       }
       dispatch(addToCart(formData))
+      toast.success('Successfully added')
+    }
+    const handleAddToWishList = () => {
+
+      const formData = {
+        slug: courseSlug
+      }
+      dispatch(addToWishList(formData))
       toast.success('Successfully added')
     }
 
@@ -91,17 +107,20 @@ const PublicCourseDetail = () => {
       }
       dispatch(PublicGetSingleCourse(courseSlug))
       dispatch(getCart())
+      dispatch(getWishList())
     }, [courseSlug, dispatch, error])
   
     useEffect(() => {
       setCourseDetails(Publiccourse)
       setUserDetail(user)
       setCartItems(cart)
-    }, [Publiccourse, user, cart])
+      setWishListItems(wishList)
+    }, [Publiccourse, user, cart, wishList])
 
     useEffect(() => {
       checkCart();
-    }, [cartItems]);
+      checkWishList()
+    }, [cartItems, wishListItems]);
 
   
   
@@ -266,7 +285,10 @@ const PublicCourseDetail = () => {
                   <Link to='/Student/Cart'><HiOutlineShoppingCart size={25}/>Go to cart</Link> : 
                   <button onClick={handleAddToCart}><HiOutlineShoppingCart size={25}/>Add to cart</button>
                 }
-                <button><IoMdHeartEmpty size={25}/>Add To Wishlist</button>
+                {isInWishList === true ? 
+                  <Link to='/Student/wishList'><HiOutlineShoppingCart size={25}/>Go to Wishlist</Link> : 
+                  <button onClick={handleAddToWishList}><IoMdHeartEmpty size={25}/>Add To Wishlist</button>
+                }
               </>
             )}
           </div>

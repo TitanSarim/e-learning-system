@@ -7,7 +7,7 @@ import storage from 'redux-persist/lib/storage';
 import {userReducer, AdminUserReducer, ForgetPasswordReducer} from './redcuers/UserReducer'
 import {AdminCourseReducer, PublicCourseReducer} from './redcuers/CourseReducer'
 import {myPorfileReducer} from './redcuers/ProfileReducer'
-import {cartReducer} from './redcuers/CartReducer'
+import {cartReducer, wishListReducer} from './redcuers/CartReducer'
 import {orderReducer} from './redcuers/OrderReducer'
 import {InrolledCourseReducer} from './redcuers/InrolledCourseReducer'
 
@@ -20,6 +20,7 @@ const reducer = combineReducers({
 
     myPorfile: myPorfileReducer,
     cart: cartReducer,
+    wishList: wishListReducer,
     order: orderReducer,
     userInrolledCourses: InrolledCourseReducer,
 

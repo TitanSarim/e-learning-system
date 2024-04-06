@@ -7,7 +7,7 @@ import { TbCategoryPlus } from "react-icons/tb";
 import { IoIosSearch } from "react-icons/io";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoMdHeartEmpty } from "react-icons/io";
-import {addToCart, getCart} from '../../actions/cartAction'
+import {getWishList, getCart} from '../../actions/cartAction'
 
 import './NavBar.css'
 
@@ -23,17 +23,21 @@ const NavBar = () => {
   const dispatch = useDispatch()
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const {cart } = useSelector((state) => state.cart);
+  const {wishList} = useSelector((state)=>state.wishList);
 
   const [selectedCategoryOption, setSelectedCategoryOption] = useState(searchCategory[0]);
   const [cartItems, setCartItems] = useState([])
+  const [wishListItems, setWishListItems] = useState([])
 
   useEffect(() => {
     dispatch(getCart())
+    dispatch(getWishList())
   }, [dispatch])
 
   useEffect(() => {
     setCartItems(cart)
-  }, [cart])
+    setWishListItems(wishList)
+  }, [cart, wishList])
 
 
   const customStyles = {
@@ -92,7 +96,7 @@ const NavBar = () => {
         </div>
 
         <div className='nav-cart'>
-            <Link><IoMdHeartEmpty size={23}/> {cartItems?.length > 0 ? <span>{cartItems?.length}</span>: <span>0</span>}</Link>
+            <Link to="/Student/wishList"><IoMdHeartEmpty size={23}/> {wishListItems?.length > 0 ? <span>{wishListItems?.length}</span>: <span>0</span>}</Link>
             <Link to="/Student/Cart"><HiOutlineShoppingCart size={23}/> {cartItems?.length > 0 ? <span>{cartItems?.length}</span>: <span>0</span>}</Link>
         </div>
 
