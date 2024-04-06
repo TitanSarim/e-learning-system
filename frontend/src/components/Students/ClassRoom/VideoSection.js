@@ -4,43 +4,71 @@ import userImage from "../../../assets/profile.png"
 import { IoEyeOutline } from "react-icons/io5";
 import { Player, ControlBar, LoadingSpinner, BigPlayButton} from 'video-react';
 import 'video-react/dist/video-react.css';
+import axios from 'axios';
+import { ConfigApplicationJson } from '../../../actions/Config';
+const BASE_URL = 'http://localhost:3900';
 
-const VideoSection = ({selectVideToPlay, courseDetails, setVideoPercentage, videoPercentage}) => {
+
+const VideoSection = ({selectVideToPlay, courseDetails, setVideoPercentage, videoPercentage, selectWeekIndex, setCouseCompletion}) => {
 
   const [isCompleted, setIsCompleted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const playerRef = useRef(null);
 
-  const handleProgress= () => {
+  const handleProgress = () => {
     if (playerRef.current) {
       const playerState = playerRef.current.getState();
-      const { currentTime, duration, paused } = playerState.player;
+      const { currentTime, duration, paused, ended } = playerState.player;
+  
       const progressPercentage = (currentTime / duration) * 100;
   
-      setVideoPercentage({
-        isCompleted: isCompleted,
-      });
-  
-      if (progressPercentage >= 90 && !isCompleted) {
+      if (ended) {
+        setIsCompleted(true); 
+      } else if (!paused && progressPercentage >= 10) {
         setIsCompleted(true);
+      } else if (paused && !ended) {
+        setIsPaused(true);
       }
-      if(paused === true){
-        setIsPaused(true)
+    }
+    console.log("videoPercentage", videoPercentage)
+
+  };
+
+
+  const handleProgressUpdateApi = async (formData) => {
+    
+    try {
+      
+      const res = await axios.post(`${BASE_URL}/api/v1/save-completion-content`, formData, ConfigApplicationJson)
+      if(res.status === 201){
+        setCouseCompletion(res.data.completionPercentage)
       }
+    } catch (error) {
+      console.log(error)
     }
   }
 
-  console.log("videoPercentage", videoPercentage)
-
+  
   useEffect(() => {
     const progressInterval = setInterval(handleProgress, 1000);
   
-    if (isCompleted === true || isPaused === true) {
+    if (isPaused === true || isCompleted === true) {
       clearInterval(progressInterval);
-      setVideoPercentage({
-        isCompleted: true,
-        id: selectVideToPlay?.id
-      });
+      setVideoPercentage(
+        {
+          slug: courseDetails?.slug,
+          Week: selectWeekIndex,
+          weekStatus: 'inComplete',
+          isCompleted: true,
+          id: selectVideToPlay?.id,
+        }
+      );
+      const formData = {
+        slug: courseDetails.slug,
+        url: selectVideToPlay.url,
+        isViewd: true
+      }
+      handleProgressUpdateApi(formData)
     }
       return () => clearInterval(progressInterval);
   }, [isCompleted]); 

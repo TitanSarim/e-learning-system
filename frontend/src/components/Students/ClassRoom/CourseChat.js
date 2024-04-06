@@ -8,14 +8,14 @@ import { FaRegCircle } from "react-icons/fa";
 import { FaRegSmile } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 
-const CourseChat = ({selectWeek, courseDetails, setSelectVideoToPlay, videoPercentage}) => {
+const CourseChat = ({selectWeek, courseDetails, setSelectVideoToPlay, videoPercentage, couseCompletion}) => {
 
 
   const handleVideoChange = (id, url, title) => {
     setSelectVideoToPlay({id: id, url: url, title: title});
   }
   
-  console.log("videoPercentage", videoPercentage)
+  console.log("couseCompletion", couseCompletion)
 
   return (
 
@@ -38,7 +38,11 @@ const CourseChat = ({selectWeek, courseDetails, setSelectVideoToPlay, videoPerce
 
                     <p>{courseDetails?.course_title?.length > 33 ? courseDetails?.course_title.slice(0, 33): courseDetails?.course_title}..</p>
 
-                    <div className='course-line'></div>
+                    {couseCompletion > courseDetails?.CompletionRate?.CompletionPercentage ||  courseDetails?.CompletionRate === '' ? 
+                      <div className='course-line' style={{ width: `${couseCompletion}%`}}></div>
+                      :
+                      <div className='course-line' style={{ width: `${courseDetails?.CompletionRate?.CompletionPercentage}%`}}></div>
+                    }
 
                     <p>{courseDetails?.course_content?.length} Weeks · {courseDetails?.hours}+ hours</p>    
 
@@ -62,7 +66,12 @@ const CourseChat = ({selectWeek, courseDetails, setSelectVideoToPlay, videoPerce
                           <div className='class-course-content-videos-1' key={item?.id} onClick={() => handleVideoChange(item?.id, item?.videoFile, item?.videoTitle)}>
 
                             <div >
-                             {item?.id === videoPercentage?.id && videoPercentage?.isCompleted === true ? <FaCheck size={12} style={{backgroundColor: "#007AFF", borderRadius: "50%", color: "white", padding: "4px" }} />: <FaRegCircle size={20} style={{color: "#007AFF"}}/> } 
+                             
+                                {courseDetails?.ViewedVideos?.some(viewedVideo => viewedVideo.url === item?.videoFile) || (item?.id === videoPercentage?.id && videoPercentage?.isCompleted === true  ) ?
+                                      <FaCheck size={12} style={{backgroundColor: "#007AFF", borderRadius: "50%", color: "white", padding: "4px" }} /> : 
+                                      <FaRegCircle size={20} style={{color: "#007AFF"}}/>
+                                } 
+                           
                             </div>
 
                             <div className='class-course-content-videos-content-1'> 
@@ -122,3 +131,5 @@ const CourseChat = ({selectWeek, courseDetails, setSelectVideoToPlay, videoPerce
 }
 
 export default CourseChat
+
+

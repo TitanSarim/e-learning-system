@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('LeaderBoards', {
+    await queryInterface.createTable('ViewdVideos', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,11 +15,11 @@ module.exports = {
       slug:{
         type: Sequelize.TEXT
       },
-      weekData:{
-        type: Sequelize.JSON
+      url:{
+        type: Sequelize.TEXT
       },
-      CompletionPercentage:{
-        type: Sequelize.INTEGER
+      IsViewd:{
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('LeaderBoards');
+    await queryInterface.dropTable('ViewdVideos');
   }
 };

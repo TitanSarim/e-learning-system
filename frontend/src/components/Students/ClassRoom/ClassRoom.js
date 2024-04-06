@@ -21,8 +21,8 @@ const ClassRoom = () => {
     const [selectWeek, setSelectWeek] = useState([])
     const [selectWeekIndex, setSelectWeekIndex] = useState(0)
     const [selectVideoToPlay, setSelectVideoToPlay] = useState({})
-    const [videoProgression, setVideoProgression] = useState([])
-    const [videoPercentage, setVideoPercentage] = useState({})
+    const [couseCompletion, setCouseCompletion] = useState()
+    const [videoPercentage, setVideoPercentage] = useState([])
 
     const handleSelectedIndex = (content, index) => {
         let ActivevideosArray = JSON.parse(localStorage.getItem('selectedWeekIndex')) || [];
@@ -53,6 +53,7 @@ const ClassRoom = () => {
         // integrate API
     }
 
+    console.log('courseDetails',courseContent)
 
     useEffect(() => {
         if(error){
@@ -77,9 +78,9 @@ const ClassRoom = () => {
     useEffect(() => {
         const weekIndexArray = JSON.parse(localStorage.getItem('selectedWeekIndex'));
         let isMounted = true;
-    
+
         if (weekIndexArray && courseContent?.length > 0 && isMounted) {
-            const weekIndex = weekIndexArray.find(item => item.slug === courseDetails?.slug);
+            const weekIndex = weekIndexArray?.find(item => item.slug === courseDetails?.slug);
             if (weekIndex) {
                 const index = parseInt(weekIndex.weekIndex, 10);
                 if (!isNaN(index) && index >= 0 && index < courseContent?.length) {
@@ -114,53 +115,61 @@ const ClassRoom = () => {
             <NavBar />
         </div>
         
-        <div className='class-container-1'>
+        {loading ? <div className='class-container-loader'><Loader/></div> :(
+            <div className='class-container-1'>
 
-            <div className='class-main-container'>
-                <div className='class-description-section'>
+                <div className='class-main-container'>
+                    <div className='class-description-section'>
 
-                    <div className='class-description-section-a'>
-                        <div className='class-description-section-heading'>
-                           <h2>Course Content</h2>
+                        <div className='class-description-section-a'>
+                            <div className='class-description-section-heading'>
+                            <h2>Course Content</h2>
+                            </div>
+
+                            <div className='class-description-course-info'>
+                            <div className='class-description-section-content-container'>
+                            {courseContent?.map((content, index) => {
+                                        const weekData = courseDetails?.CompletionRate?.weekData.find(week => week.weekTitle === content.weekTitle);
+
+                                        const allVideosCompleted = weekData && weekData.videos.every(video => video.completed);
+
+                                        return (
+                                            <div className='class-description-section-content' key={index}>
+                                                <h2>{content.weekTitle}</h2>
+                                                <div>
+                                                    <p>{content.videos.length} videos</p>
+                                                    <span>{allVideosCompleted ? "Complete" : "Incomplete"}</span>
+                                                </div>
+                                                <button onClick={() => handleSelectedIndex(content, index)}>Take Lecture</button>
+                                            </div>
+                                        );
+                                    })}
+                            </div>
+                            </div>
                         </div>
 
-                        <div className='class-description-course-info'>
-                           <div className='class-description-section-content-container'>
-                                {courseContent?.map((content, index) => (
-                                <div className='class-description-section-content' key={index}>
-                                    <h2>{content.weekTitle}</h2>
-                                    <div>
-                                        <p>{content.videos.length} videos</p>
-                                        <span>Incomplete</span>
-                                    </div>
-                                    <button onClick={() => handleSelectedIndex(content, index)}>Take Lecture</button>
-                                </div>
-                                ))}
-                           </div>
+                        <div className='class-description-leader-section'>
+                            <div className='class-description-leader-content'>
+                            <h2> Leaderboard</h2>
+                            </div>
+
+                            <LeaderBoardList />
+                        
                         </div>
-                    </div>
-
-                    <div className='class-description-leader-section'>
-                        <div className='class-description-leader-content'>
-                           <h2> Leaderboard</h2>
-                        </div>
-
-                        <LeaderBoardList />
-                    
-                    </div>
-                </div>       
+                    </div>       
 
 
-            <div className='class-video-container-1'>
-                <VideoSection selectVideToPlay={selectVideoToPlay} courseDetails={courseDetails} setVideoPercentage={setVideoPercentage} videoPercentage={videoPercentage}/>
+                <div className='class-video-container-1'>
+                    <VideoSection selectVideToPlay={selectVideoToPlay} courseDetails={courseDetails} setVideoPercentage={setVideoPercentage} videoPercentage={videoPercentage} selectWeekIndex={selectWeekIndex} setCouseCompletion={setCouseCompletion}/>
+                </div>
+
+                <div className='class-course-container-1'>
+                <CourseChat selectWeek={selectWeek} courseDetails={courseDetails} setSelectVideoToPlay={setSelectVideoToPlay} videoPercentage={videoPercentage} couseCompletion={couseCompletion}/>
+                </div>
+
+            </div> 
             </div>
-
-            <div className='class-course-container-1'>
-               <CourseChat selectWeek={selectWeek} courseDetails={courseDetails} setSelectVideoToPlay={setSelectVideoToPlay} videoPercentage={videoPercentage}/>
-            </div>
-
-        </div> 
-        </div>
+        )}
        
     </div>
   )

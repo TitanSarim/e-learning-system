@@ -1,8 +1,9 @@
-const { Op, Sequelize } = require('sequelize');
-const { Course, UserProfile, Order } = require("../models"); // Adjust the path based on your project structure
+const { Op, Sequelize, where } = require('sequelize');
+const { Course, UserProfile, Order, LeaderBoard, ViewdVideos } = require("../models"); // Adjust the path based on your project structure
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
+const leaderboard = require('../models/leaderboard');
 
 
 // admin
@@ -546,6 +547,7 @@ const GetSinglePublicCourse  = catchAsyncError(async (req, res, next) => {
 // Get User Inrolled Course --Single Course
 const GetSingleInrolledCourse  = catchAsyncError(async (req, res, next) => {
 
+    const userId = req.user.userid;
     try {
 
         const {slug} = req.body
@@ -561,30 +563,40 @@ const GetSingleInrolledCourse  = catchAsyncError(async (req, res, next) => {
             attributes: ['avatar'] 
         })
 
+        const getCompletionRate = await LeaderBoard.findOne({
+            where: {userId: userId, slug: slug}
+        })
+
+        const getViewedVideos = await ViewdVideos.findAll({
+            where: {userId: userId, slug: slug}
+        })
+
         const InrolledCourses  = {
-            id: SingleInrolledCourse .id || '',
-            teacherId: SingleInrolledCourse .teacherId || '',
+            id: SingleInrolledCourse.id || '',
+            teacherId: SingleInrolledCourse.teacherId || '',
             TeacherAvatar: TeacherAvatar || '',
-            slug: SingleInrolledCourse .slug || '',
-            course_title: SingleInrolledCourse .course_title || '',
-            category: SingleInrolledCourse .category || '',
-            tags: SingleInrolledCourse .tags || '',
-            timeline: SingleInrolledCourse .timeline || '',
-            course_desc: SingleInrolledCourse .course_desc.desc || '',
-            course_thumbnail: SingleInrolledCourse .course_thumbnail.url || '',
-            course_content: SingleInrolledCourse .course_content.data || '',
-            views: SingleInrolledCourse .views || '',
-            price: SingleInrolledCourse .price || '',
-            language: SingleInrolledCourse .language || '',
-            level: SingleInrolledCourse .level || '',
-            hours: SingleInrolledCourse .hours || '',
-            inrolled_by: SingleInrolledCourse .inrolled_by || '',
-            teacher_name: SingleInrolledCourse .teacher_name || '',
-            comments: SingleInrolledCourse .comments || '',
-            reviews: SingleInrolledCourse .reviews || '',
-            status: SingleInrolledCourse .status || '',
-            createdAt: SingleInrolledCourse .createdAt || '',
-            updatedAt: SingleInrolledCourse .updatedAt || '',
+            slug: SingleInrolledCourse.slug || '',
+            course_title: SingleInrolledCourse.course_title || '',
+            category: SingleInrolledCourse.category || '',
+            tags: SingleInrolledCourse.tags || '',
+            timeline: SingleInrolledCourse.timeline || '',
+            course_desc: SingleInrolledCourse.course_desc.desc || '',
+            course_thumbnail: SingleInrolledCourse.course_thumbnail.url || '',
+            course_content: SingleInrolledCourse.course_content.data || '',
+            views: SingleInrolledCourse.views || '',
+            price: SingleInrolledCourse.price || '',
+            language: SingleInrolledCourse.language || '',
+            level: SingleInrolledCourse.level || '',
+            hours: SingleInrolledCourse.hours || '',
+            inrolled_by: SingleInrolledCourse.inrolled_by || '',
+            teacher_name: SingleInrolledCourse.teacher_name || '',
+            comments: SingleInrolledCourse.comments || '',
+            reviews: SingleInrolledCourse.reviews || '',
+            status: SingleInrolledCourse.status || '',
+            ViewedVideos: getViewedVideos || '',
+            CompletionRate: getCompletionRate || '',
+            createdAt: SingleInrolledCourse.createdAt || '',
+            updatedAt: SingleInrolledCourse.updatedAt || '',
           };
           
         res.status(201).json({
@@ -599,7 +611,7 @@ const GetSingleInrolledCourse  = catchAsyncError(async (req, res, next) => {
 
 })
 
-// Get User Inrolled Course --Sll Courses
+// Get User Inrolled Course --all Courses
 const GetAllInrolledCourse  = catchAsyncError(async (req, res, next) => {
 
     const userId = req.user.userid
@@ -658,6 +670,136 @@ const GetAllInrolledCourse  = catchAsyncError(async (req, res, next) => {
 })
 
 
+// course completion rate handler -- pending 
+const SaveCompletionRateOfCourse = catchAsyncError(async (req, res, next) => {
+    const userId = req.user.userid;
+    const {slug, url} = req.body;
+  
+    try {
+
+        const existingRecord = await ViewdVideos.findOne({
+            where: {
+                userId: userId,
+                url: url
+            }
+        });
+
+        if (existingRecord) {
+            return res.status(200).json({
+                success: false,
+                message: 'Record already exists',
+            });
+        }
+
+        const course = await Course.findOne({
+            where: {
+                slug: slug
+            }
+        });
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: 'Course not found',
+            });
+        }
+        const courseContent =  course.course_content;
+        // console.log("courseContent", JSON.parse(courseContent))
+
+        let courseContentUpdated = courseContent.data.map(week => {
+            week.videos = week.videos.map(video => {
+                if (video.videoFile === url) {
+                    return { ...video, completed: true };
+                }
+                return video;
+            });
+            return week;
+        });
+
+        const LeaderboardCheck = await LeaderBoard.findOne({
+            where: {userId: userId, slug: slug}
+        })
+
+        if(!LeaderboardCheck){
+            await LeaderBoard.create({
+                userId: userId,
+                slug: slug,
+                weekData: courseContentUpdated
+            })
+        } else {
+            // Update specific week and video's completed status
+            let updatedWeekData = LeaderboardCheck.weekData.map(week => {
+                week.videos = week.videos.map(video => {
+                    if (video.videoFile === url) {
+                        return { ...video, completed: true };
+                    }
+                    return video;
+                });
+                return week;
+            });
+
+            // Update the existing record
+            await LeaderBoard.update({
+                weekData: updatedWeekData
+            }, {
+                where: {
+                    userId: userId,
+                    slug: slug
+                }
+            });
+        }
+
+        await ViewdVideos.create({
+            userId: userId,
+            slug: slug,
+            url: url,
+            isViewd: 'true' 
+        });
+
+        const LeaderboardProgressCheck = await LeaderBoard.findOne({
+            where: {userId: userId, slug: slug}
+        })
+
+        
+        if (!LeaderboardProgressCheck) {
+            return res.status(404).json({
+                success: false,
+                message: 'LeaderBoard data not found',
+            });
+        }
+
+        const weekData = LeaderboardProgressCheck.weekData;
+        let totalVideos = 0;
+        let completedVideos = 0;
+
+        weekData.forEach(week => {
+            totalVideos += week.videos.length;
+            week.videos.forEach(video => {
+                if (video.completed) {
+                    completedVideos++;
+                }
+            });
+        });
+        
+        const completionPercentage = (completedVideos / totalVideos) * 100;
+
+        await LeaderBoard.update({
+            CompletionPercentage: completionPercentage
+        },{
+            where: {userId: userId, slug: slug}, 
+        })
+      
+      res.status(201).json({
+        success: true,
+        message: 'Completion rate saved successfully',
+        completionPercentage: completionPercentage
+      });
+    } catch (error) {
+      return next(new errorHandler(error, 500));
+    }
+});
+  
+
 module.exports = {
     createCourse,
     GetAllCourseAdmin,
@@ -668,5 +810,6 @@ module.exports = {
     GetAllPublicCourses,
     GetSinglePublicCourse,
     GetSingleInrolledCourse,
-    GetAllInrolledCourse
+    GetAllInrolledCourse,
+    SaveCompletionRateOfCourse
 }
