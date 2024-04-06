@@ -26,7 +26,6 @@ const DeleteAvatar =  ({setAvatarDeleteConfirm, setAvatar}) => {
         } catch (error) {
             console.error('Error Deleting file:', error);
         }finally{
-            console.log('Image Deleted successfully');
             setIsLoading(false)
             setAvatarDeleteConfirm(false)
         }

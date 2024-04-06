@@ -144,7 +144,6 @@ const EditCourse = () => {
     const handleSeqByWeekChange = (weekIndex, e) => {
         
         setSeqByWeek(weekIndex)
-        console.log("Dynamic weekIndex:", weekIndex);
     };
 
     const handleThumbnailChange = (e) => {
@@ -156,7 +155,6 @@ const EditCourse = () => {
             image.onload = () => {
                 const { naturalWidth, naturalHeight } = image;
 
-                console.log("naturalWidth", naturalWidth, 'h', naturalHeight)
 
                 // Check if dimensions are within the specified ranges
                 if (
@@ -404,8 +402,6 @@ const EditCourse = () => {
             status: 'active'
         }
     
-
-        console.log("formData", formData)
 
         const onVideoUploadProgress = (progress) => {
             setUploadProgress(progress);

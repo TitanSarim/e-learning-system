@@ -27,6 +27,7 @@ import { RiMastercardLine } from "react-icons/ri";
 import { CiBitcoin } from "react-icons/ci";
 import { FaFacebookF, FaXTwitter, FaInstagram, FaWhatsapp  } from "react-icons/fa6";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { CgLaptop } from "react-icons/cg";
 
 import './PublicCourseDetail.css'
 import RelatedPublicCourses from './RelatedPublicCourses';
@@ -42,38 +43,21 @@ const PublicCourseDetail = () => {
     const courseSlug = slug.substring(slug.lastIndexOf('/') + 1);
     const currentUrl = window.location.origin + location.pathname;
 
+    const {user} = useSelector((state)=>state.user);
     const {Publiccourse, error, loading} = useSelector((state)=>state.PublicCourse);
     const {cart} = useSelector((state)=>state.cart);
 
     const [courseDetails, setCourseDetails] = useState([])
+    const [userDetail, setUserDetail] = useState([])
     const [cartItems, setCartItems] = useState([])
     const [isInCart, setIsInCart] = useState(false);
     const [activeTab, setActiveTab] = useState('Overview');
 
+
     const checkCart = () => {
       const found = cartItems?.some(item => item.slug === courseSlug);
-      console.log("cartItems", found)
       setIsInCart(found);
-  }
-
-    useEffect(() => {
-      if(error){
-        toast.error(error);
-        dispatch(clearErrors());
-      }
-      // if(cartError){
-      //   toast.error(cartError);
-      //   dispatch(cartClearErrors())
-      // }
-      dispatch(PublicGetSingleCourse(courseSlug))
-      dispatch(getCart())
-    }, [courseSlug, dispatch, error])
-  
-    useEffect(() => {
-      setCourseDetails(Publiccourse)
-      setCartItems(cart)
-    }, [Publiccourse, cart])
-
+    }
     const handleMainTabClick = (tab) => {
       setActiveTab(tab);
     };
@@ -82,10 +66,6 @@ const PublicCourseDetail = () => {
       navigator.clipboard.writeText(currentUrl);
       toast.success('URL Copyed')      
     };
-    useEffect(() => {
-      checkCart();
-  }, [cartItems]);
-
 
     const handleAddToCart = () => {
 
@@ -95,6 +75,35 @@ const PublicCourseDetail = () => {
       dispatch(addToCart(formData))
       toast.success('Successfully added')
     }
+
+    let IsEnrolled = false
+    const isUserEnrolled = courseDetails?.inrolled_by?.id.includes(userDetail?.id);
+    if(isUserEnrolled === true){
+      IsEnrolled = true
+    }else{
+      IsEnrolled = false
+    }
+
+    useEffect(() => {
+      if(error){
+        toast.error(error);
+        dispatch(clearErrors());
+      }
+      dispatch(PublicGetSingleCourse(courseSlug))
+      dispatch(getCart())
+    }, [courseSlug, dispatch, error])
+  
+    useEffect(() => {
+      setCourseDetails(Publiccourse)
+      setUserDetail(user)
+      setCartItems(cart)
+    }, [Publiccourse, user, cart])
+
+    useEffect(() => {
+      checkCart();
+    }, [cartItems]);
+
+  
   
   return (
 
@@ -119,16 +128,30 @@ const PublicCourseDetail = () => {
 
             <div className='public-single-course-content-category-review'>
               <p>{courseDetails?.category}</p>
-              <span>
-                <StarRatings
-                  rating={courseDetails?.reviews}
-                  starDimension="20px"
-                  starSpacing="2px"
-                  numberOfStars={5}
-                  starRatedColor="#FFFF00"
-                />
-                ({courseDetails?.reviews} Reviews)
-              </span>
+              
+                {courseDetails?.reviews === "0" || courseDetails?.reviews === "" ? (
+                  <span>
+                  <StarRatings
+                    rating={0}
+                    starDimension="20px"
+                    starSpacing="2px"
+                    numberOfStars={5}
+                    starRatedColor="#FFFF00"
+                  />
+                  (0 Reviews)
+                  </span>
+                ) : (
+                  <span>
+                  <StarRatings
+                    rating={courseDetails?.reviews}
+                    starDimension="20px"
+                    starSpacing="2px"
+                    numberOfStars={5}
+                    starRatedColor="#FFFF00"
+                  />
+                  ({courseDetails?.reviews} Reviews)
+                  </span>
+                )}
             </div>
             <p className='public-single-course-content-title'>{courseDetails?.course_title}</p>
             <div className='public-single-course-content-teacher-detail'>
@@ -233,8 +256,19 @@ const PublicCourseDetail = () => {
           </div>
 
           <div className='public-single-course-content-sidebar-cart'>
-            {isInCart === true ? <Link to='/Student/Cart'><HiOutlineShoppingCart size={25}/>Go to cart</Link> : <button onClick={handleAddToCart}><HiOutlineShoppingCart size={25}/>Add to cart</button>}
-            <button><IoMdHeartEmpty size={25}/>Add To Wishlist</button>
+            {IsEnrolled === true ? (
+              <>
+                <Link to={`/Student/class/${courseDetails?.slug}`}><CgLaptop size={25}/>ClassRoom</Link>
+              </>
+            ) : (
+              <>
+                {isInCart === true ? 
+                  <Link to='/Student/Cart'><HiOutlineShoppingCart size={25}/>Go to cart</Link> : 
+                  <button onClick={handleAddToCart}><HiOutlineShoppingCart size={25}/>Add to cart</button>
+                }
+                <button><IoMdHeartEmpty size={25}/>Add To Wishlist</button>
+              </>
+            )}
           </div>
           
 

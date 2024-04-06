@@ -3,8 +3,6 @@ import StarRatings from 'react-star-ratings'
 
 const AllPublicCoursesFilters = ({applyFilters, courses }) => {
 
-  // console.log("courses", courses)
-
   const getCategoryCounts = () => {
     return courses?.Publiccourses?.reduce((counts, course) => {
       counts[course.category] = (counts[course.category] || 0) + 1;
@@ -36,8 +34,6 @@ const AllPublicCoursesFilters = ({applyFilters, courses }) => {
     level: '',
     rating: 0,
   });
-
-  console.log("filters", filters)
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;

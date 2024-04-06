@@ -65,7 +65,6 @@ const ResetPassword = () => {
 
         if(message){
           toast.success(message.message)
-               console.log(message);
         }
    
   }, [dispatch, error, message])

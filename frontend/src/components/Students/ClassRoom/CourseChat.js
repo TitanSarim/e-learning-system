@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import { FaArrowRight } from "react-icons/fa6";
 import { MdOutlineOndemandVideo } from "react-icons/md";
@@ -8,40 +8,14 @@ import { FaRegCircle } from "react-icons/fa";
 import { FaRegSmile } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 
+const CourseChat = ({selectWeek, courseDetails, setSelectVideoToPlay, videoPercentage, couseCompletion}) => {
 
-import courseImage from "../../../../src/assets/courseImage.png"
 
-
-const course = [
-  {
-     No : "01",
-     title: " Welcome!",
-     duration: "2:20"
-  },
-  {
-     No : "02",
-     title: " What is Python design?",
-     duration: "2:20"
-  },
-  {
-     No : "03",
-     title: "Python Developer role developer",
-     duration: "2:20"
-  },
-  {
-     No : "04",
-     title: "A little bit of a background of topic",
-     duration: "2:20"
-  },
-  {
-     No : "05",
-     title: "A  bit of a background of Coding",
-     duration: "2:20"
+  const handleVideoChange = (id, url, title) => {
+    setSelectVideoToPlay({id: id, url: url, title: title});
   }
-]
-
-
-const CourseChat = () => {
+  
+  console.log("couseCompletion", couseCompletion)
 
   return (
 
@@ -58,15 +32,19 @@ const CourseChat = () => {
             <div className='class-course-container-b'>
                 <div className='class-course-container-b-1'>
 
-                  <img src={courseImage} alt="course image" className=''/>
+                  <img src={courseDetails?.course_thumbnail} alt="course_thumbnail" width={100}/>
 
                   <div className='class-course-container-b-2'>
 
-                    <p>Design Challenges Workbook</p>
+                    <p>{courseDetails?.course_title?.length > 33 ? courseDetails?.course_title.slice(0, 33): courseDetails?.course_title}..</p>
 
-                    <div className='course-line'></div>
+                    {couseCompletion > courseDetails?.CompletionRate?.CompletionPercentage ||  courseDetails?.CompletionRate === '' ? 
+                      <div className='course-line' style={{ width: `${couseCompletion}%`}}></div>
+                      :
+                      <div className='course-line' style={{ width: `${courseDetails?.CompletionRate?.CompletionPercentage}%`}}></div>
+                    }
 
-                    <p>40+ lessons · 4+ hours</p>    
+                    <p>{courseDetails?.course_content?.length} Weeks · {courseDetails?.hours}+ hours</p>    
 
                   </div>
                 </div>
@@ -77,18 +55,23 @@ const CourseChat = () => {
                 <div className='class-course-content'>
 
                   <div className='class-course-content-1'>
-                      <p>Course Content</p>
+                      <p>{selectWeek?.weekTitle}</p>
                   </div>
 
                   
                   <div className='class-course-content-videos'>
 
-                        {course.map((item)=>(    
+                        {selectWeek?.videos?.map((item, index)=>(    
 
-                          <div className='class-course-content-videos-1'>
+                          <div className='class-course-content-videos-1' key={item?.id} onClick={() => handleVideoChange(item?.id, item?.videoFile, item?.videoTitle)}>
 
                             <div >
-                             {false ? <FaCheck size={12} style={{backgroundColor: "#007AFF", borderRadius: "50%", color: "white", padding: "4px" }} />: <FaRegCircle size={20} style={{color: "#007AFF"}}/> } 
+                             
+                                {courseDetails?.ViewedVideos?.some(viewedVideo => viewedVideo.url === item?.videoFile) || (item?.id === videoPercentage?.id && videoPercentage?.isCompleted === true  ) ?
+                                      <FaCheck size={12} style={{backgroundColor: "#007AFF", borderRadius: "50%", color: "white", padding: "4px" }} /> : 
+                                      <FaRegCircle size={20} style={{color: "#007AFF"}}/>
+                                } 
+                           
                             </div>
 
                             <div className='class-course-content-videos-content-1'> 
@@ -96,15 +79,15 @@ const CourseChat = () => {
                                <div className='class-course-content-videos-content'>
 
                                   <MdOutlineOndemandVideo />
-                                  <p>{item.No} -</p>
-                                  <p>{item.title.length > 22 ? item.title.slice(0, 23): item.title}..</p>
+                                  <p>{index + 1} -</p>
+                                  <p>{item.videoTitle.length > 22 ? item.videoTitle.slice(0, 23): item.videoTitle}..</p>
 
                                </div>
                       
                   
                                <div className='class-course-content-videos-duration'>
 
-                                 <p>({item.duration})</p>
+                                 <p>(2:20)</p>
 
                                </div>
 
@@ -148,3 +131,5 @@ const CourseChat = () => {
 }
 
 export default CourseChat
+
+

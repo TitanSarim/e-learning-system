@@ -13,8 +13,6 @@ const AddToCart = catchAsyncError(async (req, res, next) => {
 
         const existingCartEntry = await Cart.findOne({ where: {userId: userId, slug: slug} })
 
-        console.log("existingCartEntry", existingCartEntry)
-
         if (existingCartEntry) {
             return res.status(400).json({
                 success: false,
@@ -39,7 +37,7 @@ const AddToCart = catchAsyncError(async (req, res, next) => {
                     [Op.in]: slugs 
                 }
             },
-            attributes: ['slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
+            attributes: ['id', 'slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
         });
 
         res.status(201).json({
@@ -70,7 +68,7 @@ const GetCart = catchAsyncError(async (req, res, next) => {
                     [Op.in]: slugs 
                 }
             },
-            attributes: ['slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
+            attributes: ['id', 'slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
         });
 
         res.status(201).json({
@@ -91,14 +89,19 @@ const removeFromCart = catchAsyncError(async (req, res, next) => {
         const userId = req.user.userid
         const slug = req.params.slug
 
-        console.log("userId", userId)
         await Cart.destroy({ where: {userId: userId, slug: slug}})
+
+        const cartItems = await Cart.findAll({where: {userId: userId}})
+
+        const slugs = cartItems.map(cartItem => cartItem.slug);
 
         const cart = await Course.findAll({
             where: {
-                userId: userId 
+                slug: {
+                    [Op.in]: slugs 
+                }
             },
-            attributes: ['slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
+            attributes: ['id', 'slug', 'course_title', 'teacher_name', 'price', 'course_thumbnail']
         });
 
         res.status(201).json({

@@ -27,11 +27,13 @@ const user = require("./routes/userRoutes");
 const course = require("./routes/courseRoutes");
 const profile = require("./routes/profileRoutes");
 const cart = require("./routes/cartRoutes");
+const order = require("./routes/orderRoutes");
 
 app.use("/api/v1", user);
 app.use("/api/v1", course);
 app.use("/api/v1", profile);
 app.use("/api/v1", cart);
+app.use("/api/v1", order);
 
 
 app.use(errorMiddleware);

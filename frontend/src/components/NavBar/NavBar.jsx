@@ -35,7 +35,6 @@ const NavBar = () => {
     setCartItems(cart)
   }, [cart])
 
-  console.log("cartItems", cartItems?.length)
 
   const customStyles = {
     control: (provided, state) => ({

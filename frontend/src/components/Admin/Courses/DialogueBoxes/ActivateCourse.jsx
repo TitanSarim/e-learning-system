@@ -8,8 +8,6 @@ import { adminUpdateCourseStatus } from '../../../../actions/CoursesAction';
 
 const ActivateCourse = ({slug, setActivateConfirmationOpen}) => {
 
-    console.log('slug', slug)
-
     const dispatch = useDispatch()
 
     const handleSubmit= () => {

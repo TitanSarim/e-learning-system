@@ -1,8 +1,9 @@
-const { Op, Sequelize } = require('sequelize');
-const { Course, UserProfile } = require("../models"); // Adjust the path based on your project structure
+const { Op, Sequelize, where } = require('sequelize');
+const { Course, UserProfile, Order, LeaderBoard, ViewdVideos } = require("../models"); // Adjust the path based on your project structure
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
+const leaderboard = require('../models/leaderboard');
 
 
 // admin
@@ -35,10 +36,10 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
             language:language,
             level:level,
             hours:hours,
-            inrolled_by: { id: ["1", "2"]},
+            inrolled_by: { id: []},
             teacher_name: teacherName,
             comments: "0",
-            reviews: "0",
+            reviews: 0,
             status: status
         })
 
@@ -66,7 +67,7 @@ const UpdateCourse  = catchAsyncError(async (req, res, next) => {
 
         const slug = generateSlug(courseTitle, userId)
 
-        const updatedCourses  = await Course.update({
+        await Course.update({
             teacherId: userId,
             slug: slug,
             course_title: courseTitle,
@@ -80,15 +81,11 @@ const UpdateCourse  = catchAsyncError(async (req, res, next) => {
             course_content: {
                 data: videoUrls
             },
-            views: "0",
             price: price,
             language:language,
             level:level,
             hours:hours,
-            inrolled_by: { id: ["1", "2"]},
             teacher_name: teacherName,
-            comments: "0",
-            reviews: "0",
             status: status
         }, {where: {slug: CourseUrlslug}})
 
@@ -253,7 +250,6 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
     const slug = req.params.slug;
 
-    console.log("slug", slug)
 
     try {
 
@@ -299,7 +295,6 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
     }
 
 })
-
 
 // Public All Courses
 const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
@@ -548,6 +543,263 @@ const GetSinglePublicCourse  = catchAsyncError(async (req, res, next) => {
 
 })
 
+
+// Get User Inrolled Course --Single Course
+const GetSingleInrolledCourse  = catchAsyncError(async (req, res, next) => {
+
+    const userId = req.user.userid;
+    try {
+
+        const {slug} = req.body
+
+        const SingleInrolledCourse  = await Course.findOne({ where: { slug: slug } });
+
+        if (!SingleInrolledCourse ) {
+            return res.status(404).json({ error: "Course not found" });
+        }
+
+        const TeacherAvatar = await UserProfile.findOne({ 
+            where: { userId: SingleInrolledCourse.teacherId },
+            attributes: ['avatar'] 
+        })
+
+        const getCompletionRate = await LeaderBoard.findOne({
+            where: {userId: userId, slug: slug}
+        })
+
+        const getViewedVideos = await ViewdVideos.findAll({
+            where: {userId: userId, slug: slug}
+        })
+
+        const InrolledCourses  = {
+            id: SingleInrolledCourse.id || '',
+            teacherId: SingleInrolledCourse.teacherId || '',
+            TeacherAvatar: TeacherAvatar || '',
+            slug: SingleInrolledCourse.slug || '',
+            course_title: SingleInrolledCourse.course_title || '',
+            category: SingleInrolledCourse.category || '',
+            tags: SingleInrolledCourse.tags || '',
+            timeline: SingleInrolledCourse.timeline || '',
+            course_desc: SingleInrolledCourse.course_desc.desc || '',
+            course_thumbnail: SingleInrolledCourse.course_thumbnail.url || '',
+            course_content: SingleInrolledCourse.course_content.data || '',
+            views: SingleInrolledCourse.views || '',
+            price: SingleInrolledCourse.price || '',
+            language: SingleInrolledCourse.language || '',
+            level: SingleInrolledCourse.level || '',
+            hours: SingleInrolledCourse.hours || '',
+            inrolled_by: SingleInrolledCourse.inrolled_by || '',
+            teacher_name: SingleInrolledCourse.teacher_name || '',
+            comments: SingleInrolledCourse.comments || '',
+            reviews: SingleInrolledCourse.reviews || '',
+            status: SingleInrolledCourse.status || '',
+            ViewedVideos: getViewedVideos || '',
+            CompletionRate: getCompletionRate || '',
+            createdAt: SingleInrolledCourse.createdAt || '',
+            updatedAt: SingleInrolledCourse.updatedAt || '',
+          };
+          
+        res.status(201).json({
+            success: true,
+            message: 'Course retrived successfully',
+            InrolledCourses: InrolledCourses,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
+// Get User Inrolled Course --all Courses
+const GetAllInrolledCourse  = catchAsyncError(async (req, res, next) => {
+
+    const userId = req.user.userid
+
+    try {
+
+        const orders = await Order.findAll({ where: { userId: userId } });
+
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ error: "No orders found for this user" });
+        }
+
+        const courseIds = orders.flatMap(order => order.course_ids);
+
+        const courses = await Course.findAll({ where: { id: courseIds } });
+
+        if (!courses || courses.length === 0) {
+            return res.status(404).json({ error: "No courses found" });
+        }
+
+        const InrolledCourses  = courses.map(course => ({
+            id: course.id || '',
+            teacherId: course.teacherId || '',
+            slug: course.slug || '',
+            course_title: course.course_title || '',
+            category: course.category || '',
+            tags: course.tags || '',
+            timeline: course.timeline || '',
+            course_desc: course.course_desc.desc || '',
+            course_thumbnail: course.course_thumbnail.url || '',
+            course_content: course.course_content.data || '',
+            views: course.views || '',
+            price: course.price || '',
+            language: course.language || '',
+            level: course.level || '',
+            hours: course.hours || '',
+            inrolled_by: course.inrolled_by || '',
+            teacher_name: course.teacher_name || '',
+            comments: course.comments || '',
+            reviews: JSON.parse(course.reviews) || '',
+            status: course.status || '',
+            createdAt: course.createdAt || '',
+            updatedAt: course.updatedAt || '',
+        }));
+          
+        res.status(201).json({
+            success: true,
+            message: 'Course retrived successfully',
+            InrolledCourses: InrolledCourses,
+          });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
+
+// course completion rate handler -- pending 
+const SaveCompletionRateOfCourse = catchAsyncError(async (req, res, next) => {
+    const userId = req.user.userid;
+    const {slug, url} = req.body;
+  
+    try {
+
+        const existingRecord = await ViewdVideos.findOne({
+            where: {
+                userId: userId,
+                url: url
+            }
+        });
+
+        if (existingRecord) {
+            return res.status(200).json({
+                success: false,
+                message: 'Record already exists',
+            });
+        }
+
+        const course = await Course.findOne({
+            where: {
+                slug: slug
+            }
+        });
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: 'Course not found',
+            });
+        }
+        const courseContent =  course.course_content;
+        // console.log("courseContent", JSON.parse(courseContent))
+
+        let courseContentUpdated = courseContent.data.map(week => {
+            week.videos = week.videos.map(video => {
+                if (video.videoFile === url) {
+                    return { ...video, completed: true };
+                }
+                return video;
+            });
+            return week;
+        });
+
+        const LeaderboardCheck = await LeaderBoard.findOne({
+            where: {userId: userId, slug: slug}
+        })
+
+        if(!LeaderboardCheck){
+            await LeaderBoard.create({
+                userId: userId,
+                slug: slug,
+                weekData: courseContentUpdated
+            })
+        } else {
+            // Update specific week and video's completed status
+            let updatedWeekData = LeaderboardCheck.weekData.map(week => {
+                week.videos = week.videos.map(video => {
+                    if (video.videoFile === url) {
+                        return { ...video, completed: true };
+                    }
+                    return video;
+                });
+                return week;
+            });
+
+            // Update the existing record
+            await LeaderBoard.update({
+                weekData: updatedWeekData
+            }, {
+                where: {
+                    userId: userId,
+                    slug: slug
+                }
+            });
+        }
+
+        await ViewdVideos.create({
+            userId: userId,
+            slug: slug,
+            url: url,
+            isViewd: 'true' 
+        });
+
+        const LeaderboardProgressCheck = await LeaderBoard.findOne({
+            where: {userId: userId, slug: slug}
+        })
+
+        
+        if (!LeaderboardProgressCheck) {
+            return res.status(404).json({
+                success: false,
+                message: 'LeaderBoard data not found',
+            });
+        }
+
+        const weekData = LeaderboardProgressCheck.weekData;
+        let totalVideos = 0;
+        let completedVideos = 0;
+
+        weekData.forEach(week => {
+            totalVideos += week.videos.length;
+            week.videos.forEach(video => {
+                if (video.completed) {
+                    completedVideos++;
+                }
+            });
+        });
+        
+        const completionPercentage = (completedVideos / totalVideos) * 100;
+
+        await LeaderBoard.update({
+            CompletionPercentage: completionPercentage
+        },{
+            where: {userId: userId, slug: slug}, 
+        })
+      
+      res.status(201).json({
+        success: true,
+        message: 'Completion rate saved successfully',
+        completionPercentage: completionPercentage
+      });
+    } catch (error) {
+      return next(new errorHandler(error, 500));
+    }
+});
+  
+
 module.exports = {
     createCourse,
     GetAllCourseAdmin,
@@ -556,5 +808,8 @@ module.exports = {
     UpdateCourseStatus,
     deleteCourse,
     GetAllPublicCourses,
-    GetSinglePublicCourse
+    GetSinglePublicCourse,
+    GetSingleInrolledCourse,
+    GetAllInrolledCourse,
+    SaveCompletionRateOfCourse
 }
