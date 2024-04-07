@@ -23,6 +23,7 @@ import UserForm from "./components/Admin/User/UserForm";
 import EditCourse from "./components/Admin/Courses/EditCourse";
 import PublicCourseDetail from "./components/Courses/PublicCourseDetail";
 import MakeOrder from "./components/Cart/MakeOrder.jsx/MakeOrder";
+import AdminProfile from "./components/Admin/Profile/AdminProfile";
 
 function App() {
 
@@ -57,6 +58,8 @@ function App() {
             <Route path='/admin/all-courses' element={<AllCourses/>}/>
             <Route path='/admin/create-course' element={<CreateCourse />}/>
             <Route path='/admin/edit-course/:slug' element={<EditCourse/>}/>
+
+            <Route path='/admin/profile' element={<AdminProfile/>}/>
           </Route>
 
           <Route path="/login" element={<Auth />} />

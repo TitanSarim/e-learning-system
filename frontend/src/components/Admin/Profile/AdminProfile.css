@@ -1,0 +1,260 @@
+.admin-wrapper-admin-profile{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 82%;
+    align-items: center;
+    justify-content: flex-start;
+    margin: auto;
+    margin-top: 0%;
+    left: 160px;
+    height: 100vh;
+}
+
+.admin-profile-container{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    top: 100px;
+    width: 90%;
+    height: 70vh;
+    border: 1px solid rgba(255, 255, 255, 0.103);
+    border-radius: 12px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/*  */
+.admin-profile-avatar-location{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 23%;
+    height: 70vh;
+    gap: 30px;
+}
+
+.admin-profile-avatar{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.admin-profile-avatar>img{
+    width: 200px;
+    border-radius: 100px;
+}
+
+.admin-profile-avatar>div{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.admin-profile-avatar>div button:nth-child(1){
+    background-color: transparent;
+    color: tomato;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    gap: 4px;
+    cursor: pointer;
+    border-bottom: 1px solid tomato;
+    padding-bottom: 2px;
+}
+
+.admin-profile-avatar>div button:nth-child(2){
+    background-color: transparent;
+    color: tomato;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    gap: 4px;
+    cursor: pointer;
+    padding-bottom: 2px;
+}
+
+.admin-profile-location{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+}
+
+.admin-profile-location p:nth-child(1){
+    position: relative;
+    color: white;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.admin-profile-location p:nth-child(2){
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.774);
+}
+
+.admin-profile-location p:nth-child(2) span{
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 15px;
+}
+
+.admin-profile-location p:nth-child(2) span svg{
+    color: tomato;
+}
+
+
+.admin-profile-avatar-about{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    height: 70vh;
+    gap: 20px;
+}
+
+.admin-profile-avatar-aboutinput-sections{
+    position: relative;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+
+
+
+.admin-profile-avatar-aboutinput-type1, .admin-profile-avatar-aboutinput-type2, .admin-profile-avatar-aboutinput-type3, .admin-profile-avatar-aboutinput-type4, .admin-profile-avatar-aboutinput-editor{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.admin-profile-avatar-aboutinput-type1 p,
+.admin-profile-avatar-aboutinput-type2 p,
+.admin-profile-avatar-aboutinput-type3 p,
+.admin-profile-avatar-aboutinput-type4 p,
+.admin-profile-avatar-aboutinput-editor p{
+    color: white;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.admin-profile-avatar-aboutinput-type1 input{
+    position: relative;
+    width: 180px;
+    height: 35px;
+    background-color: #0b2542;
+    border: 1px solid rgba(255, 255, 255, 0.425);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.616);
+    padding: 3px 6px;
+    outline: none;
+}
+
+.admin-profile-avatar-aboutinput-type2 input{
+    position: relative;
+    width: 260px;
+    height: 35px;
+    background-color: #0b2542;
+    border: 1px solid rgba(255, 255, 255, 0.425);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.616);
+    padding: 3px 6px;
+    outline: none;
+}
+
+.admin-profile-avatar-aboutinput-type3 input{
+    position: relative;
+    width: 380px;
+    height: 35px;
+    background-color: #0b2542;
+    border: 1px solid rgba(255, 255, 255, 0.425);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.616);
+    padding: 3px 6px;
+    outline: none;
+}
+
+.admin-profile-avatar-aboutinput-type4 input{
+    position: relative;
+    width: 600px;
+    height: 35px;
+    background-color: #0b2542;
+    border: 1px solid rgba(255, 255, 255, 0.425);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.616);
+    padding: 3px 6px;
+    outline: none;
+}
+
+.admin-profile-avatar-aboutinput-editor{
+    width: 100%;
+}
+
+
+.admin-profile-avatar-aboutinput-editor .ql-toolbar.ql-snow{
+    border: 1px solid rgba(255, 255, 255, 0.425);
+}
+
+.admin-profile-avatar-aboutinput-editor  .ql-container.ql-snow {
+    border-top: 0px;
+    width: 700px;
+    color: white;
+    height: 200px;
+    border: 1px solid rgba(255, 255, 255, 0.425);
+}
+
+.admin-profile-avatar-aboutinput-bottom{
+    position: relative;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    top: 40px;
+}
+
+.admin-profile-avatar-aboutinput-bottom>input{
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    padding: 8px 35px;
+    font-size: 18px;
+    background-color: tomato;
+    color: white;
+    transition: all 500ms;
+    cursor: pointer;
+}
+
+.admin-profile-avatar-aboutinput-bottom>input:hover{
+    transform: scale(1.02);
+}

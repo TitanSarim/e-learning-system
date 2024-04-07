@@ -110,6 +110,9 @@ const NavBar = () => {
           {isAuthenticated && user?.role === 'admin' && (
             <Link to='/admin/dashboard'>Admin</Link>
           )}
+          {isAuthenticated && user?.role === 'Teacher' && (
+            <Link to='/admin/dashboard'>Office</Link>
+          )}
           {!isAuthenticated && (
             <Link to='/login'>Login</Link>
           )}

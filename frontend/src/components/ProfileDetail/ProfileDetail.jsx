@@ -180,7 +180,9 @@ useEffect(() => {
                     )}
                     <div>
                       <button onClick={() => hanldeEditorModelOpen()}><MdModeEditOutline/>Edit</button>
-                      <button onClick={() => hanldeAavatarDeleteModelOpen()}><CiCircleRemove size={23}/></button>
+                      {profileData?.avatar ? (
+                        <button onClick={() => hanldeAavatarDeleteModelOpen()}><CiCircleRemove size={23}/></button>
+                      ): ""}                   
                     </div>
                   </div>
                   <div className='general-profile-detail-image-user-detail'>

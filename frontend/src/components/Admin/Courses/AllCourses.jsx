@@ -39,6 +39,7 @@ const AllCourses = () => {
 
   const dispatch = useDispatch()
 
+    const {user} =  useSelector((state)=>state.user);
     const {AllAdmincourses, error, loading, message} = useSelector((state)=>state.adminCourses);
 
     const [allCourses, setAllCourses] = useState([])
@@ -140,7 +141,7 @@ const AllCourses = () => {
 
             <div className='admin-allcourses-container'>
                 
-                <Link to={'/admin/create-course'}>Add Course</Link>
+                {user?.role === 'Teacher' ? <Link to={'/admin/create-course'}>Add Course</Link> : ''}
 
                 <div className='admin-allcourses-filter'>
                   
@@ -193,11 +194,20 @@ const AllCourses = () => {
                             <p><BsCalendar2Date size={25}/> {moment(item.updatedAt).format("MMM Do YY")}</p>
                             <div className='admin-allcourses-card-footer-more-options'>
                               <IoMdMore size={24}/>
-                              <div className='admin-allcourses-card-footer-more-options-show'>
-                                {item?.status === 'active' ? <button onClick={() => hanldeDeActivateModelOpen(item.slug)}>DeActivate</button> : <button onClick={() => hanldeActivateModelOpen(item.slug)}>Activate</button>}
-                                <Link to={`/admin/edit-course/${item.slug}`}>Update</Link>
-                                <button onClick={() => hanldeDeleteModelOpen(item.slug)}>Delete</button>
-                              </div>
+                              {user?.role === "Teacher" ? (
+                                <div className='admin-allcourses-card-footer-more-options-show'>
+                                  {item?.status === 'active' ? <button onClick={() => hanldeDeActivateModelOpen(item.slug)}>DeActivate</button> : <button onClick={() => hanldeActivateModelOpen(item.slug)}>Activate</button>}
+                                  <Link to={`/admin/edit-course/${item.slug}`}>Update</Link>
+                                  <button onClick={() => hanldeDeleteModelOpen(item.slug)}>Delete</button>
+                                </div>
+                              ) : (
+                                <div className='admin-allcourses-card-footer-more-options-show'>
+                                  {item?.status === 'active' ? <button onClick={() => hanldeDeActivateModelOpen(item.slug)}>DeActivate</button> : <button onClick={() => hanldeActivateModelOpen(item.slug)}>Activate</button>}
+                                  {/* <Link to={`/admin/edit-course/${item.slug}`}>Update</Link> */}
+                                  <button onClick={() => hanldeDeleteModelOpen(item.slug)}>Delete</button>
+                                </div>
+                              )}
+                              
                             </div>
                           </div>
                         </div>

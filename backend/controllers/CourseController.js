@@ -296,6 +296,7 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
 })
 
+
 // Public All Courses
 const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
 
@@ -306,12 +307,13 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
         const page = parseInt(req.query.page) || 1; // Default page 1
         const limit = parseInt(req.query.limit) || 4; // Default limit 10
         const skip = (page - 1) * limit;
-
+        const status = 'active'
 
         const filter = {};
         if (category) filter.category = category;
         if (level) filter.level = level;
         if (language) filter.language = language;
+        if (status) filter.status = status;
         
         let orderOption = []; // Initialize order option
 
