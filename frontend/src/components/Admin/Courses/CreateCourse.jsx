@@ -44,7 +44,7 @@ const CreateCourse = () => {
 
     const createEmptyWeek = () => ({
         weekTitle: '',
-        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null, videoFileName: null, isFeatured: false}],
+        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null, videoLenght: null, videoFileName: null, isFeatured: false}],
       });
     
     const [videoDivsArray, setVideoDivsArray] = useState(
@@ -208,6 +208,28 @@ const CreateCourse = () => {
       
     };
 
+    const handleVideoLengthChange = (weekIndex, divId, e) => {
+        const videoLenght = e.target.value;
+
+        setVideoDivsArray((prevVideoDivsArray) =>
+            prevVideoDivsArray.map((week, wIndex) =>
+                wIndex === weekIndex
+                    ? {
+                        ...week,
+                        videos: week.videos.map((video) =>
+                            video.id === divId ? { ...video, videoLenght: videoLenght } : video
+                        ),
+                    }
+                    : week
+            )
+        );
+
+        setVideoDivsArrayAuthError((prevErrors) => ({
+            ...prevErrors,
+            error: false,
+        }));
+    }
+
     const handleVideoTitleChange = (weekIndex, divId, e) => {
 
         const videoTitle = e.target.value;
@@ -354,6 +376,8 @@ const CreateCourse = () => {
                 }
                 if (!video.videoFile) {
                     errors.push({ weekIndex, videoIndex, error: 'Video file is required' });
+                }if (!video.videoLenght) {
+                    errors.push({ weekIndex, videoIndex, error: 'Video length is required' });
                 }if(!video.videoTitle){
                     errors.push({ weekIndex, videoIndex, error: 'Video title is required' });
                 }
@@ -658,6 +682,12 @@ const CreateCourse = () => {
                                                         </div>
                                                     
                                                     </div>
+
+                                                    <div  className='admin-create-course-adding-video-input'>
+                                                        <p>Video Length <span>*</span></p>
+                                                        <input placeholder='Video Length in minutes, e.g(30)' type='number' value={video.videoLenght} onChange={(e) => handleVideoLengthChange(weekIndex, video.id, e)}/>
+                                                    </div>
+
                                                     <div className='admin-create-course-adding-videos-btn'>
                                                         <p>Add another video</p>
                                                         <button onClick={() => handleAddVideo(weekIndex)}>
@@ -708,7 +738,10 @@ const CreateCourse = () => {
                                     {courseDescAuthError.error === true ? (<p><MdErrorOutline size={24}/> {courseDescAuthError?.value}</p>) : ""}
                                     {thumbnailFileAuthError.error === true ? (<p><MdErrorOutline size={24}/> {thumbnailFileAuthError?.value}</p>): ""}
                                     {priceAuthError.error === true ? (<p><MdErrorOutline size={24}/> {priceAuthError?.value}</p>): ""}
-                               </div> 
+                                    {lengthError.error === true ? (<p><MdErrorOutline size={25}/> {lengthError?.value}</p>): ""}
+                                    {languageError.error === true ? (<p><MdErrorOutline size={25}/> {languageError?.value}</p>): ""}
+                                    {skillError.error === true ? (<p><MdErrorOutline size={25}/> {skillError?.value}</p>): ""}
+                                </div> 
                             ) : ""
                         }
 

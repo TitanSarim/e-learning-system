@@ -16,9 +16,11 @@ const WishList = () => {
     const {cart, loading} = useSelector((state)=>state.cart);
     const {wishList} = useSelector((state)=>state.wishList);
     
+    
     const [cartItems, setCartItems] = useState([])
     const [wishListItems, setWishListItems] = useState([])
-    
+
+
     const handleAddToCart = (courseSlug) => {
         const formData = {
           slug: courseSlug
@@ -37,6 +39,10 @@ const WishList = () => {
         toast.success('Successfully removed')
     }
 
+    const isInCart = (slug) => {
+        return cartItems.some(item => item.slug === slug);
+    }
+
     useEffect(() => {
         dispatch(getCart())
         dispatch(getWishList())
@@ -46,6 +52,7 @@ const WishList = () => {
         setCartItems(cart)
         setWishListItems(wishList)
     }, [cart, wishList])
+
 
 
 
@@ -76,7 +83,11 @@ const WishList = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <button className='courses-cart-item-button-one' onClick={() => handleAddToCart(item.slug)}><HiOutlineShoppingCart size={22}/></button>
+                                        {isInCart(item.slug) ? 
+                                            ""
+                                            :
+                                            <button className='courses-cart-item-button-one' onClick={() => handleAddToCart(item.slug)}><HiOutlineShoppingCart size={22} /></button>
+                                        }
                                         <button className='courses-cart-item-button' onClick={() => removeFromWishList(item.slug)}><GiTireIronCross size={22}/></button>
                                     </div>
                                 ))}

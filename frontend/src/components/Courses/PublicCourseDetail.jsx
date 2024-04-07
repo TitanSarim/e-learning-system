@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams, useLocation  } from 'react-router-dom';
+import { Link, useParams, useLocation, useNavigate  } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Utils/Loader';
 import TeacherAvatar from '../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
@@ -39,11 +39,12 @@ const PublicCourseDetail = () => {
 
     const dispatch = useDispatch()
     const location = useLocation();
+    const navigate = useNavigate();
     const { slug } = useParams();
     const courseSlug = slug.substring(slug.lastIndexOf('/') + 1);
     const currentUrl = window.location.origin + location.pathname;
 
-    const {user} = useSelector((state)=>state.user);
+    const {isAuthenticated, user} = useSelector((state)=>state.user);
     const {Publiccourse, error, loading} = useSelector((state)=>state.PublicCourse);
     const {cart} = useSelector((state)=>state.cart);
     const {wishList} = useSelector((state)=>state.wishList);
@@ -76,12 +77,16 @@ const PublicCourseDetail = () => {
     };
 
     const handleAddToCart = () => {
-
-      const formData = {
-        slug: courseSlug
+      if (!isAuthenticated) {
+        navigate('/login')
+        // localStorage.setItem('historyRoute', courseSlug)
+      }else{
+        const formData = {
+          slug: courseSlug
+        }
+        dispatch(addToCart(formData))
+        toast.success('Successfully added')
       }
-      dispatch(addToCart(formData))
-      toast.success('Successfully added')
     }
     const handleAddToWishList = () => {
 

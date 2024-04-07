@@ -95,10 +95,13 @@ const NavBar = () => {
 
         </div>
 
-        <div className='nav-cart'>
+        {isAuthenticated === true ? (
+          <div className='nav-cart'>
             <Link to="/Student/wishList"><IoMdHeartEmpty size={23}/> {wishListItems?.length > 0 ? <span>{wishListItems?.length}</span>: <span>0</span>}</Link>
             <Link to="/Student/Cart"><HiOutlineShoppingCart size={23}/> {cartItems?.length > 0 ? <span>{cartItems?.length}</span>: <span>0</span>}</Link>
-        </div>
+          </div>
+        ) : ""}
+       
 
         <div className='navbar-login'>
           {isAuthenticated && user?.role === 'Student' && (

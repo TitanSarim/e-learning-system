@@ -175,7 +175,7 @@ const AllCourses = () => {
                         <div key={item.id} className='admin-allcourses-card-container'>
 
                         <LazyLoadImage src={item.course_thumbnail} alt={'Course Thumbnail'}/>
-                          {/* <img src={JSON.parse(item.course_thumbnail).url} alt="Course Thumbnail" /> */}
+
                           <div className='admin-allcourses-card-header'>
                             {item.status === 'active' ? <span className='admin-allcourses-card-header-status-acitve'>{item.status}</span> : <span className='admin-allcourses-card-header-status-inacitve'>{item.status}</span>}
                             <p>{item.category}</p>

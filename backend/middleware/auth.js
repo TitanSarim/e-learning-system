@@ -9,6 +9,7 @@ const isAuthenticatedUser = catchAsyncError(async(req, res, next) => {
 
     if (req.cookies && req.cookies.token) {
         token = req.cookies.token;
+        console.log("token", token)
     } else if (authHeader && authHeader.startsWith("Bearer")) {
         token = authHeader.split(" ")[1];
     }

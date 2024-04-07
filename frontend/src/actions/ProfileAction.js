@@ -18,19 +18,21 @@ const BASE_URL = "http://localhost:3900"
 
 export const getMyProfile = () => async (dispatch) => {
 
+    
     try {
-        dispatch({type: GET_MY_PROFILE_REQUEST});
-
         const token = Cookies.get('token');
 
-         const config = { headers: 
-                      { 
-                        "Content-Type": "application/json",
-                         Authorization: `Bearer ${token}` 
-                      }
-                    }
+        const ConfigApplicationJson = { headers: 
+            { 
+              "Content-Type": "application/json",
+                Authorization: `Bearer ${token}` 
+            }
+        }
 
-        const {data} = await axios.get(`${BASE_URL}/api/v1/get-my-profile`, config)
+        dispatch({type: GET_MY_PROFILE_REQUEST});
+
+
+        const {data} = await axios.get(`${BASE_URL}/api/v1/get-my-profile`, ConfigApplicationJson)
 
         dispatch({type: GET_MY_PROFILE_SUCCESS, payload: data?.myProfile});
         
@@ -43,9 +45,18 @@ export const getMyProfile = () => async (dispatch) => {
 
 // Update profile
 export const updateMyProfile = (formData, oldResume, NewAvatar) => async (dispatch) => {
-    console.log("newAvatar234", NewAvatar)
 
     try {
+
+        const token = Cookies.get('token');
+
+        const ConfigApplicationJson = { headers: 
+            { 
+              "Content-Type": "application/json",
+                Authorization: `Bearer ${token}` 
+            }
+        }
+        
 
         const {cv, ...restFormData } = formData;
 
@@ -66,18 +77,10 @@ export const updateMyProfile = (formData, oldResume, NewAvatar) => async (dispat
         const jsonString = JSON.stringify(jsonData);
 
 
-        const token = Cookies.get('token');
-
-         const config = { headers: 
-                      { 
-                        "Content-Type": "application/json",
-                         Authorization: `Bearer ${token}` 
-                      }
-                    }
 
         const {data} = await axios.post(`${BASE_URL}/api/v1/update-my-profile`, 
             jsonString,
-            config
+            ConfigApplicationJson
         )
 
 
