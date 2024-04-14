@@ -10,6 +10,7 @@ import {myPorfileReducer} from './redcuers/ProfileReducer'
 import {cartReducer, wishListReducer} from './redcuers/CartReducer'
 import {orderReducer} from './redcuers/OrderReducer'
 import {InrolledCourseReducer} from './redcuers/InrolledCourseReducer'
+import { hrJobReducer, publicJobReducer } from './redcuers/JobReducer';
 
 const reducer = combineReducers({
 
@@ -24,7 +25,10 @@ const reducer = combineReducers({
     order: orderReducer,
     userInrolledCourses: InrolledCourseReducer,
 
-    PublicCourse: PublicCourseReducer
+    PublicCourse: PublicCourseReducer,
+
+    hrJob : hrJobReducer,
+    publicJob: publicJobReducer
 
 });
 

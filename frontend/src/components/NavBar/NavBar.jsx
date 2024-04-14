@@ -72,7 +72,7 @@ const NavBar = () => {
         <div className='navbar-pages'>
             <Link to='/'>Home</Link>
             <Link to='/courses'>Courses</Link>
-            <Link to='/'>Jobs</Link>
+            <Link to='/all-jobs'>Jobs</Link>
             <Link to='/'>Contact</Link>
         </div>
 
@@ -106,6 +106,9 @@ const NavBar = () => {
         <div className='navbar-login'>
           {isAuthenticated && user?.role === 'Student' && (
             <Link to='/Student/Profile'>Profile</Link>
+          )}
+          {isAuthenticated && user?.role === 'HR Manager' && (
+            <Link to='/hr/HrProfile'>Profile</Link>
           )}
           {isAuthenticated && user?.role === 'admin' && (
             <Link to='/admin/dashboard'>Admin</Link>

@@ -3,7 +3,6 @@ const { Course, UserProfile, Order, LeaderBoard, ViewdVideos } = require("../mod
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
-const leaderboard = require('../models/leaderboard');
 
 
 // admin
@@ -321,15 +320,6 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
             orderOption.push(['price', price]); // Construct order option array
         }
 
-        // if (ratingStringfy >= '1') {
-        //     filter.reviews = { $gt: ratingStringfy };
-        // }else if (ratingStringfy >= '2') {
-        //     filter.reviews = { $gt: ratingStringfy };
-        // }else if (ratingStringfy >= '3') {
-        //     filter.reviews = { $gt: ratingStringfy };
-        // }if (ratingStringfy >= '4') {
-        //     filter.reviews = { $gt: ratingStringfy };
-        // }
 
         const totalCount = await Course.count({
             where: filter, // Apply filters
@@ -419,10 +409,10 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
         }));
         
           
-          const Publiccourses = {
+        const Publiccourses = {
             Publiccourses: PubliccoursesObject,
             pagination: pagination
-          }
+        }
         res.status(201).json({
             success: true,
             message: 'Course retrived successfully',

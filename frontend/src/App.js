@@ -24,6 +24,11 @@ import EditCourse from "./components/Admin/Courses/EditCourse";
 import PublicCourseDetail from "./components/Courses/PublicCourseDetail";
 import MakeOrder from "./components/Cart/MakeOrder.jsx/MakeOrder";
 import AdminProfile from "./components/Admin/Profile/AdminProfile";
+import AllPublicJobs from "./components/Job/Jobs/AllPublicJobs";
+import HrProfile from "./components/HRManager/Profile/HrProfile";
+import HRCreateNewJob from "./components/HRManager/Jobs/HRCreateNewJob";
+import HRUpdateJob from "./components/HRManager/Jobs/HRUpdateJob";
+import HRJobsApplications from "./components/HRManager/Jobs/HRJobsApplications";
 
 function App() {
 
@@ -42,6 +47,18 @@ function App() {
             <Route path="/Student/wishList" element={<WishList/>}/>
             <Route path="/Student/Cart" element={<Cart/>}/>
             <Route path="/Student/make-order" element={<MakeOrder/>}/>
+          </Route>
+
+          <Route path="/hr">
+            <Route path="/hr/HrProfile" element={<HrProfile/>}/> 
+            <Route path="/hr/create-job" element={<HRCreateNewJob/>}/>
+            <Route path="/hr/update-job/:slug" element={<HRUpdateJob/>}/>
+            <Route path="/hr/job-applications/:slug" element={<HRJobsApplications/>}/>
+          </Route>
+
+          <Route path="/all-jobs" element={<AllPublicJobs/>}/>
+          <Route path="/Job" element={<ProtectedRoutes />}>
+            {/* <Route path="/Job/jobs" element={<AllPublicJobs/>}/> */}
           </Route>
 
           <Route path="/Profile" element={<ProtectedRoutes />}>

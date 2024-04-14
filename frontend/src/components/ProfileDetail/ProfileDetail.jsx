@@ -29,8 +29,10 @@ const ProfileDetail = () => {
 
   const dispatch = useDispatch()
 
+  const {user} = useSelector((state)=>state.user);
   const {myProfileData, error, loading} = useSelector((state)=>state.myPorfile);
 
+  console.log("user", user)
   
   const [profileData, setProfileData] = useState(myProfileData)
   const [editorOpen, setEditorOpen] = useState(false);
@@ -162,7 +164,7 @@ useEffect(() => {
 
         {/* left bar */}
         <div className='general-profile-detail-left-bar'>
-          <ProfileDetailSideBar profileData={profileData}/>
+          <ProfileDetailSideBar profileData={profileData} user={user}/>
         </div>
 
         {/* right side */}
@@ -207,26 +209,34 @@ useEffect(() => {
                                 onClick={() => handleMainTabClick('About')}>
                   About
                 </button>
+                {user?.role === "HR Manager" ? "" : (
                 <button className={activeTab === 'Education' ? 'general-profile-detail-tab-avtive' : ''}
                                 onClick={() => handleMainTabClick('Education')}>
                   Education
                 </button>
+                )}
+                {user?.role === "HR Manager" ? "" : (
                 <button className={activeTab === 'Skills' ? 'general-profile-detail-tab-avtive' : ''}
                                 onClick={() => handleMainTabClick('Skills')}>
                   Skills
                 </button>
+                )}
+                {user?.role === "HR Manager" ? "" : (
                 <button className={activeTab === 'Experience' ? 'general-profile-detail-tab-avtive' : ''}
                                 onClick={() => handleMainTabClick('Experience')}>
                   Experience
                 </button>
+                )}
                 <button className={activeTab === 'Social' ? 'general-profile-detail-tab-avtive' : ''}
                                 onClick={() => handleMainTabClick('Social')}>
                   Social
                 </button>
+                {user?.role === "HR Manager" ? "" : (
                 <button className={activeTab === 'Resume' ? 'general-profile-detail-tab-avtive' : ''}
                                 onClick={() => handleMainTabClick('Resume')}>
                   Resume
                 </button>
+                )}
               </div>
 
               {/*  tab content */}

@@ -130,6 +130,9 @@ const Auth = () => {
         naviagte("/admin/dashboard");
         toast.success("Welcome to M-Time");
         
+      }else if(isAuthenticated === true && user?.role === "HR Manager"){
+        naviagte("/hr/HrProfile")
+        toast.success("Welcome to M-Time");
       }
     }
   });

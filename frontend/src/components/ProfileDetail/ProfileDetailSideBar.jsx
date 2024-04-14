@@ -5,7 +5,7 @@ import {userLogOut } from "../../actions/UserActions";
 
 import './ProfileDetailSideBar.css'
 
-const ProfileDetailSideBar = ({profileData}) => {
+const ProfileDetailSideBar = ({profileData, user}) => {
 
     const [completionRate, setCompletionRate] = useState(0);
 
@@ -76,7 +76,8 @@ const ProfileDetailSideBar = ({profileData}) => {
     <div className='profile-detail-side-bar'>
 
         <div className='profile-detail-side-bar-container'>
-        
+
+          {user?.role === "HR Manager" ? "" : (
             <div className='profile-detail-side-bar-profile-completion'>
                 <p>Profile Completion:</p>
                 <div className='progress-bar'>
@@ -85,6 +86,7 @@ const ProfileDetailSideBar = ({profileData}) => {
                     </div>
                 </div>
             </div>
+          )}
 
             <div className='profile-detail-side-bar-profile-settings'>
                 <div>

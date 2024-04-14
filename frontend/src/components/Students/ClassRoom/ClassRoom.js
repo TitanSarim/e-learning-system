@@ -129,7 +129,7 @@ const ClassRoom = () => {
                             <div className='class-description-course-info'>
                             <div className='class-description-section-content-container'>
                             {courseContent?.map((content, index) => {
-                                        const weekData = courseDetails?.CompletionRate?.weekData.find(week => week.weekTitle === content.weekTitle);
+                                        const weekData = courseDetails?.CompletionRate?.weekData?.find(week => week.weekTitle === content.weekTitle);
 
                                         const allVideosCompleted = weekData && weekData.videos.every(video => video.completed);
 
