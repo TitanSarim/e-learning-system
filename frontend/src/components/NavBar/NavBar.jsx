@@ -110,6 +110,9 @@ const NavBar = () => {
           {isAuthenticated && user?.role === 'HR Manager' && (
             <Link to='/hr/HrProfile'>Profile</Link>
           )}
+          {isAuthenticated && user?.role === 'Job Seeker' && (
+            <Link to='/JobSeeker/JobSeeker-profile'>Profile</Link>
+          )}
           {isAuthenticated && user?.role === 'admin' && (
             <Link to='/admin/dashboard'>Admin</Link>
           )}

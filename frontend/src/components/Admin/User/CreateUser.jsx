@@ -19,7 +19,7 @@ const CreateUser = () => {
     const [age, setAge] = useState('')
     const [gender, setGender] = useState('Male')
     const [role, setRole] = useState('Student')
-    const [status, setStatus] = useState('Activate')
+    const [status, setStatus] = useState('active')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 

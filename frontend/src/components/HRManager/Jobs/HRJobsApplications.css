@@ -144,3 +144,157 @@
     position: relative;
     top: 1px;
 }
+
+/* HRJobsApplications-lists */
+
+.HRJobsApplications-no-applicants{
+    color: white;
+    font-size: 30px;
+    font-weight: 500;    
+}
+
+.HRJobsApplications-lists{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 95%;
+    gap: 30px;
+}
+
+.HRJobsApplications-lists-container{
+    width: 300px;
+    border: 1px solid rgba(255, 255, 255, 0.178);
+    background-color: #141622;
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 25px;
+    gap: 24px;
+}
+
+.HRJobsApplications-list-applicant-img{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.HRJobsApplications-list-applicant-img>img{
+    width: 60px;
+    border-radius: 100px;
+}
+
+.HRJobsApplications-list-applicant-img>p{
+    color: rgba(255, 255, 255, 0.829);
+    font-size: 17px;
+}
+
+.HRJobsApplications-list-applicant-location{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+}
+
+.HRJobsApplications-list-applicant-location>p{
+    color: rgba(255, 255, 255, 0.801);
+    font-size: 16px;
+}
+
+.HRJobsApplications-list-applicant-location>span{
+    color: rgba(255, 255, 255, 0.801);
+    font-size: 16px;
+}
+
+.HRJobsApplications-list-applicant-cv{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.HRJobsApplications-list-applicant-cv button:nth-child(1){
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #7F56D9;
+    outline: none;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transition: all 500ms;
+    color: rgba(255, 255, 255, 0.815);
+    padding: 8px 12px;
+    border-radius: 28px;
+    gap: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.HRJobsApplications-list-applicant-cv button:nth-child(1):hover{
+    background-color: #7F56D9;
+}
+
+.HRJobsApplications-list-applicant-cv button:nth-child(1)>svg{
+    color: tomato;
+}
+
+.HRJobsApplications-list-applicant-cv button:nth-child(2){
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #7F56D9;
+    outline: none;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transition: all 500ms;
+    color: rgba(255, 255, 255, 0.815);
+    padding: 8px 12px;
+    border-radius: 28px;
+    gap: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.HRJobsApplications-list-applicant-cv button:nth-child(2):hover{
+    background-color: #7F56D9;
+}
+
+.HRJobsApplications-list-applicant-cv button:nth-child(2)>svg{
+    color: tomato;
+}
+
+.HRJobsApplications-list-applicant-cv button:nth-child(3){
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #7F56D9;
+    outline: none;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transition: all 500ms;
+    color: rgba(255, 255, 255, 0.815);
+    padding: 8px 12px;
+    border-radius: 28px;
+    gap: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.HRJobsApplications-list-applicant-cv button:nth-child(3):hover{
+    background-color: #7F56D9;
+}
+
+.HRJobsApplications-list-applicant-cv button:nth-child(3)>svg{
+    color: tomato;
+}

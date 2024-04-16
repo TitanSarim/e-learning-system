@@ -9,24 +9,19 @@ import { SlBell } from "react-icons/sl";
 import { FiEdit2 } from "react-icons/fi";
 import { CiLogout } from "react-icons/ci";
 import { IoPlay } from "react-icons/io5";
-
 import store from "../../../Store";
 import {userLogOut } from "../../../actions/UserActions";
-import { getMyProfile } from '../../../actions/ProfileAction';
-import { GetAllHRJobs, ClearErrors } from '../../../actions/jobAction';
-import { IoEyeOutline } from "react-icons/io5";
+import { getMyProfile, clearErrors } from '../../../actions/ProfileAction';
 
 import profileImage from '../../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
-import './HrProfile.css'
 
-const HrProfile = () => {
+
+
+const JobSeeker = () => {
 
   const dispatch = useDispatch()
-  const{myProfileData} = useSelector((state)=>state.myPorfile);
-  const{jobs, loading, error} = useSelector((state)=>state.hrJob);
+  const{myProfileData, error} = useSelector((state)=>state.myPorfile);
 
-  const [myJobs, setMyJobs] = useState([])
-  
 
   const handleLogOut = () => {
     store.dispatch(userLogOut());
@@ -35,15 +30,12 @@ const HrProfile = () => {
   useEffect(() => {
     if(error){
       toast.error(error);
-      dispatch(ClearErrors());
+      dispatch(clearErrors());
     }
-    dispatch(getMyProfile());
-    dispatch(GetAllHRJobs())
+    dispatch(getMyProfile())
   }, [dispatch, error])
 
-  useEffect(() => {
-    setMyJobs(jobs)
-  }, [jobs])
+
 
   return (
     <div className='class-container'>
@@ -56,45 +48,17 @@ const HrProfile = () => {
         <div className='profile-courses-list'>
 
             <div className='student-courses-banner'>
-                <p>Online Jobs Portal</p>
+                <p>Dream Jobs</p>
                 <span>Get Your Dream Job And Become A Valuable Resource</span>
                 <Link to='/all-jobs'>Apply Now<IoPlay/></Link>
             </div>
 
-            <div className='student-profile-no-course'>
-              {setMyJobs?.length > 0 ? (
-                <>
-                  <p>Your Jobs</p>
-                  <Link to='/hr/create-job'>Post Job <IoPlay/></Link>
-                </>
-              ) : (
-                <>
-                  <p>Currently you don't have any active Job</p>
-                  <Link to='/hr/create-job'>Post Job <IoPlay/></Link>
-                </>
-              )}
-          
-              {loading ? <Loader/> : (
-                <div className='student-profile-add-new-courses'>
-                  {myJobs?.map((job) => (
-                  <div className='hr-profile-job-card' key={job.id}>
-                      <p>{job?.jobTitle?.length > 38 ? job?.jobTitle?.slice(0, 38): job?.jobTitle}..</p>
-                      <div className='hr-profile-job-location'>
-                        <p>{job?.company}</p>
-                        <span>{job?.country.name}, {job?.city.name}</span>
-                      </div>
-                      <span dangerouslySetInnerHTML={{__html: job?.jobDesc.slice(0, 135)}}>
-                      </span>
-                      <div className='hr-profile-job-footer'>
-                          <p>{job?.status}</p>
-                          <Link to={`/hr/job-applications/${job.slug}`}><IoEyeOutline size={24}/></Link>
-                      </div>
-                  </div>
-                  ))}
-                </div>
-              )}
+            {/* <div className='student-profile-no-course'>
+             
+                <p>Currently you don't have any active course</p>
+                <Link to='/courses'>Select Course <IoPlay/></Link>
 
-            </div>
+            </div> */}
         </div>
 
         <div className='profile-profile-rightbar'>
@@ -137,4 +101,4 @@ const HrProfile = () => {
   )
 }
 
-export default HrProfile
+export default JobSeeker

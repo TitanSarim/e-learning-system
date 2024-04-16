@@ -134,6 +134,10 @@ const Auth = () => {
         naviagte("/hr/HrProfile")
         toast.success("Welcome to M-Time");
       }
+      else if(isAuthenticated === true && user?.role === "Job Seeker"){
+        naviagte("/JobSeeker/JobSeeker-profile")
+        toast.success("Welcome to M-Time");
+      }
     }
   });
 

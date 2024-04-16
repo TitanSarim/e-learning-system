@@ -121,8 +121,8 @@ const UpdateUser = () => {
                           <p>Status <span>*</span></p>
                           <select value={status} onChange={(e) => setStatus(e.target.value)}>
                               <option disabled>Select</option>
-                              <option>Activate</option>
-                              <option>Blocked</option>
+                              <option>active</option>
+                              <option>blocked</option>
                           </select>
                       </div> 
                   </div>

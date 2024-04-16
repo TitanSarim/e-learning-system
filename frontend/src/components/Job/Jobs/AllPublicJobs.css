@@ -402,6 +402,23 @@
     transition: all 500ms;
 }
 
+.public-all-Jobs-jobs-job-detail-button>a{
+    background-color: rgba(218, 218, 247, 0.418);
+    border: none;
+    outline: none;
+    color: white;
+    border-radius: 100px;
+    padding: 12px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 500ms;
+    text-decoration: none;
+}
+
+.public-all-Jobs-jobs-job-detail-button>a:hover{
+    background-color: rgba(218, 218, 247, 0.61);
+}
+
 .public-all-Jobs-jobs-job-detail-button>button:hover{
     background-color: rgba(218, 218, 247, 0.61);
 }

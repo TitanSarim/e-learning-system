@@ -230,6 +230,27 @@ export const GetAllPublicJobs = (page, filters) => async (dispatch) => {
     }
 };
 
+export const ApplyOnJob = (formData) => async () => {
+
+    try {
+    
+        const token = Cookies.get('token');
+
+        const ConfigApplicationJson = { headers: 
+            { 
+            "Content-Type": "application/json",
+                Authorization: `Bearer ${token}` 
+            }
+        }
+            
+        await axios.post( `${BASE_URL}/api/v1/apply-on-job`, formData, ConfigApplicationJson);
+    
+  
+    } catch (error) {
+        console.log("error", error);
+    }
+};
+
 export const ClearErrors = () => async (dispatch) => {
     dispatch({ type: CLEAR_ERRORS });
 };

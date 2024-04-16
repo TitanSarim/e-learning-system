@@ -145,9 +145,26 @@ const getSingleHrJob = catchAsyncError(async (req, res, next) => {
     try {
 
         const slug = req.params.slug;
+        const userId = req.user.userid
 
-        const jobs = await Jobs.findOne({ where: { slug: slug } });
+        const jobData = await Jobs.findOne({ where: { slug: slug, userId: userId } });
 
+        const appliedIds = jobData.Applications.id;
+        console.log("appliedIds", appliedIds)
+
+        let jobsApplications = null
+        if(appliedIds !== undefined) {
+            jobsApplications = await UserProfile.findAll({
+                where: {
+                    userId: appliedIds
+                }
+            });
+        }
+
+        const jobs = {
+            jobs: jobData,
+            jobsApplications: jobsApplications
+        }
         res.status(201).json({
             success: true,
             message: 'Job retrived successfully',
@@ -186,7 +203,9 @@ const getAllJobsPublic = catchAsyncError(async(req, res, next) => {
 
     try {
 
-        const { category, level, duration, type  } = req.query;
+        const { category, level, duration, type, date  } = req.query;
+
+        console.log("date", date)
 
         const page = parseInt(req.query.page) || 1; 
         const limit = parseInt(req.query.limit) || 6;
@@ -199,6 +218,19 @@ const getAllJobsPublic = catchAsyncError(async(req, res, next) => {
         if (duration) filter.duration = duration;
         if (type) filter.type = type;
         if (status) filter.status = status;
+
+
+        if (date === 'Last 24 Hours') {
+            const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+            filter.createdAt = {
+                [Op.gte]: twentyFourHoursAgo, 
+            };
+        } else if (date === 'Last Week') {
+            const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+            filter.createdAt = {
+                [Op.gte]: oneWeekAgo,
+            };
+        }
 
         const totalCount = await Jobs.count({
             where: filter, 
@@ -249,6 +281,34 @@ const getAllJobsPublic = catchAsyncError(async(req, res, next) => {
 
 })
 
+const jobApply = catchAsyncError (async (req, res, next) => {
+
+    try {
+        
+        const userId = req.user.userid
+    
+        const {slug} = req.body
+
+        console.log("slug", slug)
+
+        const existingData = await Jobs.findOne({ where: { slug: slug } });
+        let appliedByIds = existingData.Applications.id || [];
+        appliedByIds.push(userId);
+        await Jobs.update({ Applications: { id: appliedByIds } }, { where: { slug: slug } });
+
+        res.status(201).json({
+            success: true,
+            message: 'Applied Successfully',
+        });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
+
+
 
 module.exports = {
     createJob,
@@ -258,5 +318,5 @@ module.exports = {
     getSingleHrJob,
     deleteHrJob,
     getAllJobsPublic,
-
+    jobApply,
 }

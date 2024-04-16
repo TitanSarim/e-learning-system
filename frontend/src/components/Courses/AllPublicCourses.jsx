@@ -30,6 +30,7 @@ const AllPublicCourses = () => {
   const dispatch = useDispatch()
 
   const {Publiccourses, error, loading} = useSelector((state)=>state.PublicCourse);
+  const {user} = useSelector((state)=>state.user);
 
   const [courses, setCourses] = useState([])
   const [pagination, setPagination] = useState([])
@@ -209,7 +210,11 @@ const AllPublicCourses = () => {
                       <p className='pubic-single-course-box-view-title'>{course.course_title}</p>
                       <p className='pubic-single-course-box-view-teacher'><span>By </span> {course.teacher_name}</p>
                     <div className='pubic-single-course-box-view-price'>
-                      <Link to={`/courses/course/${course.slug}`}>Enroll Now</Link>
+                      {user?.role === "admin" || user?.role === "Teacher" || user?.role === "HR Manager" || user?.role === "Job Seeker" ? 
+                        <Link to="">Enroll Now</Link>
+                      :
+                        <Link to={`/courses/course/${course.slug}`}>Enroll Now</Link>
+                      }
                       <p>${course.price}.00</p>
                     </div>
                   </div>

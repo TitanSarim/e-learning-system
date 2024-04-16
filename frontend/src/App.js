@@ -29,6 +29,7 @@ import HrProfile from "./components/HRManager/Profile/HrProfile";
 import HRCreateNewJob from "./components/HRManager/Jobs/HRCreateNewJob";
 import HRUpdateJob from "./components/HRManager/Jobs/HRUpdateJob";
 import HRJobsApplications from "./components/HRManager/Jobs/HRJobsApplications";
+import JobSeeker from "./components/Job/Profile/JobSeeker";
 
 function App() {
 
@@ -57,8 +58,8 @@ function App() {
           </Route>
 
           <Route path="/all-jobs" element={<AllPublicJobs/>}/>
-          <Route path="/Job" element={<ProtectedRoutes />}>
-            {/* <Route path="/Job/jobs" element={<AllPublicJobs/>}/> */}
+          <Route path="/JobSeeker" element={<ProtectedRoutes />}>
+            <Route path="/JobSeeker/JobSeeker-profile" element={<JobSeeker/>}/>
           </Route>
 
           <Route path="/Profile" element={<ProtectedRoutes />}>

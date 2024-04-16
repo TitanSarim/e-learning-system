@@ -153,7 +153,7 @@ const StudentProfile = () => {
               </div>
             </div>
 
-            <p className='profile-profile-rightbar-aboutme' dangerouslySetInnerHTML={{ __html: myProfileData?.about}}></p>
+            <p className='profile-profile-rightbar-aboutme' dangerouslySetInnerHTML={{ __html: myProfileData?.about.slice(0, 200)}}></p>
 
             <button className='profile-profile-rightbar-logout' onClick={handleLogOut}><CiLogout/>Logout</button>
 
