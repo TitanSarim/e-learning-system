@@ -14,7 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   chat.init({
-    userId: DataTypes.INTEGER,
+    FromuserId: DataTypes.INTEGER,
+    ToUserId: DataTypes.INTEGER,
+    FromUserName: DataTypes.STRING,
+    ToUserName: DataTypes.STRING,
+    FromUserAvatar: DataTypes.JSON,
+    toUserAvatar: DataTypes.JSON,
+    jobId: DataTypes.INTEGER,
     readStatus: DataTypes.STRING,
     message: DataTypes.JSON
   }, {

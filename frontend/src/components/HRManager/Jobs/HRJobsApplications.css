@@ -298,3 +298,29 @@
 .HRJobsApplications-list-applicant-cv button:nth-child(3)>svg{
     color: tomato;
 }
+
+/* send-message-dialog-box */
+
+.send-message-dialog-box{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.send-message-dialog-box>p{
+    color: rgba(0, 0, 0, 0.685);
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.send-message-dialog-box>textarea{
+    height: 150px;
+    padding: 6px 12px;
+    outline: none;
+    border-radius: 12px;
+    border: 1px solid rgb(170, 170, 170);
+    max-height: 150px;
+    max-width: 450px;
+    min-width: 450px;
+}

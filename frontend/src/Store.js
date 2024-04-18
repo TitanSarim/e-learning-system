@@ -11,6 +11,7 @@ import {cartReducer, wishListReducer} from './redcuers/CartReducer'
 import {orderReducer} from './redcuers/OrderReducer'
 import {InrolledCourseReducer} from './redcuers/InrolledCourseReducer'
 import { hrJobReducer, publicJobReducer } from './redcuers/JobReducer';
+import {messageReducer} from './redcuers/ChatReducer';
 
 const reducer = combineReducers({
 
@@ -28,7 +29,9 @@ const reducer = combineReducers({
     PublicCourse: PublicCourseReducer,
 
     hrJob : hrJobReducer,
-    publicJob: publicJobReducer
+    publicJob: publicJobReducer,
+
+    message: messageReducer
 
 });
 

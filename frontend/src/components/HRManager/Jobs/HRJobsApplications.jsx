@@ -17,6 +17,8 @@ import ConfirmAnimation from '../../../assets/icons8-confirm.gif'
 import { PiFilePdfDuotone } from "react-icons/pi";
 import { SlEye } from "react-icons/sl";
 import { TbMessage2Bolt } from "react-icons/tb";
+import { sendMessage } from '../../../actions/chatAction';
+
 
 const HRJobsApplications = () => {
 
@@ -26,10 +28,18 @@ const HRJobsApplications = () => {
   const jobSlug = slug.substring(slug.lastIndexOf('/') + 1);
 
   const{job, loading, error} = useSelector((state)=>state.hrJob);
+  const {user} = useSelector((state)=>state.user)
+  const{myProfileData} = useSelector((state)=>state.myPorfile);
 
   const [jobDetails, setJobDetails] = useState([])
   const [jobApplications, setJobApplications] = useState([])
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [sendMessageModelOpen, setSendMessageModelOpen] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userId, setUserId] = useState('');
+  const [jobId, setJobId] = useState('');
+  const [message, setMessage] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
 
   const handleJobStatusChnage = (data) => {
     const formData = {
@@ -43,6 +53,40 @@ const HRJobsApplications = () => {
     setDeleteConfirmationOpen(true)
   }
 
+  const handleSendMessageDialogie = (username, userId, avatar) => {
+    setSendMessageModelOpen(true)
+    setUserName(username)
+    setUserId(userId)
+    setJobId(jobDetails?.id)
+    setUserAvatar(avatar)
+  }
+
+  const handleSendMessage = () => {
+
+    if(!message){
+      toast.error("Please enter a message")
+      return
+    }
+
+    const formData = {
+      id: Math.random(),
+      FromuserId: user?.id,
+      ToUserId: userId,
+      FromUserName: user?.username,
+      ToUserName: userName,
+      FromUserAvatar: myProfileData.avatar,
+      toUserAvatar: userAvatar, 
+      jobId: jobId,
+      message: message,
+      createdAt: new Date().toISOString()
+    }
+
+    dispatch(sendMessage(formData))
+    setMessage('')
+    toast.success("Message sent successfully")
+    setSendMessageModelOpen(false)
+  }
+
   const handleDelete = () => {
     dispatch(DeleteJob(jobSlug))
     navigate('/hr/HrProfile')
@@ -51,23 +95,18 @@ const HRJobsApplications = () => {
 
   const handleDownloadPdf = (url, firstname, lastname) => {
 
-    // const fileName = url.substring(url.lastIndexOf('/') + 1);
 
-      // Constructing the new file name using the first name and last name
       const fullName = `${firstname}_${lastname}`;
       const newFileName = `${fullName}_resume.pdf`;
 
-      // Create an anchor element
       const anchor = document.createElement('a');
       anchor.href = url;
       anchor.target = '_blank';
       anchor.download = newFileName;
 
-      // Programmatically trigger the click event
       document.body.appendChild(anchor);
       anchor.click();
 
-      // Clean up
       document.body.removeChild(anchor);
   }
 
@@ -127,7 +166,7 @@ const HRJobsApplications = () => {
                       </div>
                       <div className='HRJobsApplications-list-applicant-cv'>
                         <button onClick={() => handleDownloadPdf(application.cv.url, application.firstname, application.lastname)}><PiFilePdfDuotone size={25}/>CV</button>
-                        <button><TbMessage2Bolt size={25}/> Text</button>
+                        <button onClick={() => handleSendMessageDialogie(application.username, application.userId, application.avatar)}><TbMessage2Bolt size={25} /> Text</button>
                         <button><SlEye size={25}/> Profile</button>
                       </div>
                   </div>
@@ -158,6 +197,30 @@ const HRJobsApplications = () => {
               Cancel
               </button>
           </div>
+          </div>
+      </Popup>
+
+      <Popup
+        open={sendMessageModelOpen}
+        closeOnDocumentClick
+        onClose={() => setSendMessageModelOpen(false)}
+      >
+          <div className="admin-user-deletemodal">
+            <button className="admin-user-deletemodal-close-btn" onClick={() => setSendMessageModelOpen(false)}>
+                <GiTireIronCross/>
+            </button>
+            <div className='send-message-dialog-box'>
+              <p>Send Message to {userName}</p>
+              <textarea placeholder='Type your message' value={message} onChange={(e) => setMessage(e.target.value)}/>
+            </div>
+            <div className="admin-user-deletemodal-buttons">
+                <button onClick={handleSendMessage}>
+                Send
+                </button>
+                <button onClick={() => setSendMessageModelOpen(false)}>
+                Cancel
+                </button>
+            </div>
           </div>
       </Popup>
 

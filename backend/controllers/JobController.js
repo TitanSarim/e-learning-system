@@ -1,5 +1,5 @@
 const { Op, where } = require('sequelize');
-const { Jobs, UserProfile} = require("../models"); 
+const { Jobs, UserProfile, User} = require("../models"); 
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
@@ -159,12 +159,34 @@ const getSingleHrJob = catchAsyncError(async (req, res, next) => {
                     userId: appliedIds
                 }
             });
+        
+
+            const userIds = jobsApplications.map(application => application.userId);
+
+            const usernames = await User.findAll({
+                where: {
+                    id: userIds
+                },
+                attributes: ['id', 'username', 'email'] 
+            });
+
+
+            jobsApplications = jobsApplications.map(application => {
+                const user = usernames.find(username => username.id === application.userId);
+                return { 
+                    ...application.toJSON(), 
+                    username: user ? user.username : null, 
+                    email: user ? user.email : null 
+                };
+            });
+
         }
 
         const jobs = {
             jobs: jobData,
             jobsApplications: jobsApplications
         }
+
         res.status(201).json({
             success: true,
             message: 'Job retrived successfully',

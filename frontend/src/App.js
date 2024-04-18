@@ -30,6 +30,7 @@ import HRCreateNewJob from "./components/HRManager/Jobs/HRCreateNewJob";
 import HRUpdateJob from "./components/HRManager/Jobs/HRUpdateJob";
 import HRJobsApplications from "./components/HRManager/Jobs/HRJobsApplications";
 import JobSeeker from "./components/Job/Profile/JobSeeker";
+import Message from "./components/Chat/Message";
 
 function App() {
 
@@ -60,6 +61,10 @@ function App() {
           <Route path="/all-jobs" element={<AllPublicJobs/>}/>
           <Route path="/JobSeeker" element={<ProtectedRoutes />}>
             <Route path="/JobSeeker/JobSeeker-profile" element={<JobSeeker/>}/>
+          </Route>
+
+          <Route path="/chat" element={<ProtectedRoutes />}>
+            <Route path="/chat/job-chat" element={<Message/>}/>
           </Route>
 
           <Route path="/Profile" element={<ProtectedRoutes />}>

@@ -9,7 +9,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
+      FromuserId:{
+        type: Sequelize.INTEGER
+      },
+      ToUserId: {
+        type: Sequelize.INTEGER
+      },
+      FromUserName: {
+        type: Sequelize.STRING
+      },
+      ToUserName: {
+        type: Sequelize.STRING
+      },
+      FromUserAvatar:{
+        type: Sequelize.JSON
+      },
+      toUserAvatar:{
+        type: Sequelize.JSON
+      },
+      jobId: {
         type: Sequelize.INTEGER
       },
       readStatus: {

@@ -5,10 +5,10 @@ import { toast } from 'react-toastify';
 import StudentProfileChart from '../../../Charts/StudentProfileChart'
 import { Link } from 'react-router-dom'
 import Loader from '../../Utils/Loader'
-import { SlBell } from "react-icons/sl";
 import { FiEdit2 } from "react-icons/fi";
 import { CiLogout } from "react-icons/ci";
 import { IoPlay } from "react-icons/io5";
+import { BiMessageSquare } from "react-icons/bi";
 
 import store from "../../../Store";
 import {userLogOut } from "../../../actions/UserActions";
@@ -112,7 +112,7 @@ const HrProfile = () => {
                 </div>
 
                 <div className='profile-profile-rightbar-setting'>
-                  <Link><SlBell size={27}/></Link>
+                  <Link to="/chat/job-chat"><BiMessageSquare size={27}/></Link>
                   <Link to='/Profile/detail'><FiEdit2 size={27}/></Link>
                 </div>
             </div>
