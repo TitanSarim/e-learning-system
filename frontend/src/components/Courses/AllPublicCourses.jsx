@@ -197,14 +197,27 @@ const AllPublicCourses = () => {
                     <div className='pubic-single-course-box-view-header'>
                       <p>{course.category}</p>
                       <span>
-                        <StarRatings 
-                          rating={JSON.parse(course.reviews)}
-                          starDimension="20px"
-                          starSpacing="2px"
-                          numberOfStars={1}
-                          starRatedColor="#FFFF00"
-                        />
-                        ({JSON.parse(course.reviews)} Reviews)
+                        {course.reviews === "" ? 
+                        (
+                          <StarRatings 
+                            rating={0}
+                            starDimension="20px"
+                            starSpacing="2px"
+                            numberOfStars={1}
+                            starRatedColor="#FFFF00"
+                          />
+                        ): (
+                          <StarRatings 
+                            rating={course.reviews}
+                            starDimension="20px"
+                            starSpacing="2px"
+                            numberOfStars={1}
+                            starRatedColor="#FFFF00"
+                          />
+                        )}
+                       
+                        {course.reviews === "" ? "0 Reviews" : `(${course.reviews} Reviews)`}
+                        
                       </span>
                     </div>
                       <p className='pubic-single-course-box-view-title'>{course.course_title}</p>

@@ -220,7 +220,7 @@ const PublicCourseDetail = () => {
               <CourseDetailPreview videos={courseDetails?.featuredVideos}/>
             )}
             {activeTab === 'Reviews' && (
-              <CourseDetailReviews/>
+              <CourseDetailReviews IsEnrolled={IsEnrolled} comments={courseDetails?.comments} courseSlug={courseSlug}/>
             )}
 
 

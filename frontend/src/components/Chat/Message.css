@@ -113,6 +113,7 @@
 .chat-message-user-date>span{
     color: rgba(255, 255, 255, 0.37);
     font-size: 12px;
+    width: 100px;
 }
 
 

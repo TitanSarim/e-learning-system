@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     course_desc: DataTypes.JSON,
     course_thumbnail: DataTypes.JSON,
     course_content: DataTypes.JSON,
-    views: DataTypes.STRING,
+    views: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
     language: DataTypes.STRING,
     level: DataTypes.STRING,
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     inrolled_by: DataTypes.JSON,
     teacher_name: DataTypes.STRING,
     comments: DataTypes.JSON,
-    reviews: DataTypes.TEXT,
+    reviews: DataTypes.FLOAT,
     status: DataTypes.STRING,
   }, {
     sequelize,

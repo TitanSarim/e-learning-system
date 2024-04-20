@@ -14,6 +14,7 @@ import {userLogOut } from "../../../actions/UserActions";
 import { getMyProfile, clearErrors } from '../../../actions/ProfileAction';
 
 import profileImage from '../../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
+import { BiMessageSquare } from 'react-icons/bi';
 
 
 
@@ -76,7 +77,7 @@ const JobSeeker = () => {
                 </div>
 
                 <div className='profile-profile-rightbar-setting'>
-                  <Link><SlBell size={27}/></Link>
+                  <Link to="/chat/job-seeker-chat"><BiMessageSquare size={27}/></Link>
                   <Link to='/Profile/detail'><FiEdit2 size={27}/></Link>
                 </div>
             </div>

@@ -30,14 +30,14 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
             course_content: {
                 data: videoUrls
             },
-            views: "0",
+            views: 0,
             price: price,
             language:language,
             level:level,
             hours:hours,
             inrolled_by: { id: []},
             teacher_name: teacherName,
-            comments: "0",
+            comments: {"data": []},
             reviews: 0,
             status: status
         })
@@ -425,6 +425,7 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
 
 })
 
+
 const GetSinglePublicCourse  = catchAsyncError(async (req, res, next) => {
 
     const slug = req.params.slug;
@@ -432,6 +433,8 @@ const GetSinglePublicCourse  = catchAsyncError(async (req, res, next) => {
     try {
 
         const PublicSinglecourse  = await Course.findOne({ where: { slug: slug } });
+        PublicSinglecourse.views = PublicSinglecourse.views + 1;
+        await PublicSinglecourse.save();
 
         if (!PublicSinglecourse) {
             return res.status(404).json({ error: "Course not found" });
@@ -792,6 +795,55 @@ const SaveCompletionRateOfCourse = catchAsyncError(async (req, res, next) => {
 });
   
 
+const addCommentsController = catchAsyncError(async (req, res, next) => {
+
+    try {
+
+        const slug = req.params.slug;
+        const {reviews, comment} = req.body
+
+        const course = await Course.findOne({ where: { slug: slug } });
+
+        const newComment = {
+            user: comment.user,
+            username: comment.username,
+            avatarurl: comment.avatarurl,
+            comment: comment.comment,
+            reviews: comment.reviews,
+            date: comment.date
+          };
+
+          
+        const existingComments = course.comments ? course.comments.data || [] : [];
+        const updatedComments = [...existingComments, newComment];
+
+        const countOfComments = updatedComments.length;
+          
+        let averageRating = 0;
+        if(course.reviews === 0){
+            averageRating = reviews;
+        }else {
+            updatedComments.forEach(comment => {
+                averageRating += parseInt(comment.reviews);
+            });
+        }
+        const overAllRzating = averageRating / countOfComments
+
+        course.comments = { data: updatedComments };
+        course.reviews = overAllRzating;
+        await course.save();
+
+        res.status(201).json({
+            success: true,
+            message: 'Comment added successfully',
+        });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
 module.exports = {
     createCourse,
     GetAllCourseAdmin,
@@ -803,5 +855,8 @@ module.exports = {
     GetSinglePublicCourse,
     GetSingleInrolledCourse,
     GetAllInrolledCourse,
-    SaveCompletionRateOfCourse
+    SaveCompletionRateOfCourse,
+    addCommentsController
 }
+
+

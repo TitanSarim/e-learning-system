@@ -3,7 +3,7 @@ import NavBar from '../../NavBar/NavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import StudentProfileChart from '../../../Charts/StudentProfileChart'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Loader from '../../Utils/Loader'
 import { FiEdit2 } from "react-icons/fi";
 import { CiLogout } from "react-icons/ci";
@@ -22,6 +22,7 @@ import './HrProfile.css'
 const HrProfile = () => {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const{myProfileData} = useSelector((state)=>state.myPorfile);
   const{jobs, loading, error} = useSelector((state)=>state.hrJob);
 
@@ -30,6 +31,7 @@ const HrProfile = () => {
 
   const handleLogOut = () => {
     store.dispatch(userLogOut());
+    navigate('/login');
   }
 
   useEffect(() => {

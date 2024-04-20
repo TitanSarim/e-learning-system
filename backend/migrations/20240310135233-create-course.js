@@ -37,7 +37,7 @@ module.exports = {
         type: Sequelize.JSON
       },
       views:{
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       price:{
         type: Sequelize.INTEGER
@@ -61,7 +61,7 @@ module.exports = {
         type: Sequelize.JSON
       },
       reviews:{
-        type: Sequelize.TEXT
+        type: Sequelize.FLOAT
       },
       status:{
         type: Sequelize.STRING

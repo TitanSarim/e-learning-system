@@ -31,6 +31,7 @@ import HRUpdateJob from "./components/HRManager/Jobs/HRUpdateJob";
 import HRJobsApplications from "./components/HRManager/Jobs/HRJobsApplications";
 import JobSeeker from "./components/Job/Profile/JobSeeker";
 import Message from "./components/Chat/Message";
+import MessageJobSeeker from "./components/Chat/MessageJobSeeker";
 
 function App() {
 
@@ -51,7 +52,7 @@ function App() {
             <Route path="/Student/make-order" element={<MakeOrder/>}/>
           </Route>
 
-          <Route path="/hr">
+          <Route path="/hr" element={<ProtectedRoutes />}>
             <Route path="/hr/HrProfile" element={<HrProfile/>}/> 
             <Route path="/hr/create-job" element={<HRCreateNewJob/>}/>
             <Route path="/hr/update-job/:slug" element={<HRUpdateJob/>}/>
@@ -65,6 +66,7 @@ function App() {
 
           <Route path="/chat" element={<ProtectedRoutes />}>
             <Route path="/chat/job-chat" element={<Message/>}/>
+            <Route path="/chat/job-seeker-chat" element={<MessageJobSeeker/>}/>
           </Route>
 
           <Route path="/Profile" element={<ProtectedRoutes />}>

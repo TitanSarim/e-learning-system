@@ -42,8 +42,37 @@ export const sendMessage = (formData) => async (dispatch) => {
     }
 };
 
+export const sendJobSeekerMessage = (formData) => async (dispatch) => {
 
-export const getMessages = (formData) => async (dispatch) => {
+    try {
+    
+        const token = Cookies.get('token');
+
+        const ConfigApplicationJson = { headers: 
+            { 
+            "Content-Type": "application/json",
+                Authorization: `Bearer ${token}` 
+            }
+        }
+    
+        dispatch({ type: SEND_MESSAGE_REQUEST });
+
+            
+        const { data } = await axios.post( `${BASE_URL}/api/v1/send-job-seeker-message`, formData, ConfigApplicationJson);
+    
+        dispatch({ type: SEND_MESSAGE_SUCCESS, payload: data.messageData });
+  
+    } catch (error) {
+        dispatch({
+            type: SEND_MESSAGE_FAIL,
+            payload: error?.response?.data.message,
+        });
+      console.log("error", error);
+    }
+};
+
+
+export const getMessages = () => async (dispatch) => {
 
     try {
     
@@ -72,6 +101,35 @@ export const getMessages = (formData) => async (dispatch) => {
     }
 };
 
+
+export const getJobSeekerMessages = () => async (dispatch) => {
+
+    try {
+    
+        const token = Cookies.get('token');
+
+        const ConfigApplicationJson = { headers: 
+            { 
+            "Content-Type": "application/json",
+                Authorization: `Bearer ${token}` 
+            }
+        }
+    
+        dispatch({ type: GET_MESSAGES_REQUEST });
+
+            
+        const { data } = await axios.get( `${BASE_URL}/api/v1/get-job-seeker-messages`, ConfigApplicationJson);
+    
+        dispatch({ type: GET_MESSAGES_SUCCESS, payload: data.messageData });
+  
+    } catch (error) {
+        dispatch({
+            type: GET_MESSAGES_FAIL,
+            payload: error?.response?.data.message,
+        });
+      console.log("error", error);
+    }
+};
 
 
 export const chatClearErrors = () => async (dispatch) => {

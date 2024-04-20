@@ -5,7 +5,7 @@ import NavBar from '../NavBar/NavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { io } from "socket.io-client";
-import { sendMessage, getMessages, chatClearErrors } from '../../actions/chatAction';
+import { sendJobSeekerMessage, getJobSeekerMessages, chatClearErrors } from '../../actions/chatAction';
 import { toast } from 'react-toastify';
 import { IoCheckmarkDone, IoCheckmarkSharp  } from "react-icons/io5";
 import { BsSendFill } from "react-icons/bs";
@@ -13,7 +13,7 @@ import { BiMessageRoundedDetail } from "react-icons/bi";
 
 const host = 'http://localhost:3900';
 
-const Message = () => {
+const MessageJobSeeker = () => {
 
     const dispatch = useDispatch();
     // const socket = useRef();
@@ -57,29 +57,29 @@ const Message = () => {
             id: Math.random(),
             FromuserId: user.id,
             ToUserId: ToUserId,
-            FromUserName: FromUserName,
-            ToUserName: ToUserName,
-            FromUserAvatar: fromuserAvatar,
-            toUserAvatar: toUserAvatar,
+            FromUserName: ToUserName,
+            ToUserName: FromUserName,
+            FromUserAvatar: toUserAvatar,
+            toUserAvatar: fromuserAvatar,
             jobId: jobId,
             message: message,
             createdAt: new Date().toISOString()
         };
 
+        console.log("formData", formData)
+
         setSelectedChat(prevChat => [...prevChat, formData]);
 
-        dispatch(sendMessage(formData));
+        dispatch(sendJobSeekerMessage(formData));
         setMessage('')
     };
-
-    console.log("users", users)
 
     useEffect(() => {
         if (chatError) {
             toast.error(chatError);
             dispatch(chatClearErrors());
         }
-        dispatch(getMessages());
+        dispatch(getJobSeekerMessages());
     }, [dispatch, chatError]);
 
     useEffect(() => {
@@ -161,7 +161,7 @@ const Message = () => {
                                     </div>
                                 ))}
                             </div>
-                            <form className='chat-message-chatting-form' onSubmit={(e) => handleSendMessage(selectedChat[0]?.ToUserId, selectedChat[0]?.ToUserName, selectedChat[0]?.toUserAvatar, selectedChat[0]?.FromUserAvatar,  selectedChat[0]?.FromUserName, selectedChat[0]?.jobId, e)}>
+                            <form className='chat-message-chatting-form' onSubmit={(e) => handleSendMessage(selectedChat[0]?.FromuserId, selectedChat[0]?.ToUserName, selectedChat[0]?.toUserAvatar, selectedChat[0]?.FromUserAvatar,  selectedChat[0]?.FromUserName, selectedChat[0]?.jobId, e)}>
                                 <input placeholder='Type your message' value={message} onChange={(e) => setMessage(e.target.value)} required />
                                 <button type='submit'><BsSendFill size={30} /></button>
                             </form>
@@ -172,4 +172,4 @@ const Message = () => {
     );
 };
 
-export default Message;
+export default MessageJobSeeker;

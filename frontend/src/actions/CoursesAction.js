@@ -306,6 +306,28 @@ export const PublicGetSingleCourse = (slug) => async (dispatch) => {
   }
 };
 
+export const postComment = async (formData, slug) => {
+
+  try {
+
+
+    const token = Cookies.get('token');
+
+    const ConfigApplicationJson = { headers: 
+        { 
+        "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        }
+    }
+
+    await axios.post(`${BASE_URL}/api/v1/add-comment/${slug}`, formData, ConfigApplicationJson);
+
+
+  } catch (error) {
+      console.log(error);
+  }
+
+}
 
 
 export const clearErrors = () => async (dispatch) => {
