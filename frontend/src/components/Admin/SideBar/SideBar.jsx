@@ -22,10 +22,9 @@ const SideBar = () => {
         <img src={LogoIcon} alt="Logo"/>
 
         <div className='admin-sidebar-tabs'>
-          <Link to="/admin/dashboard"><GrHomeRounded/> <p>Dashboard</p></Link>
+          {user?.role === "admin" && <Link to="/admin/dashboard"><GrHomeRounded/> <p>Dashboard</p></Link>}
           <Link to={'/admin/all-courses'}><TfiBook/> <p>Courses</p></Link>
           {user?.role === "admin" && <Link to='/admin/all-users'><CiUser/> <p>Users</p></Link>}
-          <Link><TfiStatsUp/> <p>Revenue</p></Link>
           <Link to="/admin/profile"><CgProfile/> <p>Profile</p></Link>
         </div>
 

@@ -12,6 +12,7 @@ import {orderReducer} from './redcuers/OrderReducer'
 import {InrolledCourseReducer} from './redcuers/InrolledCourseReducer'
 import { hrJobReducer, publicJobReducer } from './redcuers/JobReducer';
 import {messageReducer} from './redcuers/ChatReducer';
+import { dashboardAnalyticsReducer } from './redcuers/DashboardAnalyticsReducer';
 
 const reducer = combineReducers({
 
@@ -31,7 +32,9 @@ const reducer = combineReducers({
     hrJob : hrJobReducer,
     publicJob: publicJobReducer,
 
-    message: messageReducer
+    message: messageReducer,
+
+    dashboardAnalytics: dashboardAnalyticsReducer
 
 });
 

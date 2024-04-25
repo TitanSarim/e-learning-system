@@ -15,7 +15,6 @@ import 'react-quill/dist/quill.snow.css';
 import './AdminProfile.css'
 import { MdModeEditOutline } from 'react-icons/md'
 import { CiCircleRemove } from 'react-icons/ci'
-import { FaLocationDot } from 'react-icons/fa6'
 import Loader from '../../Utils/Loader.jsx'
 
 const AdminProfile = () => {
