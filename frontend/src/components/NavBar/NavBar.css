@@ -146,6 +146,32 @@
     background-color: rgba(255, 255, 255, 0.596);
 }
 
+
+.search-results-container{
+    position: absolute;
+    top: 50px;
+    background-color: #7F56D9;
+    border-radius: 12px;
+    padding: 6px 10px 6px 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 101;
+}
+
+.search-results-container>p{
+    height: 30px;
+    cursor: pointer;
+    color: white;
+    padding: 14px 6px 5px 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.404);
+    transition: all 500ms;
+}
+
+.search-results-container>p:hover{
+    background-color: #7144d1;
+}
+
+
 .nav-cart{
     position: relative;
     display: flex;

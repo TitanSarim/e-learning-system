@@ -1,4 +1,4 @@
-const { Op, Sequelize, where } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { Course, UserProfile, Order, LeaderBoard, ViewdVideos } = require("../models"); // Adjust the path based on your project structure
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
@@ -385,7 +385,7 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
 
 
     try {
-        const { category, rating, level, language, price } = req.query;
+        const { category, rating, level, language, price, searchTitle } = req.query;
 
         const page = parseInt(req.query.page) || 1; // Default page 1
         const limit = parseInt(req.query.limit) || 20; // Default limit 10
@@ -409,12 +409,29 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
             where: filter, // Apply filters
           });
           
-        const allPublicCourses = await Course.findAll({
-            offset: skip,
-            limit: limit,
-            where: filter,
-            order: orderOption,
-        });
+        let allPublicCourses
+        if(searchTitle){
+            allPublicCourses = await Course.findAll({
+                where:{
+                    [Op.or]: [
+                        { course_title: { [Op.iLike]: `%${query}%` } },
+                        { course_desc: { [Op.iLike]: `%${query}%` } },
+                    ]
+                },
+                offset: skip,
+                limit: limit,
+                where: filter,
+                order: orderOption,
+            });
+        }else{
+            allPublicCourses = await Course.findAll({
+                offset: skip,
+                limit: limit,
+                where: filter,
+                order: orderOption,
+            });
+        }
+        
 
 
         const totalPages = Math.ceil(totalCount / limit);
@@ -928,6 +945,33 @@ const addCommentsController = catchAsyncError(async (req, res, next) => {
 
 })
 
+
+const getRelatedKeyWords = catchAsyncError(async (req, res, next) => {
+    try {
+        const { searchTitle } = req.body;
+
+        const relatedCourses = await Course.findAll({
+            where: {
+                course_title: {
+                    [Op.like]: `%${searchTitle}%` 
+                }
+            },
+            attributes: ['course_title'],
+            order: [
+                ['course_title', 'ASC'] 
+            ],
+            limit: 10
+        });
+
+        const relatedTitles = relatedCourses.map(course => course.course_title);
+
+        res.json(relatedTitles);
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+});
+
+
 module.exports = {
     createCourse,
     GetAllCourseAdmin,
@@ -941,7 +985,8 @@ module.exports = {
     GetSingleInrolledCourse,
     GetAllInrolledCourse,
     SaveCompletionRateOfCourse,
-    addCommentsController
+    addCommentsController,
+    getRelatedKeyWords
 }
 
 

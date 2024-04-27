@@ -330,6 +330,31 @@ const jobApply = catchAsyncError (async (req, res, next) => {
 })
 
 
+const getRelatedKeyWords = catchAsyncError(async (req, res, next) => {
+    try {
+        const { searchTitle } = req.body;
+
+        const relatedJobs = await Jobs.findAll({
+            where: {
+                jobTitle: {
+                    [Op.like]: `%${searchTitle}%` 
+                }
+            },
+            attributes: ['jobTitle'],
+            order: [
+                ['jobTitle', 'ASC'] 
+            ],
+            limit: 10 
+        });
+
+        const relatedTitles = relatedJobs.map(course => course.jobTitle);
+
+        res.json(relatedTitles);
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+});
+
 
 
 module.exports = {
@@ -341,4 +366,5 @@ module.exports = {
     deleteHrJob,
     getAllJobsPublic,
     jobApply,
+    getRelatedKeyWords
 }

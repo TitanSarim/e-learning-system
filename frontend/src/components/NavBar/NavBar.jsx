@@ -8,7 +8,7 @@ import { IoIosSearch } from "react-icons/io";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoMdHeartEmpty } from "react-icons/io";
 import {getWishList, getCart} from '../../actions/cartAction'
-
+import axios from 'axios';
 import './NavBar.css'
 
 
@@ -16,6 +16,7 @@ const searchCategory = [
   { value: 'Courses', label: 'Courses' },
   { value: 'Jobs', label: 'Jobs' },
 ];
+const BASE_URL = 'http://localhost:3900';
 
 
 const NavBar = () => {
@@ -28,6 +29,8 @@ const NavBar = () => {
   const [selectedCategoryOption, setSelectedCategoryOption] = useState(searchCategory[0]);
   const [cartItems, setCartItems] = useState([])
   const [wishListItems, setWishListItems] = useState([])
+  const [searchInput, setSearchInput] = useState('') 
+  const [searchResults, setSearchResults] = useState([])
 
   const handleCategoryChange = (selectedOption) => {
     setSelectedCategoryOption(selectedOption);
@@ -44,6 +47,29 @@ const NavBar = () => {
     setWishListItems(wishList)
   }, [cart, wishList])
 
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+        if (searchInput && selectedCategoryOption.value === "Courses") {
+            try {
+                const response = await axios.post(`${BASE_URL}/api/v1/related-words`, { searchTitle: searchInput });
+                setSearchResults(response?.data)
+            } catch (error) {
+                console.error("Error fetching related words:", error);
+            }
+        }else if(searchInput && selectedCategoryOption.value === "Jobs"){
+          try {
+            const response = await axios.post(`${BASE_URL}/api/v1/get-job-search-results`, { searchTitle: searchInput });
+            setSearchResults(response?.data)
+          } catch (error) {
+              console.error("Error fetching related words:", error);
+          }
+        }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+}, [searchInput, selectedCategoryOption]);
+
+console.log("searchResults", searchResults)
 
   const customStyles = {
     control: (provided, state) => ({
@@ -94,10 +120,19 @@ const NavBar = () => {
               
             />
             <span></span>
-            <input type='text' placeholder={`Search for ${selectedCategoryOption?.value}`}/>
+            <input type='text' placeholder={`Search for ${selectedCategoryOption?.value}`} onChange={(e) => setSearchInput(e.target.value)}/>
             <button><IoIosSearch size={23}/></button>
           </div>
 
+          {searchResults.length > 0 && searchInput && (
+              <div className='search-results-container'>
+                {searchResults?.map((item, i) => {
+                  return(
+                    <p key={i}>{item.length > 42 ? item.slice(0, 42) : item}</p>
+                  )
+                })}
+              </div>
+          )}
         </div>
 
         {isAuthenticated === true ? (

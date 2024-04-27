@@ -1,6 +1,6 @@
 const express = require('express')
 const {isAuthenticatedUser} = require('../middleware/auth')
-const {createCourse, UpdateCourse, GetAllCourseAdmin, GetSingleCourseAdmin, UpdateCourseStatus, deleteCourse, GetAllPublicCoursesHomePage, GetAllPublicCourses, GetSinglePublicCourse, GetSingleInrolledCourse, GetAllInrolledCourse, SaveCompletionRateOfCourse, addCommentsController} = require('../controllers/CourseController')
+const {createCourse, UpdateCourse, GetAllCourseAdmin, GetSingleCourseAdmin, UpdateCourseStatus, deleteCourse, GetAllPublicCoursesHomePage, GetAllPublicCourses, GetSinglePublicCourse, GetSingleInrolledCourse, GetAllInrolledCourse, SaveCompletionRateOfCourse, addCommentsController, getRelatedKeyWords} = require('../controllers/CourseController')
 
 
 const router = express.Router();
@@ -32,6 +32,8 @@ router.route('/get-single-inrolled-course').post(isAuthenticatedUser, GetSingleI
 router.route('/save-completion-content').post(isAuthenticatedUser, SaveCompletionRateOfCourse)
 
 router.route('/add-comment/:slug').post(isAuthenticatedUser, addCommentsController)
+
+router.route('/related-words').post(getRelatedKeyWords)
 
 
 module.exports = router
