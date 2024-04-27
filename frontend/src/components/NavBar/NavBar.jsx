@@ -29,6 +29,11 @@ const NavBar = () => {
   const [cartItems, setCartItems] = useState([])
   const [wishListItems, setWishListItems] = useState([])
 
+  const handleCategoryChange = (selectedOption) => {
+    setSelectedCategoryOption(selectedOption);
+  };
+
+
   useEffect(() => {
     dispatch(getCart())
     dispatch(getWishList())
@@ -83,7 +88,7 @@ const NavBar = () => {
             <TbCategoryPlus size={23}/>
             <Select
               defaultValue={selectedCategoryOption} 
-              onChange={(selectedOption) => setSelectedCategoryOption(selectedOption.value)}
+              onChange={handleCategoryChange}
               options={searchCategory}
               styles={customStyles}
               

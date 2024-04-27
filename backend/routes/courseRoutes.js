@@ -1,6 +1,6 @@
 const express = require('express')
 const {isAuthenticatedUser} = require('../middleware/auth')
-const {createCourse, UpdateCourse, GetAllCourseAdmin, GetSingleCourseAdmin, UpdateCourseStatus, deleteCourse, GetAllPublicCourses, GetSinglePublicCourse, GetSingleInrolledCourse, GetAllInrolledCourse, SaveCompletionRateOfCourse, addCommentsController} = require('../controllers/CourseController')
+const {createCourse, UpdateCourse, GetAllCourseAdmin, GetSingleCourseAdmin, UpdateCourseStatus, deleteCourse, GetAllPublicCoursesHomePage, GetAllPublicCourses, GetSinglePublicCourse, GetSingleInrolledCourse, GetAllInrolledCourse, SaveCompletionRateOfCourse, addCommentsController} = require('../controllers/CourseController')
 
 
 const router = express.Router();
@@ -18,6 +18,8 @@ router.route("/get-all-admin-courses").get(isAuthenticatedUser, GetAllCourseAdmi
 router.route("/get-single-admin-courses/:slug").get(isAuthenticatedUser, GetSingleCourseAdmin)
 
 // public routes
+router.route('/get-all-public-courses-home').get(GetAllPublicCoursesHomePage)
+
 router.route('/get-all-public-courses').get(GetAllPublicCourses)
 
 router.route('/get-single-public-course/:slug').get(GetSinglePublicCourse)

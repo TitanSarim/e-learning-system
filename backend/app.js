@@ -30,6 +30,7 @@ const cart = require("./routes/cartRoutes");
 const order = require("./routes/orderRoutes");
 const job = require("./routes/JobRoutes")
 const chat= require("./routes/messageRoute")
+const analytics = require("./routes//AnalyticsRoute")
 
 app.use("/api/v1", user);
 app.use("/api/v1", course);
@@ -38,6 +39,7 @@ app.use("/api/v1", cart);
 app.use("/api/v1", order);
 app.use("/api/v1", job);
 app.use("/api/v1", chat)
+app.use("/api/v1", analytics)
 
 app.use(errorMiddleware);
 

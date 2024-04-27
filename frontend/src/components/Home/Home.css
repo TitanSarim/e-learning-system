@@ -182,9 +182,18 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    width: 80%;
+    width: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+}
+
+.pubic-all-courses-boxes-view-home{
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .home-popular-course-card{
@@ -314,7 +323,7 @@
     font-size: 17px;
 }
 
-.home-popular-course-btn button{
+.home-popular-course-btn a{
     width: 273px;
     height: 60px;
     padding: 16px 28px;
@@ -328,6 +337,7 @@
     font-weight: 500;
     line-height: 28px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 /* home course category */
@@ -576,6 +586,13 @@
 
 }
 
+.home-testimonial-card-section-a-stars{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
 .home-testimonial-card-rule{
     border: 0.5px solid rgba(218, 218, 247, 0.32);
 }
@@ -628,17 +645,21 @@
 
 } 
 
-.footer-section-section-a-button button{
+.footer-section-section-a-button a{
     width: 320px;
-    height: 65px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    text-decoration: none;
+    color: white;
     flex-shrink: 0;
     border: none;
     border-radius: 48px;
     background: #FF5156;
     cursor: pointer;
+    text-align: center;
 }
 
-.footer-section-section-a-button button:last-child{
+.footer-section-section-a-button a:last-child{
     background: #7F56D9;
 }
 

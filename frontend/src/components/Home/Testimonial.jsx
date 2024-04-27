@@ -1,6 +1,7 @@
 import React from 'react';
 import profile from "../../assets/profile.png"
 import { IoStarSharp } from "react-icons/io5";
+import StarRatings from 'react-star-ratings';
 
 
 const Testimonial = () => {
@@ -25,11 +26,13 @@ const Testimonial = () => {
                  
  
                 <div className='home-testimonial-card-section-a-stars'>
-                    <IoStarSharp />
-                    <IoStarSharp />
-                    <IoStarSharp />
-                    <IoStarSharp />
-                    <IoStarSharp />
+                    <StarRatings
+                        rating={4.6}
+                        starDimension="20px"
+                        starSpacing="2px"
+                        numberOfStars={5}
+                        starRatedColor="#FFFF00"
+                    />
                 </div>
             </div>
 

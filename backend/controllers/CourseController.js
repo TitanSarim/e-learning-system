@@ -205,6 +205,10 @@ const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
     try {
 
+        const userId = req.user.userid
+        const role = req.user.role
+
+        if(role === 'admin'){
         const AdminAllcourses  = await Course.findAll();
 
         const Admincourses = AdminAllcourses.map(course => ({
@@ -237,6 +241,53 @@ const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
             message: 'Course retrived successfully',
             Admincourses: Admincourses,
           });
+        }else if(role === 'Teacher'){
+            const AdminAllcourses  = await Course.findAll({
+                where: {
+                    teacherId: userId
+                }
+            });
+
+            if(!AdminAllcourses){
+                res.status(204).json({
+                    success: true,
+                    message: 'No Course found',
+                    Admincourses: [],
+                  });
+            }
+
+            const Admincourses = AdminAllcourses.map(course => ({
+                id: course.id || '',
+                teacherId: course.teacherId || '',
+                slug: course.slug || '',
+                course_title: course.course_title || '',
+                category: course.category || '',
+                tags: course.tags || '',
+                timeline: course.timeline || '',
+                course_desc: course.course_desc || '',
+                course_thumbnail: course.course_thumbnail.url || '',
+                course_content: course.course_content || '',
+                views: course.views || '',
+                price: course.price || '',
+                language: course.language || '',
+                level: course.level || '',
+                hours: course.hours || '',
+                inrolled_by: course.inrolled_by || '',
+                teacher_name: course.teacher_name || '',
+                comments: course.comments || '',
+                reviews: course.reviews || '',
+                status: course.status || '',
+                createdAt: course.createdAt || '',
+                updatedAt: course.updatedAt || ''
+              }));
+              
+            res.status(201).json({
+                success: true,
+                message: 'Course retrived successfully',
+                Admincourses: Admincourses,
+              });
+        }
+
 
     } catch (error) {
         return next(new errorHandler(error, 500));
@@ -296,6 +347,39 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
 })
 
 
+// Public courses home page
+const GetAllPublicCoursesHomePage  = catchAsyncError(async (req, res, next) => {
+
+    try {
+        
+        const allPublicCourses = await Course.findAll()
+
+        const coursesByCategory = allPublicCourses.reduce((acc, course) => {
+            if (!acc[course.category]) {
+              acc[course.category] = [];
+            }
+            acc[course.category].push(course);
+            return acc;
+          }, {});
+          
+          const Publiccourses = {};
+          for (const category in coursesByCategory) {
+            Publiccourses[category] = coursesByCategory[category].slice(0, 4);
+          }
+        
+
+          res.status(201).json({
+            success: true,
+            message: 'Courses Retrived successfully',
+            Publiccourses: Publiccourses
+        });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
 // Public All Courses
 const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
 
@@ -304,7 +388,7 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
         const { category, rating, level, language, price } = req.query;
 
         const page = parseInt(req.query.page) || 1; // Default page 1
-        const limit = parseInt(req.query.limit) || 4; // Default limit 10
+        const limit = parseInt(req.query.limit) || 20; // Default limit 10
         const skip = (page - 1) * limit;
         const status = 'active'
 
@@ -851,6 +935,7 @@ module.exports = {
     UpdateCourse,
     UpdateCourseStatus,
     deleteCourse,
+    GetAllPublicCoursesHomePage,
     GetAllPublicCourses,
     GetSinglePublicCourse,
     GetSingleInrolledCourse,

@@ -170,7 +170,7 @@ const Auth = () => {
                 type="email"
                 placeholder="Your Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value.toLowerCase())}
               />
             </div>
           </div>
@@ -293,7 +293,7 @@ const Auth = () => {
               type="email"
               placeholder="Your Email"
               value={loginEmail}
-              onChange={(e) => setLoginEmail(e.target.value)}
+              onChange={(e) => setLoginEmail(e.target.value.toLowerCase())}
             />
           </div>
 

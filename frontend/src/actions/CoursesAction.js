@@ -259,6 +259,28 @@ export const AdminGetSingleCourses = (slug) => async (dispatch) => {
 
 
 // Get All Public Courses
+export const PublicGetHomeCourses = () => async (dispatch) => {
+  try {
+
+    
+    dispatch({ type: GET_ALL_PUBLIC_COURSES_REQUEST });
+
+
+    const { data } = await axios.get(`${BASE_URL}/api/v1/get-all-public-courses-home`);
+
+    dispatch({
+      type: GET_ALL_PUBLIC_COURSES_SUCCESS,
+      payload: data.Publiccourses,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_PUBLIC_COURSES_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
 export const PublicGetCourses = (page, filters) => async (dispatch) => {
   try {
 

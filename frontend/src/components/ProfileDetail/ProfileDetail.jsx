@@ -191,7 +191,9 @@ useEffect(() => {
                     <p>@{userName}</p>
                     <p>
                       Full Stack Developer
-                      <span><FaLocationDot size={20}/>{personalDetails?.address}</span>
+                      {personalDetails.address && (
+                        <span><FaLocationDot size={20}/>{personalDetails?.address}</span>
+                      )}
                     </p>
                   </div>
               </div>

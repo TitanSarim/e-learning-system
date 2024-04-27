@@ -48,6 +48,7 @@ const PublicCourseDetail = () => {
     const {Publiccourse, error, loading} = useSelector((state)=>state.PublicCourse);
     const {cart} = useSelector((state)=>state.cart);
     const {wishList} = useSelector((state)=>state.wishList);
+    
 
     const [courseDetails, setCourseDetails] = useState([])
     const [userDetail, setUserDetail] = useState([])
@@ -286,14 +287,18 @@ const PublicCourseDetail = () => {
               </>
             ) : (
               <>
-                {isInCart === true ? 
-                  <Link to='/Student/Cart'><HiOutlineShoppingCart size={25}/>Go to cart</Link> : 
-                  <button onClick={handleAddToCart}><HiOutlineShoppingCart size={25}/>Add to cart</button>
-                }
-                {isInWishList === true ? 
-                  <Link to='/Student/wishList'><HiOutlineShoppingCart size={25}/>Go to Wishlist</Link> : 
-                  <button onClick={handleAddToWishList}><IoMdHeartEmpty size={25}/>Add To Wishlist</button>
-                }
+              {user.role === 'Student' && (
+                <>
+                  {isInCart === true ? 
+                    <Link to='/Student/Cart'><HiOutlineShoppingCart size={25}/>Go to cart</Link> : 
+                    <button onClick={handleAddToCart}><HiOutlineShoppingCart size={25}/>Add to cart</button>
+                  }
+                  {isInWishList === true ? 
+                    <Link to='/Student/wishList'><HiOutlineShoppingCart size={25}/>Go to Wishlist</Link> : 
+                    <button onClick={handleAddToWishList}><IoMdHeartEmpty size={25}/>Add To Wishlist</button>
+                  }
+                </>
+              )}
               </>
             )}
           </div>
