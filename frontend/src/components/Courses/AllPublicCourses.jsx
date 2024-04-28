@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import NavBar from '../NavBar/NavBar';
 import AllPublicCoursesFilters from './AllPublicCoursesFilters';
 import StarRatings from 'react-star-ratings'
@@ -28,6 +28,10 @@ const selectPriceFilter = [
 const AllPublicCourses = () => {
 
   const dispatch = useDispatch()
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get('search');
 
   const {Publiccourses, error, loading} = useSelector((state)=>state.PublicCourse);
   const {user} = useSelector((state)=>state.user);
@@ -50,8 +54,12 @@ const AllPublicCourses = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
-    dispatch(PublicGetCourses(1, filters))
-  }, [dispatch, error, filters])
+    if(searchQuery){
+      dispatch(PublicGetCourses(1, filters, searchQuery))
+    }else{
+      dispatch(PublicGetCourses(1, filters))
+    }
+  }, [dispatch, error, filters, searchQuery])
 
   useEffect(() => {
     setCourses(Publiccourses)

@@ -385,12 +385,22 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
 
 
     try {
-        const { category, rating, level, language, price, searchTitle } = req.query;
+        const { category, rating, level, language, price, search} = req.query;
 
         const page = parseInt(req.query.page) || 1; // Default page 1
         const limit = parseInt(req.query.limit) || 20; // Default limit 10
         const skip = (page - 1) * limit;
         const status = 'active'
+
+        const preprocessSearchString = (searchText) => {
+            const specialCharacters = ['with', 'and', 'skip', 'learn'];
+            const lowerSearchText = searchText.toLowerCase();            
+            const filteredWords = lowerSearchText.split(' ').filter(word => !specialCharacters.includes(word));    
+            return filteredWords.join(' ');
+        };
+
+        const preprocessedSearch = preprocessSearchString(search);
+        console.log("searchText", preprocessedSearch)
 
         const filter = {};
         if (category) filter.category = category;
@@ -398,25 +408,28 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
         if (language) filter.language = language;
         if (status) filter.status = status;
         
-        let orderOption = []; // Initialize order option
+        let orderOption = [];
 
         if (price === 'ASC' || price === 'DESC') {
-            orderOption.push(['price', price]); // Construct order option array
+            orderOption.push(['price', price]); 
         }
 
 
         const totalCount = await Course.count({
-            where: filter, // Apply filters
+            where: filter, 
           });
           
         let allPublicCourses
-        if(searchTitle){
+        if(search){
             allPublicCourses = await Course.findAll({
-                where:{
+                where: {
                     [Op.or]: [
-                        { course_title: { [Op.iLike]: `%${query}%` } },
-                        { course_desc: { [Op.iLike]: `%${query}%` } },
-                    ]
+                        {
+                            course_title: {
+                                [Op.iLike]: `%${preprocessedSearch}%`
+                            }
+                        }
+                    ],
                 },
                 offset: skip,
                 limit: limit,

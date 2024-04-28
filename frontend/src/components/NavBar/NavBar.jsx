@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Select from 'react-select';
 import Logo1 from '../../assets/icons8-book.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { TbCategoryPlus } from "react-icons/tb";
 import { IoIosSearch } from "react-icons/io";
@@ -21,6 +21,7 @@ const BASE_URL = 'http://localhost:3900';
 
 const NavBar = () => {
 
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const {cart } = useSelector((state) => state.cart);
@@ -92,6 +93,11 @@ console.log("searchResults", searchResults)
       }),
   };
 
+  const handlePageClick = (searchTitle) => {
+    const url = `/courses?page=1&search=${searchTitle}`;
+    navigate(url)
+  }
+
   return (
     <div className='navbar-container'>
 
@@ -121,14 +127,14 @@ console.log("searchResults", searchResults)
             />
             <span></span>
             <input type='text' placeholder={`Search for ${selectedCategoryOption?.value}`} onChange={(e) => setSearchInput(e.target.value)}/>
-            <button><IoIosSearch size={23}/></button>
+            <button onClick={() => handlePageClick(searchInput)}><IoIosSearch size={23}/></button>
           </div>
 
           {searchResults.length > 0 && searchInput && (
               <div className='search-results-container'>
                 {searchResults?.map((item, i) => {
                   return(
-                    <p key={i}>{item.length > 42 ? item.slice(0, 42) : item}</p>
+                    <p key={i} onClick={() => handlePageClick(item)}>{item.length > 42 ? item.slice(0, 42) : item}</p>
                   )
                 })}
               </div>
