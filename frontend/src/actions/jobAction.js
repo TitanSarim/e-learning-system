@@ -204,13 +204,13 @@ export const DeleteJob = (slug) => async (dispatch) => {
 };
 
 
-export const GetAllPublicJobs = (page, filters) => async (dispatch) => {
+export const GetAllPublicJobs = (page, filters, searchQuery) => async (dispatch) => {
 
     try {
     
         dispatch({ type: GET_ALL_PUBLIC_JOB_REQUEST });
 
-        let queryString = `?page=${page}`;
+        let queryString = `?page=${page}&search=${searchQuery}`;
         if (filters) {
             Object.keys(filters).forEach(key => {
                 queryString += `&${key}=${filters[key]}`;

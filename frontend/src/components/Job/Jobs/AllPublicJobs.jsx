@@ -4,7 +4,7 @@ import './AllPublicJobs.css'
 import NavBar from '../../NavBar/NavBar'
 import AllPublicJobsFilters from './AllPublicJobsFilters'
 import { IoIosArrowForward } from 'react-icons/io'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Loader from '../../Utils/Loader';
 import { useDispatch, useSelector } from 'react-redux'
 import {GetAllPublicJobs, ApplyOnJob, ClearErrors} from '../../../actions/jobAction'
@@ -24,6 +24,11 @@ const BASE_URL = 'http://localhost:3900';
 const AllPublicJobs = () => {
   
   const dispatch = useDispatch()
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get('search');
+
   const{jobs, loading, error} = useSelector((state)=>state.publicJob);
   const {isAuthenticated,user} = useSelector((state) => state.user)
   const{myProfileData} = useSelector((state)=>state.myPorfile);
@@ -109,8 +114,12 @@ const AllPublicJobs = () => {
       toast.error(error);
       dispatch(ClearErrors());
     }
-    dispatch(GetAllPublicJobs(1, filters))
-  }, [filters, dispatch, error])
+    if(searchQuery){
+      dispatch(GetAllPublicJobs(1, filters, searchQuery))
+    }else {
+      dispatch(GetAllPublicJobs(1, filters))
+    }
+  }, [filters, dispatch, error, searchQuery])
 
   useEffect(() => {
     setAllJobs(jobs)

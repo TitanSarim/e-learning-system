@@ -70,7 +70,6 @@ const NavBar = () => {
     return () => clearTimeout(delayDebounceFn);
 }, [searchInput, selectedCategoryOption]);
 
-console.log("searchResults", searchResults)
 
   const customStyles = {
     control: (provided, state) => ({
@@ -94,8 +93,13 @@ console.log("searchResults", searchResults)
   };
 
   const handlePageClick = (searchTitle) => {
-    const url = `/courses?page=1&search=${searchTitle}`;
-    navigate(url)
+    if(searchInput && selectedCategoryOption.value === "Courses"){
+      const url = `/courses?page=1&search=${searchTitle}`;
+      navigate(url)
+    }else if(searchInput && selectedCategoryOption.value === "Jobs"){
+      const url = `/all-jobs?page=1&search=${searchTitle}`;
+      navigate(url)
+    }
   }
 
   return (

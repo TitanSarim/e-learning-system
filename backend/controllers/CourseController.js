@@ -396,7 +396,7 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
             const specialCharacters = ['with', 'and', 'skip', 'learn'];
             const lowerSearchText = searchText.toLowerCase();            
             const filteredWords = lowerSearchText.split(' ').filter(word => !specialCharacters.includes(word));    
-            return filteredWords.join(' ');
+            return filteredWords;
         };
 
         const preprocessedSearch = preprocessSearchString(search);
@@ -419,28 +419,33 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
             where: filter, 
           });
           
-        let allPublicCourses
-        if(search){
+        // example string =    nodejs reactjs nextjs development
+        let allPublicCourses;
+        if (search) {
+            const searchConditions = preprocessedSearch.map(word => ({
+                course_title: {
+                    [Op.like]: `%${word}%`
+                }
+            }));
+        
             allPublicCourses = await Course.findAll({
                 where: {
-                    [Op.or]: [
+                    [Op.and]: [
+                        filter,
                         {
-                            course_title: {
-                                [Op.iLike]: `%${preprocessedSearch}%`
-                            }
+                            [Op.or]: searchConditions
                         }
-                    ],
+                    ]
                 },
                 offset: skip,
                 limit: limit,
-                where: filter,
                 order: orderOption,
             });
-        }else{
+        } else {
             allPublicCourses = await Course.findAll({
+                where: filter,
                 offset: skip,
                 limit: limit,
-                where: filter,
                 order: orderOption,
             });
         }

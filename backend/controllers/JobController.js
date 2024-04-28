@@ -225,14 +225,24 @@ const getAllJobsPublic = catchAsyncError(async(req, res, next) => {
 
     try {
 
-        const { category, level, duration, type, date  } = req.query;
+        const { category, level, duration, type, date, search } = req.query;
 
-        console.log("date", date)
 
         const page = parseInt(req.query.page) || 1; 
         const limit = parseInt(req.query.limit) || 6;
         const skip = (page - 1) * limit;
         const status = 'active'
+
+        console.log("search", search)
+
+        const preprocessSearchString = (searchText) => {
+            const specialCharacters = ['with', 'and', 'skip', 'learn'];
+            const lowerSearchText = searchText.toLowerCase();            
+            const filteredWords = lowerSearchText.split(' ').filter(word => !specialCharacters.includes(word));    
+            return filteredWords;
+        };
+
+        const preprocessedSearch = preprocessSearchString(search);
 
         const filter = {};
         if (category) filter.category = category;
@@ -258,11 +268,33 @@ const getAllJobsPublic = catchAsyncError(async(req, res, next) => {
             where: filter, 
         });
 
-       const AllJobs = await Jobs.findAll({
-            offset: skip,
-            limit: limit,
-            where: filter,
-       })
+        let AllJobs;
+        if (search) {
+            const searchConditions = preprocessedSearch.map(word => ({
+                jobTitle: {
+                    [Op.like]: `%${word}%`
+                }
+            }));
+
+            AllJobs = await Jobs.findAll({
+                where: {
+                    [Op.and]: [
+                        filter,
+                        {
+                            [Op.or]: searchConditions
+                        }
+                    ]
+                },
+                offset: skip,
+                limit: limit,
+            });
+        } else {
+            AllJobs = await Jobs.findAll({
+                where: filter,
+                offset: skip,
+                limit: limit,
+            });
+        }
 
        const userIds = AllJobs.map(job => job.userId);
 
