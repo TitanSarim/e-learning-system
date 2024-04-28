@@ -1,9 +1,8 @@
-const { Op, Sequelize, where } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { Course, UserProfile, Order, LeaderBoard, ViewdVideos } = require("../models"); // Adjust the path based on your project structure
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
-const leaderboard = require('../models/leaderboard');
 
 
 // admin
@@ -31,14 +30,14 @@ const createCourse  = catchAsyncError(async (req, res, next) => {
             course_content: {
                 data: videoUrls
             },
-            views: "0",
+            views: 0,
             price: price,
             language:language,
             level:level,
             hours:hours,
             inrolled_by: { id: []},
             teacher_name: teacherName,
-            comments: "0",
+            comments: {"data": []},
             reviews: 0,
             status: status
         })
@@ -206,6 +205,10 @@ const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
     console.log("jkhfksjdhfkjh");
     try {
 
+        const userId = req.user.userid
+        const role = req.user.role
+
+        if(role === 'admin'){
         const AdminAllcourses  = await Course.findAll();
 
         const Admincourses = AdminAllcourses.map(course => ({
@@ -238,6 +241,53 @@ const GetAllCourseAdmin  = catchAsyncError(async (req, res, next) => {
             message: 'Course retrived successfully',
             Admincourses: Admincourses,
           });
+        }else if(role === 'Teacher'){
+            const AdminAllcourses  = await Course.findAll({
+                where: {
+                    teacherId: userId
+                }
+            });
+
+            if(!AdminAllcourses){
+                res.status(204).json({
+                    success: true,
+                    message: 'No Course found',
+                    Admincourses: [],
+                  });
+            }
+
+            const Admincourses = AdminAllcourses.map(course => ({
+                id: course.id || '',
+                teacherId: course.teacherId || '',
+                slug: course.slug || '',
+                course_title: course.course_title || '',
+                category: course.category || '',
+                tags: course.tags || '',
+                timeline: course.timeline || '',
+                course_desc: course.course_desc || '',
+                course_thumbnail: course.course_thumbnail.url || '',
+                course_content: course.course_content || '',
+                views: course.views || '',
+                price: course.price || '',
+                language: course.language || '',
+                level: course.level || '',
+                hours: course.hours || '',
+                inrolled_by: course.inrolled_by || '',
+                teacher_name: course.teacher_name || '',
+                comments: course.comments || '',
+                reviews: course.reviews || '',
+                status: course.status || '',
+                createdAt: course.createdAt || '',
+                updatedAt: course.updatedAt || ''
+              }));
+              
+            res.status(201).json({
+                success: true,
+                message: 'Course retrived successfully',
+                Admincourses: Admincourses,
+              });
+        }
+
 
     } catch (error) {
         return next(new errorHandler(error, 500));
@@ -296,49 +346,105 @@ const GetSingleCourseAdmin  = catchAsyncError(async (req, res, next) => {
 
 })
 
+
+// Public courses home page
+const GetAllPublicCoursesHomePage  = catchAsyncError(async (req, res, next) => {
+
+    try {
+        
+        const allPublicCourses = await Course.findAll()
+
+        const coursesByCategory = allPublicCourses.reduce((acc, course) => {
+            if (!acc[course.category]) {
+              acc[course.category] = [];
+            }
+            acc[course.category].push(course);
+            return acc;
+          }, {});
+          
+          const Publiccourses = {};
+          for (const category in coursesByCategory) {
+            Publiccourses[category] = coursesByCategory[category].slice(0, 4);
+          }
+        
+
+          res.status(201).json({
+            success: true,
+            message: 'Courses Retrived successfully',
+            Publiccourses: Publiccourses
+        });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
 // Public All Courses
 const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
 
 
     try {
-        const { category, rating, level, language, price } = req.query;
+        const { category, rating, level, language, price, search} = req.query;
 
         const page = parseInt(req.query.page) || 1; // Default page 1
-        const limit = parseInt(req.query.limit) || 4; // Default limit 10
+        const limit = parseInt(req.query.limit) || 20; // Default limit 10
         const skip = (page - 1) * limit;
+        const status = 'active'
 
+        const preprocessSearchString = (searchText) => {
+            const specialCharacters = ['with', 'and', 'skip', 'learn'];
+            const lowerSearchText = searchText.toLowerCase();            
+            const filteredWords = lowerSearchText.split(' ').filter(word => !specialCharacters.includes(word));    
+            return filteredWords.join(' ');
+        };
+
+        const preprocessedSearch = preprocessSearchString(search);
+        console.log("searchText", preprocessedSearch)
 
         const filter = {};
         if (category) filter.category = category;
         if (level) filter.level = level;
         if (language) filter.language = language;
+        if (status) filter.status = status;
         
-        let orderOption = []; // Initialize order option
+        let orderOption = [];
 
         if (price === 'ASC' || price === 'DESC') {
-            orderOption.push(['price', price]); // Construct order option array
+            orderOption.push(['price', price]); 
         }
 
-        // if (ratingStringfy >= '1') {
-        //     filter.reviews = { $gt: ratingStringfy };
-        // }else if (ratingStringfy >= '2') {
-        //     filter.reviews = { $gt: ratingStringfy };
-        // }else if (ratingStringfy >= '3') {
-        //     filter.reviews = { $gt: ratingStringfy };
-        // }if (ratingStringfy >= '4') {
-        //     filter.reviews = { $gt: ratingStringfy };
-        // }
 
         const totalCount = await Course.count({
-            where: filter, // Apply filters
+            where: filter, 
           });
           
-        const allPublicCourses = await Course.findAll({
-            offset: skip,
-            limit: limit,
-            where: filter,
-            order: orderOption,
-        });
+        let allPublicCourses
+        if(search){
+            allPublicCourses = await Course.findAll({
+                where: {
+                    [Op.or]: [
+                        {
+                            course_title: {
+                                [Op.iLike]: `%${preprocessedSearch}%`
+                            }
+                        }
+                    ],
+                },
+                offset: skip,
+                limit: limit,
+                where: filter,
+                order: orderOption,
+            });
+        }else{
+            allPublicCourses = await Course.findAll({
+                offset: skip,
+                limit: limit,
+                where: filter,
+                order: orderOption,
+            });
+        }
+        
 
 
         const totalPages = Math.ceil(totalCount / limit);
@@ -417,10 +523,10 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
         }));
         
           
-          const Publiccourses = {
+        const Publiccourses = {
             Publiccourses: PubliccoursesObject,
             pagination: pagination
-          }
+        }
         res.status(201).json({
             success: true,
             message: 'Course retrived successfully',
@@ -433,6 +539,7 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
 
 })
 
+
 const GetSinglePublicCourse  = catchAsyncError(async (req, res, next) => {
 
     const slug = req.params.slug;
@@ -440,6 +547,8 @@ const GetSinglePublicCourse  = catchAsyncError(async (req, res, next) => {
     try {
 
         const PublicSinglecourse  = await Course.findOne({ where: { slug: slug } });
+        PublicSinglecourse.views = PublicSinglecourse.views + 1;
+        await PublicSinglecourse.save();
 
         if (!PublicSinglecourse) {
             return res.status(404).json({ error: "Course not found" });
@@ -800,6 +909,82 @@ const SaveCompletionRateOfCourse = catchAsyncError(async (req, res, next) => {
 });
   
 
+const addCommentsController = catchAsyncError(async (req, res, next) => {
+
+    try {
+
+        const slug = req.params.slug;
+        const {reviews, comment} = req.body
+
+        const course = await Course.findOne({ where: { slug: slug } });
+
+        const newComment = {
+            user: comment.user,
+            username: comment.username,
+            avatarurl: comment.avatarurl,
+            comment: comment.comment,
+            reviews: comment.reviews,
+            date: comment.date
+          };
+
+          
+        const existingComments = course.comments ? course.comments.data || [] : [];
+        const updatedComments = [...existingComments, newComment];
+
+        const countOfComments = updatedComments.length;
+          
+        let averageRating = 0;
+        if(course.reviews === 0){
+            averageRating = reviews;
+        }else {
+            updatedComments.forEach(comment => {
+                averageRating += parseInt(comment.reviews);
+            });
+        }
+        const overAllRzating = averageRating / countOfComments
+
+        course.comments = { data: updatedComments };
+        course.reviews = overAllRzating;
+        await course.save();
+
+        res.status(201).json({
+            success: true,
+            message: 'Comment added successfully',
+        });
+
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+
+})
+
+
+const getRelatedKeyWords = catchAsyncError(async (req, res, next) => {
+    try {
+        const { searchTitle } = req.body;
+
+        const relatedCourses = await Course.findAll({
+            where: {
+                course_title: {
+                    [Op.like]: `%${searchTitle}%` 
+                }
+            },
+            attributes: ['course_title'],
+            order: [
+                ['course_title', 'ASC'] 
+            ],
+            limit: 10
+        });
+
+        const relatedTitles = relatedCourses.map(course => course.course_title);
+
+        res.json(relatedTitles);
+    } catch (error) {
+        return next(new errorHandler(error, 500));
+    }
+});
+
+
 module.exports = {
     createCourse,
     GetAllCourseAdmin,
@@ -807,9 +992,14 @@ module.exports = {
     UpdateCourse,
     UpdateCourseStatus,
     deleteCourse,
+    GetAllPublicCoursesHomePage,
     GetAllPublicCourses,
     GetSinglePublicCourse,
     GetSingleInrolledCourse,
     GetAllInrolledCourse,
-    SaveCompletionRateOfCourse
+    SaveCompletionRateOfCourse,
+    addCommentsController,
+    getRelatedKeyWords
 }
+
+

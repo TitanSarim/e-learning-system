@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { RxEyeNone } from "react-icons/rx";
 import { RxEyeClosed } from "react-icons/rx";
-
+import Cookies from 'js-cookie';
 import { register, login, clearErrors } from "../../actions/UserActions";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -62,11 +62,11 @@ const Auth = () => {
     dispatch(login(FormData));
   }
 
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleLoginSubmit();
-    }
-  };
+  // const handleKeyPress = (event) => {
+  //   if (event.key === 'Enter') {
+  //     handleLoginSubmit();
+  //   }
+  // };
 
   const handleRegisterSubmit = () => {
     if (
@@ -116,12 +116,28 @@ const Auth = () => {
       dispatch(clearErrors());
     }
 
-    if (isAuthenticated === true && user?.role === "Student") {
-      naviagte("/Student/Profile");
-      toast.success("Welcome to M-Time");
-    } else if (isAuthenticated === true && user.role === "admin") {
-      naviagte("/admin/dashboard");
-      toast.success("Welcome Admin");
+    const token = Cookies.get('token')
+
+    if(token) {
+      if (isAuthenticated === true && user?.role === "Student") {
+        naviagte("/Student/Profile");
+        toast.success("Welcome to M-Time");
+        
+      } else if (isAuthenticated === true && user.role === "admin") {
+        naviagte("/admin/dashboard");
+        toast.success("Welcome Admin");
+      }else  if (isAuthenticated === true && user?.role === "Teacher") {
+        naviagte("/admin/all-courses");
+        toast.success("Welcome to M-Time");
+        
+      }else if(isAuthenticated === true && user?.role === "HR Manager"){
+        naviagte("/hr/HrProfile")
+        toast.success("Welcome to M-Time");
+      }
+      else if(isAuthenticated === true && user?.role === "Job Seeker"){
+        naviagte("/JobSeeker/JobSeeker-profile")
+        toast.success("Welcome to M-Time");
+      }
     }
   });
 
@@ -154,7 +170,7 @@ const Auth = () => {
                 type="email"
                 placeholder="Your Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value.toLowerCase())}
               />
             </div>
           </div>
@@ -277,7 +293,7 @@ const Auth = () => {
               type="email"
               placeholder="Your Email"
               value={loginEmail}
-              onChange={(e) => setLoginEmail(e.target.value)}
+              onChange={(e) => setLoginEmail(e.target.value.toLowerCase())}
             />
           </div>
 

@@ -28,7 +28,7 @@ import { uploadImageToAzure } from "../middlewares/CourseImageUplaod";
 import {updateUploadImageToAzure} from '../middlewares/CourseImageUpdate';
 import {updateUploadVideosToAzure} from '../middlewares/CourseVideoUpdate'
 import {deleteVideosFromAzure, deleteImageFromAzure} from '../middlewares/DeleteCourseDataAzure'
-import {ConfigApplicationJson} from './Config'
+import Cookies from 'js-cookie';
 
 
 const BASE_URL = 'http://localhost:3900';
@@ -38,6 +38,15 @@ export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
 
   try {
     dispatch({ type: CREATE_COURSES_REQUEST });
+
+    const token = Cookies.get('token');
+
+    const ConfigApplicationJson = { headers: 
+        { 
+        "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        }
+    }
 
     const { thumbnailFile, videoDivsArray, ...restFormData } = formData;
 
@@ -78,6 +87,15 @@ export const adminUpdateCourse = (formData, onProgress, slug, imgUrl) => async (
 
   try {
     dispatch({ type: UPDATE_ADMIN_COURSES_REQUEST });
+
+    const token = Cookies.get('token');
+
+    const ConfigApplicationJson = { headers: 
+        { 
+        "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        }
+    }
 
     const { thumbnailFile, videoDivsArray, ...restFormData } = formData;
 
@@ -120,6 +138,15 @@ export const adminDeleteCourse = (formData, slug) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_ADMIN_COURSES_REQUEST });
 
+    const token = Cookies.get('token');
+
+    const ConfigApplicationJson = { headers: 
+        { 
+        "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        }
+    }
+
     await deleteVideosFromAzure(formData[0].course_content.data)
     await deleteVideosFromAzure(formData[0].course_thumbnail)
 
@@ -140,11 +167,17 @@ export const adminDeleteCourse = (formData, slug) => async (dispatch) => {
 // CREATE UPDATE COURSES ACTIONS
 export const adminUpdateCourseStatus = (formData, slug) => async (dispatch) => {
 
-
-  console.log("slug123", slug)
   try {
     dispatch({ type: UPDATE_ADMIN_COURSES_REQUEST });
 
+    const token = Cookies.get('token');
+
+    const ConfigApplicationJson = { headers: 
+        { 
+        "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        }
+    }
 
     const { data } = await axios.put( `${BASE_URL}/api/v1/updateCourseStatus/${slug}`, formData, ConfigApplicationJson);
 
@@ -162,10 +195,19 @@ export const adminUpdateCourseStatus = (formData, slug) => async (dispatch) => {
 
 // GET ADMIN COURSES ACTIONS
 export const AdminGetCourses = () => async (dispatch) => {
+
   try {
+
     dispatch({ type: GET_ALL_ADMIN_COURSES_REQUEST });
 
+    const token = Cookies.get('token');
 
+    const ConfigApplicationJson = { headers: 
+        { 
+        "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        }
+    }
 
     const { data } = await axios.get(
       `${BASE_URL}/api/v1/get-all-admin-courses`, ConfigApplicationJson
@@ -191,6 +233,15 @@ export const AdminGetSingleCourses = (slug) => async (dispatch) => {
 
   try {
 
+    const token = Cookies.get('token');
+
+    const ConfigApplicationJson = { headers: 
+        { 
+        "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        }
+    }
+
     dispatch({ type:   GET_SINGLE_ADMIN_COURSES_REQUEST});
 
 
@@ -209,11 +260,35 @@ export const AdminGetSingleCourses = (slug) => async (dispatch) => {
 
 
 // Get All Public Courses
-export const PublicGetCourses = (page, filters) => async (dispatch) => {
+export const PublicGetHomeCourses = () => async (dispatch) => {
   try {
+
+    
     dispatch({ type: GET_ALL_PUBLIC_COURSES_REQUEST });
 
-    let queryString = `?page=${page}`;
+
+    const { data } = await axios.get(`${BASE_URL}/api/v1/get-all-public-courses-home`);
+
+    dispatch({
+      type: GET_ALL_PUBLIC_COURSES_SUCCESS,
+      payload: data.Publiccourses,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_PUBLIC_COURSES_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
+export const PublicGetCourses = (page, filters, searchQuery) => async (dispatch) => {
+  try {
+
+    
+    dispatch({ type: GET_ALL_PUBLIC_COURSES_REQUEST });
+
+    let queryString = `?page=${page}&search=${searchQuery}`;
     if (filters) {
       Object.keys(filters).forEach(key => {
         queryString += `&${key}=${filters[key]}`;
@@ -254,6 +329,28 @@ export const PublicGetSingleCourse = (slug) => async (dispatch) => {
   }
 };
 
+export const postComment = async (formData, slug) => {
+
+  try {
+
+
+    const token = Cookies.get('token');
+
+    const ConfigApplicationJson = { headers: 
+        { 
+        "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        }
+    }
+
+    await axios.post(`${BASE_URL}/api/v1/add-comment/${slug}`, formData, ConfigApplicationJson);
+
+
+  } catch (error) {
+      console.log(error);
+  }
+
+}
 
 
 export const clearErrors = () => async (dispatch) => {

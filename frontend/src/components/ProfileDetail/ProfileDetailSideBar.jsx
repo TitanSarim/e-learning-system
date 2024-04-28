@@ -5,9 +5,7 @@ import { userLogOut } from "../../actions/UserActions";
 
 import "./ProfileDetailSideBar.css";
 
-const ProfileDetailSideBar = ({ profileData }) => {
-  console.log(profileData);
-
+const ProfileDetailSideBar = ({ profileData, user }) => {
   const [completionRate, setCompletionRate] = useState(0);
 
   const handleLogOut = () => {
@@ -75,14 +73,18 @@ const ProfileDetailSideBar = ({ profileData }) => {
   return (
     <div className="profile-detail-side-bar">
       <div className="profile-detail-side-bar-container">
-        <div className="profile-detail-side-bar-profile-completion">
-          <p>Profile Completion:</p>
-          <div className="progress-bar">
-            <div className="progress" style={{ width: `${completionRate}%` }}>
-              <p>{completionRate}%</p>
+        {user?.role === "HR Manager" ? (
+          ""
+        ) : (
+          <div className="profile-detail-side-bar-profile-completion">
+            <p>Profile Completion:</p>
+            <div className="progress-bar">
+              <div className="progress" style={{ width: `${completionRate}%` }}>
+                <p>{completionRate}%</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         <div className="profile-detail-side-bar-profile-settings">
           <div>
@@ -102,6 +104,26 @@ const ProfileDetailSideBar = ({ profileData }) => {
           <div>
             <button>Delete My Account</button>
           </div>
+        </div>
+      </div>
+
+      <div className="profile-detail-side-bar-profile-settings">
+        <div>
+          <Link>Notifications</Link>
+        </div>
+
+        <div>
+          <Link>Change Password</Link>
+        </div>
+      </div>
+
+      <div className="profile-detail-side-bar-links">
+        <div>
+          <button onClick={handleLogOut}>Logout</button>
+        </div>
+
+        <div>
+          <button>Delete My Account</button>
         </div>
       </div>
     </div>

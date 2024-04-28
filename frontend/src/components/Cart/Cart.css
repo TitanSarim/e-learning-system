@@ -135,6 +135,27 @@
     border-radius: 50px;
 }
 
+
+.courses-cart-item-button-one{
+    position: relative;
+    display: flex;
+    height: 38px;
+    width: 40px;
+    border-radius: 50px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: auto;
+    color: white;
+    background-color: rgb(57, 179, 32);
+    padding: 10px 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 500ms;
+    right: 20px;
+}
+
 .courses-cart-item-button{
     position: relative;
     display: flex;
@@ -157,6 +178,11 @@
 .courses-cart-item-button:hover{
     transform: scale(1.02);
     background-color: rgb(255, 78, 47);
+}
+
+.courses-cart-item-button-one:hover{
+    transform: scale(1.02);
+    background-color: rgb(10, 124, 6);
 }
 
 /*  */

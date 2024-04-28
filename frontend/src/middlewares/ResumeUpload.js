@@ -18,7 +18,6 @@ export const ResumeUploadToAzureContainer = async (file) => {
 }
 
 
-// example oldResume=  https://elearningplateform.blob.core.windows.net/resume/1710893466695_6b5b4b57-2764-48d2-8214-925c44a8251a_sarim_resume.pdf
 export const uploadResumeToAzure = async (file, oldResume) => {
 
     const storageAccountName = "elearningplateform";

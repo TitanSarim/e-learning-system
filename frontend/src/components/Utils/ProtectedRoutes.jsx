@@ -1,16 +1,22 @@
 import { useSelector } from 'react-redux'
-import {Outlet, Navigate} from 'react-router-dom'
-// import Cookies from 'js-cookie';
-// import { useEffect } from 'react';
+import {Outlet, Navigate, useNavigate} from 'react-router-dom'
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
+
 
 const ProtectedRoutes = () => {
 
     const {isAuthenticated} = useSelector((state)=>state.user)
 
-  
-  return (
-    isAuthenticated ? <Outlet/> : <Navigate to="/login"/>
-  )
+
+    const token = Cookies.get('token')
+
+    if (!isAuthenticated || !token) {
+      toast.error('Session Expired Please Login again');
+      return <Navigate to="/login" />;
+    }
+
+  return <Outlet />;
 }
 
 export default ProtectedRoutes

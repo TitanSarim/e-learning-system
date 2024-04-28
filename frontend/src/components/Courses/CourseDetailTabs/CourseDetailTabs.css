@@ -223,3 +223,202 @@
     height: max-content;
     width: 100%;
 }
+
+
+/* CourseDetailReviews */
+.CourseDetailReviews{
+    position: relative;
+    min-height: 20vh;
+    max-height: 60vh;
+    height: max-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.CourseDetailReviews>button{
+    background-color: #7F56D9;
+    border: none;
+    outline: none;
+    border-radius: 28px;
+    color: white;
+    padding: 12px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 500ms;
+}
+
+.CourseDetailReviews>button:hover{
+    transform: scale(1.03);
+}
+
+.CourseDetailReviews-no-feedback{
+    position: relative;
+    margin-top: 40px;
+}
+
+.CourseDetailReviews-no-feedback>p{
+    color: white;
+    font-size: 30px;
+}
+
+.course-add-feedback-dialogue-popup-content{
+    background-color: #311c5c;
+    border: 1px solid #513981;
+    height: 500px;
+    width: 400px !important;
+    padding: 12px 25px;
+}
+
+.course-add-feedback-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 12px;
+}
+
+.course-add-feedback-container>p{
+    color: rgba(255, 255, 255, 0.788);
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.course-add-feedback-wrapper{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 12px;
+    gap: 12px;
+    width: 100%;
+}
+
+.course-add-feedback-stars{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+}
+
+.course-add-feedback-stars>p{
+    color: rgba(255, 255, 255, 0.747);
+    font-size: 16px;
+}
+
+.course-add-feedback-comment{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+}
+
+.course-add-feedback-comment>p{
+    color: rgba(255, 255, 255, 0.747);
+    font-size: 16px;
+}
+
+.course-add-feedback-comment>textarea{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.795);
+    color: white;
+    min-width: 400px;
+    max-width: 400px;
+    min-height: 160px;
+    max-height: 160px;
+}
+
+.course-add-feedback-button{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+    top: 4px;
+}
+
+.course-add-feedback-button>input{
+    background-color: #7F56D9;
+    border-radius: 28px;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 6px 24px;
+    cursor: pointer;
+}
+
+.course-add-feedback-button>button{
+    background-color: tomato;
+    border-radius: 28px;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 6px 20px;
+    cursor: pointer;
+}
+
+.CourseDetailReviews-all-feedbacks{
+    position: relative;
+    width: 95%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-height: 50vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.CourseDetailReviews-all-feedbacks-wrapper{
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: flex-start;
+    border: 1px solid rgba(255, 255, 255, 0.384);
+    padding: 12px 24px;
+    margin-top: 30px;
+    border-radius: 12px;
+}
+
+.CourseDetailReviews-all-feedbacks-wrapper>img{
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+}
+
+.CourseDetailReviews-all-feedbacks-wrapper>div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    gap: 8px;
+}
+
+.CourseDetailReviews-all-feedbacks-wrapper>div>p{
+    color: rgba(255, 255, 255, 0.822);
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+.CourseDetailReviews-all-feedbacks-wrapper>div>span{
+    color: rgba(255, 255, 255, 0.822);
+    font-size: 15px;
+}

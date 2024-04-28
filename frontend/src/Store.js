@@ -7,9 +7,12 @@ import storage from 'redux-persist/lib/storage';
 import {userReducer, AdminUserReducer, ForgetPasswordReducer} from './redcuers/UserReducer'
 import {AdminCourseReducer, PublicCourseReducer} from './redcuers/CourseReducer'
 import {myPorfileReducer} from './redcuers/ProfileReducer'
-import {cartReducer} from './redcuers/CartReducer'
+import {cartReducer, wishListReducer} from './redcuers/CartReducer'
 import {orderReducer} from './redcuers/OrderReducer'
 import {InrolledCourseReducer} from './redcuers/InrolledCourseReducer'
+import { hrJobReducer, publicJobReducer } from './redcuers/JobReducer';
+import {messageReducer} from './redcuers/ChatReducer';
+import { dashboardAnalyticsReducer } from './redcuers/DashboardAnalyticsReducer';
 
 const reducer = combineReducers({
 
@@ -20,10 +23,18 @@ const reducer = combineReducers({
 
     myPorfile: myPorfileReducer,
     cart: cartReducer,
+    wishList: wishListReducer,
     order: orderReducer,
     userInrolledCourses: InrolledCourseReducer,
 
-    PublicCourse: PublicCourseReducer
+    PublicCourse: PublicCourseReducer,
+
+    hrJob : hrJobReducer,
+    publicJob: publicJobReducer,
+
+    message: messageReducer,
+
+    dashboardAnalytics: dashboardAnalyticsReducer
 
 });
 

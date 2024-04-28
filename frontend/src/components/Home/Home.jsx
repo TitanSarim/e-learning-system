@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
+import { PublicGetHomeCourses, clearErrors} from '../../actions/CoursesAction';
+import { useDispatch, useSelector } from 'react-redux'
 import './Home.css'
 import NavBar from '../NavBar/NavBar'
 import { IoSearchOutline } from "react-icons/io5";
@@ -11,14 +12,7 @@ import { CiFacebook } from "react-icons/ci";
 import { CiTwitter } from "react-icons/ci";
 import { CiInstagram } from "react-icons/ci";
 import { FaBehance } from "react-icons/fa";
-
-
-
-
-
-
 import StarRatings  from "react-star-ratings";
-
 import heroImg from '../../assets/Layer 2.png'
 import partners1 from '../../assets/Group (1).png'
 import partners2 from '../../assets/Group (2).png'
@@ -33,18 +27,39 @@ import Logo1 from '../../assets/icons8-book.png'
 import Profiles from "../../assets/profiles.png"
 import { Link } from 'react-router-dom';
 import Testimonial from './Testimonial';
+import { toast } from 'react-toastify';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 // Temporary
-const categoryName= ["Design", "Development", "Professional Dev." , "Photography", "Data Science", "Marketing", "Bussiness", "Music"]
+const categoryName= ["Design", "Website", "Apps" , "Software", "Development", "Photography", "Marketing", "Music"]
 
 const Home = () => {
 
+    const dispatch = useDispatch()
 
-    const [activeMainTab, setActiveMainTab] = useState('Design');
+    const {Publiccourses, error, loading} = useSelector((state)=>state.PublicCourse);
+    const {isAuthenticated} = useSelector((state)=>state.user);
+
+    const [courses, setCourses] = useState([])
+    const [activeMainTab, setActiveMainTab] = useState('Apps');
 
     const handleMainTabClick = (tab) => {
         setActiveMainTab(tab);
     }
+
+    console.log("courses", courses)
+
+    useEffect(() => {
+        if(error){
+          toast.error(error);
+          dispatch(clearErrors());
+        }
+        dispatch(PublicGetHomeCourses())
+      }, [dispatch, error])
+    
+    useEffect(() => {
+        setCourses(Publiccourses)
+    }, [Publiccourses])
 
 
   return (
@@ -68,7 +83,7 @@ const Home = () => {
             
             </div>
 
-            <img src={heroImg} alt='image'/>
+            <img src={heroImg} alt='hero'/>
         </div>
 
         <div className='home-coursepartners'>
@@ -88,95 +103,167 @@ const Home = () => {
             <div className='home-popular-course-header'>
                 <p>Popular Courses</p>
                 <div className='home-popular-course-header-tabs'>
+                    {courses?.Apps && (
+                        <button 
+                            className={activeMainTab === 'Apps' ? 'home-popular-course-header-tabs-active' : ''}
+                            onClick={() => handleMainTabClick('Apps')}   
+                        >Apps</button>
+                    )}
+                    {courses?.Apps && (
                     <button 
-                        className={activeMainTab === 'Design' ? 'home-popular-course-header-tabs-active' : ''}
-                        onClick={() => handleMainTabClick('Design')}   
-                    >Design</button>
+                        className={activeMainTab === 'Website' ? 'home-popular-course-header-tabs-active' : ''}
+                        onClick={() => handleMainTabClick('Website')}    
+                    >Website</button>
+                    )}
+                    {courses?.Apps && (
                     <button 
                         className={activeMainTab === 'Development' ? 'home-popular-course-header-tabs-active' : ''}
                         onClick={() => handleMainTabClick('Development')}    
                     >Development</button>
+                    )}
                 </div>
             </div>
 
             <div className='home-popular-course-wrapper'>
-                {activeMainTab === 'Design' && (
-                    <div className='home-popular-course-card'>
-                        <img src={cardImg} alt='card img'/>
-                        <div className='home-popular-course-card-section-1'>
-                            <div className='home-popular-course-card-section-1-a'>
-                                <FaPlay/>
-                                <span>10x Lesson</span>
+                {activeMainTab === 'Apps' && (
+                    <div className='pubic-all-courses-boxes-view-home'>
+                    {courses?.Apps?.map((course) => (
+                        <div className='pubic-single-course-box-view' key={course.id}>
+                            <LazyLoadImage src={course.course_thumbnail.url} alt='Course'/>
+                            <div className='pubic-single-course-box-view-header'>
+                                <p>{course.category}</p>
+                                <span>
+                                    {course.reviews === "" ? 
+                                    (
+                                    <StarRatings 
+                                        rating={0}
+                                        starDimension="20px"
+                                        starSpacing="2px"
+                                        numberOfStars={1}
+                                        starRatedColor="#FFFF00"
+                                    />
+                                    ): (
+                                    <StarRatings 
+                                        rating={course.reviews}
+                                        starDimension="20px"
+                                        starSpacing="2px"
+                                        numberOfStars={1}
+                                        starRatedColor="#FFFF00"
+                                    />
+                                    )}
+                                
+                                    {course.reviews === "" ? "0 Reviews" : `(${course.reviews} Reviews)`}
+                                    
+                                </span>
                             </div>
-                            <p>Design</p>
+                            <p className='pubic-single-course-box-view-title'>{course.course_title.length > 38 ? course.course_title.slice(0, 38):course.course_title}..</p>
+                            <p className='pubic-single-course-box-view-teacher'><span>By </span> {course.teacher_name}</p>
+                            <div className='pubic-single-course-box-view-price'>
+                                    {isAuthenticated === true ? (
+                                        <Link to={`/courses/course/${course.slug}`}>Enroll Now</Link>
+                                    ): (
+                                        <Link to="/login">View</Link>
+                                    )}
+                                <p>${course.price}.00</p>
+                            </div>
                         </div>
-                        <p className='home-popular-course-card-section-2'>
-                            Python for Financial Analysis Next
-                            and Algorithmic Trading
-                        </p>
-                        <div className='home-popular-course-card-section-3'>
-                            <div className='home-popular-course-card-section-3-a'>
-                                <img src={fromImg} alt='user img'/>
-                                <div className='home-popular-course-card-section-3-b'>
-                                    <p>Adam Smith</p>
-                                    <span>Python Developer</span>
+                    ))}
+                    </div>
+                )}
+                {activeMainTab === 'Website' && (
+                    <div className='pubic-all-courses-boxes-view'>
+                        {courses?.Website?.map((course) => (
+                            <div className='pubic-single-course-box-view' key={course.id}>
+                                <LazyLoadImage src={course.course_thumbnail.url} alt='Course'/>
+                                <div className='pubic-single-course-box-view-header'>
+                                    <p>{course.category}</p>
+                                    <span>
+                                        {course.reviews === "" ? 
+                                        (
+                                        <StarRatings 
+                                            rating={0}
+                                            starDimension="20px"
+                                            starSpacing="2px"
+                                            numberOfStars={1}
+                                            starRatedColor="#FFFF00"
+                                        />
+                                        ): (
+                                        <StarRatings 
+                                            rating={course.reviews}
+                                            starDimension="20px"
+                                            starSpacing="2px"
+                                            numberOfStars={1}
+                                            starRatedColor="#FFFF00"
+                                        />
+                                        )}
+                                    
+                                        {course.reviews === "" ? "0 Reviews" : `(${course.reviews} Reviews)`}
+                                        
+                                    </span>
+                                </div>
+                                <p className='pubic-single-course-box-view-title'>{course.course_title.length > 38 ? course.course_title.slice(0, 38):course.course_title}..</p>
+                                <p className='pubic-single-course-box-view-teacher'><span>By </span> {course.teacher_name}</p>
+                                <div className='pubic-single-course-box-view-price'>
+                                    {isAuthenticated === true ? (
+                                        <Link to={`/courses/course/${course.slug}`}>Enroll Now</Link>
+                                    ): (
+                                        <Link to="/login">View</Link>
+                                    )}
+                                    <p>${course.price}.00</p>
                                 </div>
                             </div>
-                            <p>50+ Student</p>
-                        </div>
-                        <div className='home-popular-course-card-section-4'>
-                            <StarRatings
-                                rating={4.403}
-                                starDimension="20px"
-                                starSpacing="2px"
-                                numberOfStars={5}
-                                starRatedColor="#FFFF00"
-                            />
-                            <Link>Enroll Now</Link>
-                        </div>
+                        ))}
                     </div>
                 )}
                 {activeMainTab === 'Development' && (
-                    <div className='home-popular-course-card'>
-                        <img src={cardImg} alt='card img'/>
-                        <div className='home-popular-course-card-section-1'>
-                            <div className='home-popular-course-card-section-1-a'>
-                                <FaPlay/>
-                                <span>10x Lesson</span>
-                            </div>
-                            <p>Development</p>
-                        </div>
-                        <p className='home-popular-course-card-section-2'>
-                            Python for Financial Analysis Next
-                            and Algorithmic Trading
-                        </p>
-                        <div className='home-popular-course-card-section-3'>
-                            <div className='home-popular-course-card-section-3-a'>
-                                <img src={fromImg} alt='user img'/>
-                                <div className='home-popular-course-card-section-3-b'>
-                                    <p>Adam Smith</p>
-                                    <span>Python Developer</span>
+                    <div className='pubic-all-courses-boxes-view'>
+                        {courses?.Development?.map((course) => (
+                            <div className='pubic-single-course-box-view' key={course.id}>
+                                <LazyLoadImage src={course.course_thumbnail.url} alt='Course'/>
+                                <div className='pubic-single-course-box-view-header'>
+                                    <p>{course.category}</p>
+                                    <span>
+                                        {course.reviews === "" ? 
+                                        (
+                                        <StarRatings 
+                                            rating={0}
+                                            starDimension="20px"
+                                            starSpacing="2px"
+                                            numberOfStars={1}
+                                            starRatedColor="#FFFF00"
+                                        />
+                                        ): (
+                                        <StarRatings 
+                                            rating={course.reviews}
+                                            starDimension="20px"
+                                            starSpacing="2px"
+                                            numberOfStars={1}
+                                            starRatedColor="#FFFF00"
+                                        />
+                                        )}
+                                    
+                                        {course.reviews === "" ? "0 Reviews" : `(${course.reviews} Reviews)`}
+                                        
+                                    </span>
+                                </div>
+                                <p className='pubic-single-course-box-view-title'>{course.course_title.length > 38 ? course.course_title.slice(0, 38):course.course_title}..</p>
+                                <p className='pubic-single-course-box-view-teacher'><span>By </span> {course.teacher_name}</p>
+                                <div className='pubic-single-course-box-view-price'>
+                                    {isAuthenticated === true ? (
+                                        <Link to={`/courses/course/${course.slug}`}>Enroll Now</Link>
+                                    ): (
+                                        <Link to="/login">View</Link>
+                                    )}
+                                    <p>${course.price}.00</p>
                                 </div>
                             </div>
-                            <p>50+ Student</p>
-                        </div>
-                        <div className='home-popular-course-card-section-4'>
-                            <StarRatings
-                                rating={4.403}
-                                starDimension="20px"
-                                starSpacing="2px"
-                                numberOfStars={5}
-                                starRatedColor="#FFFF00"
-                            />
-                            <Link>Enroll Now</Link>
-                        </div>
+                        ))}
                     </div>
                 )}
-                
             </div>
 
             <div className='home-popular-course-btn'>
-                <button type='button'>Explore all Courses</button>
+                <Link type='button' to="/courses">Explore All Courses</Link>
             </div>
 
         </div>
@@ -219,7 +306,7 @@ const Home = () => {
             </div>
 
             <div className='home-difference-section2'>
-              <img src={layer} alt="Hero Image" />
+              <img src={layer} alt="Hero" />
             </div>
 
 
@@ -262,7 +349,7 @@ const Home = () => {
                     </div>
 
                     <div className='Testimonials-section-image'>
-                        <img src={Profiles} alt="image" />
+                        <img src={Profiles} alt="profile" />
                     </div> 
                 </div>
 
@@ -279,8 +366,8 @@ const Home = () => {
                     </div>
 
                     <div className='footer-section-section-a-button'>
-                        <button>Join as Instructor</button>
-                        <button>Join as Student</button>
+                        <Link to="/login">Join as Instructor</Link>
+                        <Link to="/login">Join as Student</Link>
                     </div>
                 </div>
 

@@ -19,7 +19,7 @@ const CreateUser = () => {
     const [age, setAge] = useState('')
     const [gender, setGender] = useState('Male')
     const [role, setRole] = useState('Student')
-    const [status, setStatus] = useState('Activate')
+    const [status, setStatus] = useState('active')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
@@ -101,6 +101,7 @@ const CreateUser = () => {
                                 <option>Student</option>
                                 <option>Job Seeker</option>
                                 <option>HR</option>
+                                <option>Teacher</option>
                                 <option>admin</option>
                             </select>
                         </div>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams, useLocation  } from 'react-router-dom';
+import { Link, useParams, useLocation, useNavigate  } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Utils/Loader';
 import TeacherAvatar from '../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
 import {PublicGetSingleCourse, clearErrors} from '../../actions/CoursesAction'
-import {addToCart, getCart} from '../../actions/cartAction'
+import {addToCart, getCart, addToWishList, getWishList} from '../../actions/cartAction'
 import { toast } from 'react-toastify';
 import NavBar from '../NavBar/NavBar';
 import moment from 'moment'
@@ -39,18 +39,23 @@ const PublicCourseDetail = () => {
 
     const dispatch = useDispatch()
     const location = useLocation();
+    const navigate = useNavigate();
     const { slug } = useParams();
     const courseSlug = slug.substring(slug.lastIndexOf('/') + 1);
     const currentUrl = window.location.origin + location.pathname;
 
-    const {user} = useSelector((state)=>state.user);
+    const {isAuthenticated, user} = useSelector((state)=>state.user);
     const {Publiccourse, error, loading} = useSelector((state)=>state.PublicCourse);
     const {cart} = useSelector((state)=>state.cart);
+    const {wishList} = useSelector((state)=>state.wishList);
+    
 
     const [courseDetails, setCourseDetails] = useState([])
     const [userDetail, setUserDetail] = useState([])
     const [cartItems, setCartItems] = useState([])
+    const [wishListItems, setWishListItems] = useState([])
     const [isInCart, setIsInCart] = useState(false);
+    const [isInWishList, setIsInWishList] = useState(false);
     const [activeTab, setActiveTab] = useState('Overview');
 
 
@@ -58,6 +63,11 @@ const PublicCourseDetail = () => {
       const found = cartItems?.some(item => item.slug === courseSlug);
       setIsInCart(found);
     }
+    const checkWishList = () => {
+      const found = wishListItems?.some(item => item.slug === courseSlug);
+      setIsInWishList(found);
+    }
+
     const handleMainTabClick = (tab) => {
       setActiveTab(tab);
     };
@@ -68,11 +78,23 @@ const PublicCourseDetail = () => {
     };
 
     const handleAddToCart = () => {
+      if (!isAuthenticated) {
+        navigate('/login')
+        // localStorage.setItem('historyRoute', courseSlug)
+      }else{
+        const formData = {
+          slug: courseSlug
+        }
+        dispatch(addToCart(formData))
+        toast.success('Successfully added')
+      }
+    }
+    const handleAddToWishList = () => {
 
       const formData = {
         slug: courseSlug
       }
-      dispatch(addToCart(formData))
+      dispatch(addToWishList(formData))
       toast.success('Successfully added')
     }
 
@@ -91,17 +113,20 @@ const PublicCourseDetail = () => {
       }
       dispatch(PublicGetSingleCourse(courseSlug))
       dispatch(getCart())
+      dispatch(getWishList())
     }, [courseSlug, dispatch, error])
   
     useEffect(() => {
       setCourseDetails(Publiccourse)
       setUserDetail(user)
       setCartItems(cart)
-    }, [Publiccourse, user, cart])
+      setWishListItems(wishList)
+    }, [Publiccourse, user, cart, wishList])
 
     useEffect(() => {
       checkCart();
-    }, [cartItems]);
+      checkWishList()
+    }, [cartItems, wishListItems]);
 
   
   
@@ -196,7 +221,7 @@ const PublicCourseDetail = () => {
               <CourseDetailPreview videos={courseDetails?.featuredVideos}/>
             )}
             {activeTab === 'Reviews' && (
-              <CourseDetailReviews/>
+              <CourseDetailReviews IsEnrolled={IsEnrolled} comments={courseDetails?.comments} courseSlug={courseSlug}/>
             )}
 
 
@@ -262,11 +287,18 @@ const PublicCourseDetail = () => {
               </>
             ) : (
               <>
-                {isInCart === true ? 
-                  <Link to='/Student/Cart'><HiOutlineShoppingCart size={25}/>Go to cart</Link> : 
-                  <button onClick={handleAddToCart}><HiOutlineShoppingCart size={25}/>Add to cart</button>
-                }
-                <button><IoMdHeartEmpty size={25}/>Add To Wishlist</button>
+              {user.role === 'Student' && (
+                <>
+                  {isInCart === true ? 
+                    <Link to='/Student/Cart'><HiOutlineShoppingCart size={25}/>Go to cart</Link> : 
+                    <button onClick={handleAddToCart}><HiOutlineShoppingCart size={25}/>Add to cart</button>
+                  }
+                  {isInWishList === true ? 
+                    <Link to='/Student/wishList'><HiOutlineShoppingCart size={25}/>Go to Wishlist</Link> : 
+                    <button onClick={handleAddToWishList}><IoMdHeartEmpty size={25}/>Add To Wishlist</button>
+                  }
+                </>
+              )}
               </>
             )}
           </div>

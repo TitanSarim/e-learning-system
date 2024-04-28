@@ -50,7 +50,7 @@ const EditCourse = () => {
 
     const createEmptyWeek = () => ({
         weekTitle: '',
-        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null, videoFileName: null, isFeatured: false, oldUrl: null}],
+        videos: [{ id: 1, videoDesc: '', videoTitle: "", videoFile: null, videoLenght: null, videoFileName: null, isFeatured: false, oldUrl: null}],
       });
     
     const [videoDivsArray, setVideoDivsArray] = useState(
@@ -215,6 +215,28 @@ const EditCourse = () => {
       
     };
 
+    const handleVideoLengthChange = (weekIndex, divId, e) => {
+        const videoLenght = e.target.value;
+
+        setVideoDivsArray((prevVideoDivsArray) =>
+            prevVideoDivsArray.map((week, wIndex) =>
+                wIndex === weekIndex
+                    ? {
+                        ...week,
+                        videos: week.videos.map((video) =>
+                            video.id === divId ? { ...video, videoLenght: videoLenght } : video
+                        ),
+                    }
+                    : week
+            )
+        );
+
+        setVideoDivsArrayAuthError((prevErrors) => ({
+            ...prevErrors,
+            error: false,
+        }));
+    }
+
     const handleVideoTitleChange = (weekIndex, divId, e) => {
 
         const videoTitle = e.target.value;
@@ -361,6 +383,8 @@ const EditCourse = () => {
                 }
                 if (!video.videoFile) {
                     errors.push({ weekIndex, videoIndex, error: 'Video file is required' });
+                }if (!video.videoLenght) {
+                    errors.push({ weekIndex, videoIndex, error: 'Video length is required' });
                 }if(!video.videoTitle){
                     errors.push({ weekIndex, videoIndex, error: 'Video title is required' });
                 }
@@ -452,6 +476,7 @@ const EditCourse = () => {
                 videos: week.videos.map(video => ({
                     id: video.id,
                     videoDesc: video.videoDesc,
+                    videoLenght: video.videoLenght,
                     videoTitle: video.videoTitle,
                     videoFile: video.videoFile,
                     videoFileName: video.videoFileName,
@@ -471,27 +496,6 @@ const EditCourse = () => {
         }
     }, [updateLoading]);
 
-
-    const customStyles = {
-        control: (provided, state) => ({
-          ...provided,
-          width: 320,
-          height: 48,
-          backgroundColor: 'transparent',
-          border: state.isFocused ? '1px solid rgb(14, 18, 37)' : '1px solid rgb(14, 18, 37)',
-          outline: "none",
-          borderRadius: 4, 
-          cursour: "pointer"
-          }),
-          singleValue: (provided) => ({
-            ...provided,
-            color: 'black', 
-          }),  
-          placeholder: (provided) => ({
-            ...provided,
-            color: 'rgb(163, 163, 163)', 
-          }),
-      };
 
   return (
     <div className='admin-container'>
@@ -571,46 +575,28 @@ const EditCourse = () => {
                         </div>
 
                         <div className='admin-create-course-input-containers'>
-                            <div className='admin-create-course-input'> 
+                            <div className='admin-create-course-select-2'> 
                                 <p>Language <span>*</span></p>
-                                <Select
-                                    defaultValue={commonSpokenLanguages.find(option => option.value === language)}
-                                    onChange={(selectedOption) => {
-                                        setLanguage(selectedOption.value)
-                                        setLanguageError({value: null, error: false})
-                                    }}
-                                    options={commonSpokenLanguages}
-                                    styles={customStyles}
-                                    // placeholder="English"
-                                />
+                                <select value={language} onChange={(e) => { setLanguage(e.target.value); setLanguageError({ value: null, error: false }); }}>
+                                    <option>English</option>
+                                    <option>Spanish</option>
+                                    <option>Arabic</option>
+                                    <option>Urdu</option>
+                                </select>
                             </div>
 
                             <div className='admin-create-course-input'> 
                                 <p>Duration <span>*</span></p>
-                                <Select
-                                    defaultValue={CourseHoursLength.find(option => option.value === hours)}
-                                    onChange={(selectedOption) => {
-                                        setHours(selectedOption.value);
-                                        setLengthError({value: null, error: false})
-                                    }}
-                                    options={CourseHoursLength}
-                                    styles={customStyles}
-                                    // placeholder="Total Duration"
-                                />
+                                <input placeholder="Duration in hours e.g (12)" type='number' value={hours} onChange={(e) => {setHours(e.target.value); setLengthError({value: null, error: false})}}/>
                             </div>
 
-                            <div className='admin-create-course-input'> 
+                            <div className='admin-create-course-select-2'> 
                                 <p>Level <span>*</span></p>
-                                <Select
-                                    defaultValue={level}
-                                    onChange={(selectedOption) => {
-                                        setLevel(selectedOption.value);
-                                        setSkillError({ value: null, error: false });
-                                    }}
-                                    options={SkillsLevel}
-                                    styles={customStyles}
-                                    // placeholder="Intermediate"
-                                />
+                                <select value={level} onChange={(e) => { setLevel(e.target.value);  setSkillError({ value: null, error: false })}}>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Expert</option>
+                                </select>
                             </div>
 
                         </div>
@@ -685,9 +671,17 @@ const EditCourse = () => {
                                                             <p><span>{video?.videoFileName.substring(0, 3)}...</span> <span>{getExtension(video?.videoFileName)}</span></p>
                                                             }
                                                             
+                                                            
                                                         </div>
+                                                        
                                                     
                                                     </div>
+
+                                                    <div  className='admin-create-course-adding-video-input'>
+                                                        <p>Video Length <span>*</span></p>
+                                                        <input placeholder='Video Length in minutes, e.g(30)' type='number' value={video.videoLenght} onChange={(e) => handleVideoLengthChange(weekIndex, video.id, e)}/>
+                                                    </div>
+                                                    
                                                     <div className='admin-create-course-adding-videos-btn'>
                                                         <p>Add another video</p>
                                                         <button onClick={() => handleAddVideo(weekIndex)}>
@@ -698,6 +692,9 @@ const EditCourse = () => {
                                                         </button>
                                                     </div>
                                                 </div>
+
+                                                
+
                                                 <div className='admin-create-course-adding-videos-title'>
                                                     <p>Video title <span>*</span></p>
                                                     <div>
@@ -738,6 +735,9 @@ const EditCourse = () => {
                                     {courseDescAuthError.error === true ? (<p><MdErrorOutline size={24}/> {courseDescAuthError?.value}</p>) : ""}
                                     {thumbnailFileAuthError.error === true ? (<p><MdErrorOutline size={24}/> {thumbnailFileAuthError?.value}</p>): ""}
                                     {priceAuthError.error === true ? (<p><MdErrorOutline size={24}/> {priceAuthError?.value}</p>): ""}
+                                    {lengthError.error === true ? (<p><MdErrorOutline size={25}/> {lengthError?.value}</p>): ""}
+                                    {languageError.error === true ? (<p><MdErrorOutline size={25}/> {languageError?.value}</p>): ""}
+                                    {skillError.error === true ? (<p><MdErrorOutline size={25}/> {skillError?.value}</p>): ""}
                                </div> 
                             ) : ""
                         }

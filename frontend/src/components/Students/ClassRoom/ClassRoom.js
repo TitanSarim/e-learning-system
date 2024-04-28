@@ -146,7 +146,7 @@ const ClassRoom = () => {
                   <div className="class-description-section-content-container">
                     {courseContent?.map((content, index) => {
                       const weekData =
-                        courseDetails?.CompletionRate?.weekData.find(
+                        courseDetails?.CompletionRate?.weekData?.find(
                           (week) => week.weekTitle === content.weekTitle
                         );
 

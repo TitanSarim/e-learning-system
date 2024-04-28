@@ -74,12 +74,13 @@ export const login = (formData) => async (dispatch) => {
 
      const token = Cookies.get('token');
 
-    const config = { headers: 
-                      { 
-                        "Content-Type": "application/json",
-                         Authorization: `Bearer ${token}` 
-                      }
-                    }
+    const config = { 
+      headers: 
+      { 
+        "Content-Type": "application/json",
+          Authorization: `Bearer ${token}` 
+      }
+    }
 
     const { data } = await axios.post(`${BASE_URL}/api/v1/loggedIn`, formData, config);
 
@@ -88,6 +89,7 @@ export const login = (formData) => async (dispatch) => {
     }
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
+
   } catch (error) {
     dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
   }

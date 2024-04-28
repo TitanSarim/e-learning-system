@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import AllPublicCoursesFilters from "./AllPublicCoursesFilters";
 import StarRatings from "react-star-ratings";
@@ -26,10 +26,15 @@ const selectPriceFilter = [
 
 const AllPublicCourses = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get("search");
 
   const { Publiccourses, error, loading } = useSelector(
     (state) => state.PublicCourse
   );
+  const { user } = useSelector((state) => state.user);
 
   const [courses, setCourses] = useState([]);
   const [pagination, setPagination] = useState([]);
@@ -49,8 +54,12 @@ const AllPublicCourses = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
-    dispatch(PublicGetCourses(1, filters));
-  }, [dispatch, error, filters]);
+    if (searchQuery) {
+      dispatch(PublicGetCourses(1, filters, searchQuery));
+    } else {
+      dispatch(PublicGetCourses(1, filters));
+    }
+  }, [dispatch, error, filters, searchQuery]);
 
   useEffect(() => {
     setCourses(Publiccourses);
@@ -217,26 +226,47 @@ const AllPublicCourses = () => {
                     <div className="pubic-single-course-box-view-header">
                       <p>{course.category}</p>
                       <span>
-                        <StarRatings
-                          rating={JSON.parse(course.reviews)}
-                          starDimension="20px"
-                          starSpacing="2px"
-                          numberOfStars={1}
-                          starRatedColor="#FFFF00"
-                        />
-                        ({JSON.parse(course.reviews)} Reviews)
+                        {course.reviews === "" ? (
+                          <StarRatings
+                            rating={0}
+                            starDimension="20px"
+                            starSpacing="2px"
+                            numberOfStars={1}
+                            starRatedColor="#FFFF00"
+                          />
+                        ) : (
+                          <p>rating</p>
+                          // <StarRatings
+                          //   rating={course.reviews}
+                          //   starDimension="20px"
+                          //   starSpacing="2px"
+                          //   numberOfStars={1}
+                          //   starRatedColor="#FFFF00"
+                          // />
+                        )}
+
+                        {course.reviews === ""
+                          ? "0 Reviews"
+                          : `(${course.reviews} Reviews)`}
                       </span>
                     </div>
                     <p className="pubic-single-course-box-view-title">
-                      {course.course_title.slice(0, 40)}
+                      {course.course_title}
                     </p>
                     <p className="pubic-single-course-box-view-teacher">
                       <span>By </span> {course.teacher_name}
                     </p>
                     <div className="pubic-single-course-box-view-price">
-                      <Link to={`/courses/course/${course.slug}`}>
-                        Enroll Now
-                      </Link>
+                      {user?.role === "admin" ||
+                      user?.role === "Teacher" ||
+                      user?.role === "HR Manager" ||
+                      user?.role === "Job Seeker" ? (
+                        <Link to="">Enroll Now</Link>
+                      ) : (
+                        <Link to={`/courses/course/${course.slug}`}>
+                          Enroll Now
+                        </Link>
+                      )}
                       <p>${course.price}.00</p>
                     </div>
                   </div>

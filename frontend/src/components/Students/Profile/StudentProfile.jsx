@@ -13,6 +13,7 @@ import { FaPlay } from "react-icons/fa";
 import StarRatings  from "react-star-ratings";
 import store from "../../../Store";
 import {userLogOut } from "../../../actions/UserActions";
+import { getMyProfile } from '../../../actions/ProfileAction';
 import { GetAllInrolledCourses, clearErrors } from '../../../actions/InrolledCourseAction'; 
 
 import profileImage from '../../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
@@ -39,8 +40,9 @@ const StudentProfile = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
+    dispatch(getMyProfile());
     dispatch(GetAllInrolledCourses())
-  }, [dispatch, error, ])
+  }, [dispatch, error])
 
   useEffect(() => {
     setAllInrolledCourses(InrolledCourses)
@@ -151,7 +153,7 @@ const StudentProfile = () => {
               </div>
             </div>
 
-            <p className='profile-profile-rightbar-aboutme' dangerouslySetInnerHTML={{ __html: myProfileData?.about}}></p>
+            <p className='profile-profile-rightbar-aboutme' dangerouslySetInnerHTML={{ __html: myProfileData?.about.slice(0, 200)}}></p>
 
             <button className='profile-profile-rightbar-logout' onClick={handleLogOut}><CiLogout/>Logout</button>
 

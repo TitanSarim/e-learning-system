@@ -6,7 +6,7 @@ import {
 } from '../constants/OrderConstants'
 
 import axios from "axios";
-import {ConfigApplicationJson} from './Config'
+import Cookies from 'js-cookie';
 
 
 const BASE_URL = 'http://localhost:3900';
@@ -15,6 +15,16 @@ const BASE_URL = 'http://localhost:3900';
 export const makeOrder = (FormData) => async (dispatch) => {
 
     try {
+
+      const token = Cookies.get('token');
+
+      const ConfigApplicationJson = { headers: 
+          { 
+          "Content-Type": "application/json",
+              Authorization: `Bearer ${token}` 
+          }
+      }
+
       dispatch({ type: ORDER_REQUEST });
         
       const { data } = await axios.post( `${BASE_URL}/api/v1/make-order`, FormData, ConfigApplicationJson);
