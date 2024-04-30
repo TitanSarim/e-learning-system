@@ -1,5 +1,5 @@
 const { Op, where } = require('sequelize');
-const { Jobs, UserProfile, User} = require("../models"); 
+const { Jobs, UserProfile, User, Notifications} = require("../models"); 
 const errorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const { generateSlug } = require("../middleware/GenerateSlug");
@@ -269,7 +269,7 @@ const getAllJobsPublic = catchAsyncError(async(req, res, next) => {
         });
 
         let AllJobs;
-        if (search) {
+        if (search !== "889900ssjjzalsdkopasd0asd") {
             const searchConditions = preprocessedSearch.map(word => ({
                 jobTitle: {
                     [Op.like]: `%${word}%`
@@ -340,15 +340,21 @@ const jobApply = catchAsyncError (async (req, res, next) => {
     try {
         
         const userId = req.user.userid
-    
-        const {slug} = req.body
+        const userName = req.user.username
 
-        console.log("slug", slug)
+        const {slug} = req.body
 
         const existingData = await Jobs.findOne({ where: { slug: slug } });
         let appliedByIds = existingData.Applications.id || [];
         appliedByIds.push(userId);
         await Jobs.update({ Applications: { id: appliedByIds } }, { where: { slug: slug } });
+
+        await Notifications.create({
+            userId: existingData.userId,
+            title: "New Application",
+            data: `New Application from ${userName}`,
+            isSeen: "false",
+        })
 
         res.status(201).json({
             success: true,

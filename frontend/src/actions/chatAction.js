@@ -11,7 +11,8 @@ import {
 import Cookies from 'js-cookie';
 import axios from "axios";
 
-const BASE_URL = 'http://localhost:3900';
+const BASE_URL = "http://localhost:3900"
+// const BASE_URL = "http://20.6.81.5:3900"
 
 export const sendMessage = (formData) => async (dispatch) => {
 

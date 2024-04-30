@@ -15,6 +15,8 @@ import store from "../../../Store";
 import {userLogOut } from "../../../actions/UserActions";
 import { getMyProfile } from '../../../actions/ProfileAction';
 import { GetAllInrolledCourses, clearErrors } from '../../../actions/InrolledCourseAction'; 
+import Popup from 'reactjs-popup';
+import Notifications from '../../Notification/Notifications';
 
 import profileImage from '../../../assets/alex-suprun-ZHvM3XIOHoE-unsplash.jpg'
 
@@ -28,11 +30,17 @@ const StudentProfile = () => {
   const{myProfileData} = useSelector((state)=>state.myPorfile);
   const{InrolledCourses, loading, error} = useSelector((state)=>state.userInrolledCourses);
 
+  const [myProfile, setMyProfile] = useState([])
   const [inrolledCourses, setAllInrolledCourses] = useState([])
-  
+  const [isPopUpOpen, setIsPopUpOpen] = useState(false)
+  const [notificationsData, setNotificationsData] = useState([])
 
   const handleLogOut = () => {
     store.dispatch(userLogOut());
+  }
+
+  const handleNotificationPopUp = () => {
+    setIsPopUpOpen(true);
   }
 
   useEffect(() => {
@@ -47,6 +55,11 @@ const StudentProfile = () => {
   useEffect(() => {
     setAllInrolledCourses(InrolledCourses)
   }, [InrolledCourses])
+  
+  useEffect(() => {
+    setMyProfile(myProfileData)
+    setNotificationsData(myProfileData?.notifications)
+  }, [myProfileData])
 
   return (
     <div className='class-container'>
@@ -132,16 +145,16 @@ const StudentProfile = () => {
 
             <div className='profile-profile-rightbar-container'>
                 <span>
-                  {myProfileData?.avatar === "" ? <img src={profileImage} alt='profile'/> : <img src={myProfileData?.avatar} alt='profile'/> }
+                  {myProfile?.avatar === "" ? <img src={profileImage} alt='profile'/> : <img src={myProfile?.avatar} alt='profile'/> }
                 </span>
 
                 <div>
-                  <p>good Morning {myProfileData?.username}</p>
-                  <span>{myProfileData?.Headline}</span>
+                  <p>good Morning {myProfile?.username}</p>
+                  <span>{myProfile?.Headline}</span>
                 </div>
 
                 <div className='profile-profile-rightbar-setting'>
-                  <Link><SlBell size={27}/></Link>
+                  <Link onClick={() => handleNotificationPopUp(true)}><SlBell size={27}/></Link>
                   <Link to='/Profile/detail'><FiEdit2 size={27}/></Link>
                 </div>
             </div>
@@ -153,7 +166,7 @@ const StudentProfile = () => {
               </div>
             </div>
 
-            <p className='profile-profile-rightbar-aboutme' dangerouslySetInnerHTML={{ __html: myProfileData?.about.slice(0, 200)}}></p>
+            <p className='profile-profile-rightbar-aboutme' dangerouslySetInnerHTML={{ __html: myProfile?.about?.slice(0, 200)}}></p>
 
             <button className='profile-profile-rightbar-logout' onClick={handleLogOut}><CiLogout/>Logout</button>
 
@@ -161,6 +174,10 @@ const StudentProfile = () => {
         </div>
 
       </div>
+
+      <Popup open={isPopUpOpen} closeOnDocumentClick onClose={() => setIsPopUpOpen(false)} className='notifications-popup'>
+        <Notifications notificationsData={notificationsData} setIsPopUpOpen={setIsPopUpOpen}/>
+      </Popup>
       
     </div>
   )

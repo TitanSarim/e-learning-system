@@ -391,6 +391,7 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
         const limit = parseInt(req.query.limit) || 20; // Default limit 10
         const skip = (page - 1) * limit;
         const status = 'active'
+        const searchField = search || '' 
 
         const preprocessSearchString = (searchText) => {
             const specialCharacters = ['with', 'and', 'skip', 'learn'];
@@ -399,8 +400,11 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
             return filteredWords;
         };
 
-        const preprocessedSearch = preprocessSearchString(search);
-        console.log("searchText", preprocessedSearch)
+      
+        const preprocessedSearch = preprocessSearchString(searchField);
+        
+
+        console.log("searchField", searchField)
 
         const filter = {};
         if (category) filter.category = category;
@@ -418,23 +422,19 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
         const totalCount = await Course.count({
             where: filter, 
           });
+
           
-        // example string =    nodejs reactjs nextjs development
-        let allPublicCourses;
-        if (search) {
+        let allPublicCourses
+        if (searchField !== '889900ssjjzalsdkopasd0asd') { 
             const searchConditions = preprocessedSearch.map(word => ({
-                course_title: {
-                    [Op.like]: `%${word}%`
-                }
+                course_title: { [Op.like]: `%${word}%` }
             }));
-        
+
             allPublicCourses = await Course.findAll({
                 where: {
                     [Op.and]: [
                         filter,
-                        {
-                            [Op.or]: searchConditions
-                        }
+                        { [Op.or]: searchConditions }
                     ]
                 },
                 offset: skip,
@@ -449,7 +449,6 @@ const GetAllPublicCourses  = catchAsyncError(async (req, res, next) => {
                 order: orderOption,
             });
         }
-        
 
 
         const totalPages = Math.ceil(totalCount / limit);
@@ -728,17 +727,33 @@ const GetSingleInrolledCourse  = catchAsyncError(async (req, res, next) => {
 // Get User Inrolled Course --all Courses
 const GetAllInrolledCourse  = catchAsyncError(async (req, res, next) => {
 
+    console.log("userId", req.user)
     const userId = req.user.userid
 
     try {
 
         const orders = await Order.findAll({ where: { userId: userId } });
 
+        console.log("orders", orders)
+
         if (!orders || orders.length === 0) {
-            return res.status(404).json({ error: "No orders found for this user" });
+            res.status(204).json({
+                success: true,
+                message: 'Course retrived successfully',
+                InrolledCourses: [],
+            });
+            return
         }
 
         const courseIds = orders.flatMap(order => order.course_ids);
+
+        if(!courseIds){
+            res.status(204).json({
+                success: true,
+                message: 'Course retrived successfully',
+                InrolledCourses: [],
+              });
+        }
 
         const courses = await Course.findAll({ where: { id: courseIds } });
 

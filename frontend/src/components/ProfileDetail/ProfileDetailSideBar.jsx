@@ -2,12 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import store from "../../Store";
 import {userLogOut } from "../../actions/UserActions";
+import Popup from 'reactjs-popup';
 
 import './ProfileDetailSideBar.css'
+import Notifications from '../Notification/Notifications';
+import PorfileChangePassword from './ProfileDialogueBoxex/PorfileChangePassword';
+import ProfileDeleteProfile from './ProfileDialogueBoxex/ProfileDeleteProfile';
 
 const ProfileDetailSideBar = ({profileData, user}) => {
 
     const [completionRate, setCompletionRate] = useState(0);
+    const [notificationsData, setNotificationsData] = useState(profileData?.notifications)
+    const [isPopUpOpen, setIsPopUpOpen] = useState(false)
+    const [isDeletePopUpOpen, setIsDeletePopUpOpen] = useState(false)
+    const [changePassPopUp, setChangePassPopUp] = useState(false)
 
     const handleLogOut = () => {
       store.dispatch(userLogOut());
@@ -71,6 +79,15 @@ const ProfileDetailSideBar = ({profileData, user}) => {
       localStorage.setItem('completionRate', rate);
     }, [profileData]);
 
+    const handleNotificationPopUp = () => {
+      setIsPopUpOpen(true);
+    }
+    const handleChangePassPopUp = () => {
+      setChangePassPopUp(true);
+    }
+    const handleDeletePopUp = () => {
+      setIsDeletePopUpOpen(true)
+    }
       
   return (
     <div className='profile-detail-side-bar'>
@@ -90,11 +107,11 @@ const ProfileDetailSideBar = ({profileData, user}) => {
 
             <div className='profile-detail-side-bar-profile-settings'>
                 <div>
-                    <Link>Notifications</Link>
+                    <Link onClick={() => handleNotificationPopUp(true)}>Notifications</Link>
                 </div>
 
                 <div>
-                    <Link>Change Password</Link>
+                    <Link onClick={() => handleChangePassPopUp(true)}>Change Password</Link>
                 </div>
                 
             </div>
@@ -105,11 +122,22 @@ const ProfileDetailSideBar = ({profileData, user}) => {
                 </div>
 
                 <div>
-                    <button>Delete My Account</button>
+                    <button onClick={() => handleDeletePopUp()}>Delete My Account</button>
                 </div>
            </div>
 
         </div>
+
+        <Popup open={isPopUpOpen} closeOnDocumentClick onClose={() => setIsPopUpOpen(false)} className='notifications-popup'>
+          <Notifications notificationsData={notificationsData} setIsPopUpOpen={setIsPopUpOpen}/>
+        </Popup>
+        <Popup open={isDeletePopUpOpen} closeOnDocumentClick onClose={() => setIsDeletePopUpOpen(false)} className='change-delete-popup'>
+          <ProfileDeleteProfile setIsDeletePopUpOpen={setIsDeletePopUpOpen}/>
+        </Popup>
+
+        <Popup open={changePassPopUp} closeOnDocumentClick onClose={() => setChangePassPopUp(false)} className='change-pass-popup'>
+          <PorfileChangePassword setChangePassPopUp={setChangePassPopUp}/>
+        </Popup>
 
     </div>
   )

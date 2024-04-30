@@ -16,7 +16,8 @@ const searchCategory = [
   { value: 'Courses', label: 'Courses' },
   { value: 'Jobs', label: 'Jobs' },
 ];
-const BASE_URL = 'http://localhost:3900';
+const BASE_URL = "http://localhost:3900"
+// const BASE_URL = "http://20.6.81.5:3900"
 
 
 const NavBar = () => {
@@ -36,7 +37,6 @@ const NavBar = () => {
   const handleCategoryChange = (selectedOption) => {
     setSelectedCategoryOption(selectedOption);
   };
-
 
   useEffect(() => {
     dispatch(getCart())

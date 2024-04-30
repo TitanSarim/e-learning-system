@@ -23,7 +23,6 @@ const JobSeeker = () => {
   const dispatch = useDispatch()
   const{myProfileData, error} = useSelector((state)=>state.myPorfile);
 
-
   const handleLogOut = () => {
     store.dispatch(userLogOut());
   }
@@ -35,8 +34,6 @@ const JobSeeker = () => {
     }
     dispatch(getMyProfile())
   }, [dispatch, error])
-
-
 
   return (
     <div className='class-container'>

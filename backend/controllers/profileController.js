@@ -1,4 +1,4 @@
-const { User, UserProfile } = require('../models'); // Adjust the path based on your project structure
+const { User, UserProfile, Notifications } = require('../models'); // Adjust the path based on your project structure
 const errorHandler = require('../utils/errorHandler');
 const catchAsyncError = require('../middleware/catchAsyncError');
 const azure = require('azure-storage');
@@ -6,7 +6,6 @@ const azure = require('azure-storage');
 
 const getUserProfile = catchAsyncError(async(req, res, next) => {
 
-  console.log("sending data");
 
     try {
 
@@ -18,11 +17,18 @@ const getUserProfile = catchAsyncError(async(req, res, next) => {
         },
       });
 
-  
+      const notifications = await Notifications.findAll({
+        where: {
+            userId: userId
+        },
+        order: [['createdAt', 'DESC']]
+      });
+
       let myProfile = {
         userId: userTable.id,
         username: userTable.username,
         email:userTable.email,
+        notifications: notifications || [],
         avatar: '',
         location: '',
         firstname: '',
@@ -43,6 +49,15 @@ const getUserProfile = catchAsyncError(async(req, res, next) => {
           userId: userId 
         },
       })
+
+      if(!userProfileTable){
+        res.status(201).json({
+          success: true,
+          message: 'Profile retrived',
+          myProfile: myProfile,
+        });
+        return
+      }
 
       if(userProfileTable){
         myProfile = {
@@ -303,9 +318,43 @@ const deleteUserAvatar = catchAsyncError(async(req, res, next) => {
   }
 })  
 
+
+const PorfileChangePassword = catchAsyncError(async (req, res, next) => {
+    try {
+      const id = req.user.userid
+
+      const { oldpassword, newPassword } = req.body;
+
+      const userData = await User.findOne({
+        where: { id },
+      });
+
+      const passwordMatches = await bcrypt.compare(oldpassword, userData.password);
+
+      if (!passwordMatches) {
+        return res.status(201).json({
+          success: false,
+          message: "Old Password did not match",
+        });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      await User.update({ password: hashedPassword }, { where: { id } });
+
+      res.status(200).json({
+        success: true,
+        message: "Password updated successfully",
+      });
+    } catch (error) {
+      return next(new errorHandler(error, 500));
+    }
+});
+
   module.exports = {
     getUserProfile,
     createUpdateUserProfile,
     updateUserAvatar,
     deleteUserAvatar,
+    PorfileChangePassword
   }

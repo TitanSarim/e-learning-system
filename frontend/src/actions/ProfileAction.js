@@ -11,9 +11,11 @@ import{
 } from '../constants/ProfileConstants'
 import {uploadResumeToAzure} from '../middlewares/ResumeUpload'
 import Cookies from 'js-cookie';
-
 import axios from 'axios'
+
+
 const BASE_URL = "http://localhost:3900"
+// const BASE_URL = "http://20.6.81.5:3900"
 
 
 export const getMyProfile = () => async (dispatch) => {
@@ -21,6 +23,8 @@ export const getMyProfile = () => async (dispatch) => {
     
     try {
         const token = Cookies.get('token');
+
+        console.log("token", token)
 
         const ConfigApplicationJson = { headers: 
             { 
@@ -34,7 +38,7 @@ export const getMyProfile = () => async (dispatch) => {
 
         const {data} = await axios.get(`${BASE_URL}/api/v1/get-my-profile`, ConfigApplicationJson)
 
-        dispatch({type: GET_MY_PROFILE_SUCCESS, payload: data?.myProfile});
+        dispatch({type: GET_MY_PROFILE_SUCCESS, payload: data.myProfile});
         
     } catch (error) {
         dispatch({type: GET_MY_PROFILE_FAIL, payload: error?.response?.data.message});

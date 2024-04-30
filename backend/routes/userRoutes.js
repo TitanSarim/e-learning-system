@@ -16,7 +16,9 @@ router.route("/reset/password").post(ResetPassword);
 
 router.route('/logout').get(logout)
 
-router.route("/create/user").post(isAuthenticatedUser , createNewUser)
+router.route("/create/user").post(isAuthenticatedUser, createNewUser)
+
+
 
 // working
 router.route("/request/user/:id").put( adminRequestUserUpdate)

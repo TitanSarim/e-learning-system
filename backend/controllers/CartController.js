@@ -57,6 +57,7 @@ const GetCart = catchAsyncError(async (req, res, next) => {
     try {
 
         const userId = req.user.userid
+        console.log("userId", userId)
 
         const cartItems = await Cart.findAll({where: {userId: userId}})
 

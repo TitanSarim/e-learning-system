@@ -1,0 +1,105 @@
+.change-delete-popup-content{
+    position: relative;
+    background-color: #141622 !important;
+    height: 230px !important;
+    border: 1px solid rgba(255, 255, 255, 0.288) !important;
+    border-radius: 12px !important;
+    min-width: 200px;
+}
+
+.ProfileDeleteProfile-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 230px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ProfileDeleteProfile-header{
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.ProfileDeleteProfile-header>button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.ProfileDeleteProfile-header>button svg{
+    background-color: tomato;
+    color: white;
+    border-radius: 100px;
+    padding: 6px;
+}
+
+.ProfileDeleteProfile-body{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ProfileDeleteProfile-body>p{
+    color: white;
+    font-size: 22px;
+}
+
+.ProfileDeleteProfile-body>svg{
+    color: tomato;
+}
+
+.ProfileDeleteProfile-footer{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.ProfileDeleteProfile-footer button:nth-child(1){
+    padding: 8px 12px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    background-image: linear-gradient(to right, #B24592 0%, #F15F79 51%, #B24592 100%);
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.ProfileDeleteProfile-footer button:nth-child(2){
+    padding: 8px 12px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    background-color: tomato;
+}
+
+.ProfileDeleteProfile-footer>p{
+    background-color: tomato;
+    height: 40px;
+    width: 110px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+}
+
+.ProfileDeleteProfile-footer>p>span{
+    position: relative;
+    top: 12px;
+    right: 4px;
+}

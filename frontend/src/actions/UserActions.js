@@ -37,10 +37,10 @@ import Cookies from 'js-cookie';
 
 
 const BASE_URL = "http://localhost:3900"
-
+// const BASE_URL = "http://20.6.81.5:3900"
 
 // USER ACTIONS
-export const register = (formData) => async (dispatch) => {
+export const register = (formData, setIsRegistsred, setRegisterMessage) => async (dispatch) => {
   try {
     dispatch({ type: REGISTER_REQUEST });
 
@@ -55,10 +55,12 @@ export const register = (formData) => async (dispatch) => {
 
     const { data } = await axios.post(`${BASE_URL}/api/v1/register`, formData, config);
 
-    if(data.token){
-      Cookies.set('token', data.token, { expires: 365 });
+    console.log("data", data)
+
+    if(data.success === true){
+      setIsRegistsred(true)
+      setRegisterMessage("Successfully registered, Now Login")
     }
-    
 
     dispatch({ type: REGISTER_SUCCESS, payload: data.user });
   } catch (error) {

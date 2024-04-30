@@ -15,7 +15,8 @@ const Auth = () => {
 
   const { error, isAuthenticated, user } = useSelector((state) => state.user);
 
-
+  const [isRegistsred, setIsRegistsred] = useState(false)
+  const [registerMessage, setRegisterMessage] = useState('')
   const [email, setEmail] = useState("");
   const [username, setUserName] = useState("");
   const [registerType, setRegisterType] = useState("Student");
@@ -50,6 +51,9 @@ const Auth = () => {
   };
 
   const handleLoginSubmit = () => {
+    
+    const userAgent = navigator.userAgent;
+
     if (!loginEmail || !loginPassword) {
       setIsLoginFormEmpty("Please fill out all fields.");
       return;
@@ -57,16 +61,13 @@ const Auth = () => {
     const FormData = {
       email: loginEmail,
       password: loginPassword,
+      userAgent: userAgent
     };
 
     dispatch(login(FormData));
   }
 
-  // const handleKeyPress = (event) => {
-  //   if (event.key === 'Enter') {
-  //     handleLoginSubmit();
-  //   }
-  // };
+
 
   const handleRegisterSubmit = () => {
     if (
@@ -107,7 +108,17 @@ const Auth = () => {
       status: "active",
     };
 
-    dispatch(register(FormData));
+    dispatch(register(FormData, setIsRegistsred, setRegisterMessage));
+
+    if(isRegistsred === true){
+      toast.success(registerMessage)
+
+      setEmail('')
+      setUserName('')
+      setAge()
+      setPassword('')
+      setConfirmPassword('')
+    }
   };
 
   useEffect(() => {
@@ -123,7 +134,7 @@ const Auth = () => {
         naviagte("/Student/Profile");
         toast.success("Welcome to M-Time");
         
-      } else if (isAuthenticated === true && user.role === "admin") {
+      } else if (isAuthenticated === true && user?.role === "admin") {
         naviagte("/admin/dashboard");
         toast.success("Welcome Admin");
       }else  if (isAuthenticated === true && user?.role === "Teacher") {

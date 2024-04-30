@@ -11,7 +11,7 @@ import { IoCheckmarkDone, IoCheckmarkSharp  } from "react-icons/io5";
 import { BsSendFill } from "react-icons/bs";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 
-const host = 'http://localhost:3900';
+const host = 'http://20.6.81.5:3900';
 
 const MessageJobSeeker = () => {
 

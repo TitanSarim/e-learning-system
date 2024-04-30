@@ -57,7 +57,7 @@ const AllPublicCourses = () => {
     if(searchQuery){
       dispatch(PublicGetCourses(1, filters, searchQuery))
     }else{
-      dispatch(PublicGetCourses(1, filters))
+      dispatch(PublicGetCourses(1, filters, searchQuery))
     }
   }, [dispatch, error, filters, searchQuery])
 

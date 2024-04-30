@@ -31,7 +31,8 @@ import {deleteVideosFromAzure, deleteImageFromAzure} from '../middlewares/Delete
 import Cookies from 'js-cookie';
 
 
-const BASE_URL = 'http://localhost:3900';
+const BASE_URL = "http://localhost:3900"
+// const BASE_URL = "http://20.6.81.5:3900"
 
 // CREATE COURSES ACTIONS
 export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
@@ -287,7 +288,13 @@ export const PublicGetCourses = (page, filters, searchQuery) => async (dispatch)
     
     dispatch({ type: GET_ALL_PUBLIC_COURSES_REQUEST });
 
-    let queryString = `?page=${page}&search=${searchQuery}`;
+    let queryString
+    if(!searchQuery){
+      queryString = `?page=${page}&search=889900ssjjzalsdkopasd0asd`;
+    }else{
+      queryString = `?page=${page}&search=${searchQuery}`;
+    }
+     
     if (filters) {
       Object.keys(filters).forEach(key => {
         queryString += `&${key}=${filters[key]}`;

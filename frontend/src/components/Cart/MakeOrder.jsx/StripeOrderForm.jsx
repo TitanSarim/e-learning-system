@@ -14,7 +14,8 @@ import amixe from '../../../assets/icons8-american-express-200.png'
 import cryptoImg from '../../../assets/icons8-crypto-200.png'
 import ethImg from '../../../assets/icons8-ethereum-200.png'
 
-const BASE_URL = 'http://localhost:3900';
+const BASE_URL = "http://localhost:3900"
+// const BASE_URL = "http://20.6.81.5:3900"
 
 const StripeOrderForm = ({user}) => {
 

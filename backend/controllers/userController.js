@@ -1,4 +1,4 @@
-const { User, UserProfile } = require("../models"); // Adjust the path based on your project structure
+const { User, Notifications } = require("../models"); // Adjust the path based on your project structure
 const bcrypt = require("bcryptjs");
 const generatedToken = require("../utils/jwtToken");
 const generateTokenForNewUser = require("../utils/jwtToken")
@@ -19,13 +19,19 @@ const createUser = catchAsyncError(async (req, res, next) => {
       where: { email },
     });
 
+    const existingUserName = await User.findOne({
+      where: { username },
+    });
+
     if (existingUser) {
       return next(new errorHandler("User with this email already exists", 400));
+    }
+    if (existingUserName) {
+      return next(new errorHandler("User with this username already exists", 400));
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-   // Create the user
     const user = await User.create({
       username,
       email,
@@ -37,16 +43,13 @@ const createUser = catchAsyncError(async (req, res, next) => {
     });
 
     const token = generatedToken(createUser.id, createUser.email, createUser.username, createUser.role);
-    setTokenCookie(res, token);
 
     user.loginToken = token;
     await user.save();
 
     res.status(201).json({
       success: true,
-      message: "User created successfully",
-      user: user, 
-      token,
+      message: "User created successfully", 
   });
   } catch (error) {
     return next(new errorHandler(error, 500));
@@ -56,7 +59,7 @@ const createUser = catchAsyncError(async (req, res, next) => {
 
 const loginUser = catchAsyncError(async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, userAgent } = req.body;
 
     const userData = await User.findOne({
       where: { email },
@@ -81,6 +84,13 @@ const loginUser = catchAsyncError(async (req, res, next) => {
     const userDataNew = await User.findOne({
       where: { id: userData.id },
     });
+
+    await Notifications.create({
+      userId: userDataNew.id,
+      title: "New Login",
+      data: userAgent,
+      isSeen: "false",
+    })
 
     const user = {
       id: userDataNew.id,
@@ -203,6 +213,7 @@ const forgetPassword = catchAsyncError(async (req, res, next) => {
 
 
 const ResetPassword = catchAsyncError(async (req, res, next) => {
+  
   const { newPassword, id } = req.body;
 
   console.log(newPassword, id);
@@ -402,39 +413,3 @@ module.exports = {
 
 
 
-// const createNewUser = catchAsyncError(async (req, res, next) => {
-//   2;
-
-//   const { username, email, age, gender, role, password, status } = req.body;
-
-//   try {
-//     const existingUser = await User.findOne({
-//       where: { email },
-//     });
-
-//     if (existingUser) {
-//       return next(new errorHandler("User with this email already exists", 400));
-//     }
-
-//     const hashedPassword = await bcrypt.hash(password, 10);
-
-//     // Create the user
-//     const users = await User.create({
-//       username,
-//       email,
-//       age,
-//       gender,
-//       role,
-//       password: hashedPassword,
-//       status,
-//     });
-
-//     res.status(201).json({
-//       success: true,
-//       message: "User created successfully",
-//       users: users,
-//     });
-//   } catch (error) {
-//     return next(new errorHandler(error, 500));
-//   }
-// });

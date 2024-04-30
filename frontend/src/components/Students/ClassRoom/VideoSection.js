@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import videoImage from "../../../assets/VideoPlay.png"
-import userImage from "../../../assets/profile.png"
 import { IoEyeOutline } from "react-icons/io5";
 import { Player, ControlBar, LoadingSpinner, BigPlayButton} from 'video-react';
 import 'video-react/dist/video-react.css';
 import axios from 'axios';
 import { ConfigApplicationJson } from '../../../actions/Config';
-const BASE_URL = 'http://localhost:3900';
+const BASE_URL = "http://localhost:3900"
+// const BASE_URL = "http://20.6.81.5:3900"
 
 
 const VideoSection = ({selectVideToPlay, courseDetails, setVideoPercentage, videoPercentage, selectWeekIndex, setCouseCompletion}) => {
@@ -24,7 +23,7 @@ const VideoSection = ({selectVideToPlay, courseDetails, setVideoPercentage, vide
   
       if (ended) {
         setIsCompleted(true); 
-      } else if (!paused && progressPercentage >= 10) {
+      } else if (!paused && progressPercentage >= 80) {
         setIsCompleted(true);
       } else if (paused && !ended) {
         setIsPaused(true);

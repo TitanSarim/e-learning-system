@@ -19,7 +19,8 @@ const selectDateFilter = [
   { value: '', label: 'None' },
 ];
 
-const BASE_URL = 'http://localhost:3900';
+const BASE_URL = "http://localhost:3900"
+// const BASE_URL = "http://20.6.81.5:3900"
 
 const AllPublicJobs = () => {
   
@@ -58,7 +59,7 @@ const AllPublicJobs = () => {
 
     const cv = myProfileData?.cv
 
-    if(!cv || myProfileData?.location || myProfileData?.firstname || myProfileData?.lastname || myProfileData?.phoneno){
+    if(!cv){
       toast.error("Please Upload CV")
       return
     }
@@ -117,7 +118,7 @@ const AllPublicJobs = () => {
     if(searchQuery){
       dispatch(GetAllPublicJobs(1, filters, searchQuery))
     }else {
-      dispatch(GetAllPublicJobs(1, filters))
+      dispatch(GetAllPublicJobs(1, filters, searchQuery))
     }
   }, [filters, dispatch, error, searchQuery])
 

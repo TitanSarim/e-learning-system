@@ -11,7 +11,8 @@ import {
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
-const BASE_URL = 'http://localhost:3900';
+const BASE_URL = "http://localhost:3900"
+// const BASE_URL = "http://20.6.81.5:3900"
 
 
 export const GetAllInrolledCourses = () => async (dispatch) => {
