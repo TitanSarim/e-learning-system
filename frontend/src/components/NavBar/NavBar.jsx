@@ -16,8 +16,8 @@ const searchCategory = [
   { value: 'Courses', label: 'Courses' },
   { value: 'Jobs', label: 'Jobs' },
 ];
-const BASE_URL = "http://localhost:3900"
-// const BASE_URL = "http://20.6.81.5:3900"
+const BASE_URL = "http://localhost:3900" 
+//const BASE_URL = "http://40.124.120.87:3900" //Azure API endpoint
 
 
 const NavBar = () => {

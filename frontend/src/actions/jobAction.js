@@ -24,8 +24,8 @@ import {
 import Cookies from 'js-cookie';
 import axios from 'axios'
 
-const BASE_URL = "http://localhost:3900"
-// const BASE_URL = "http://20.6.81.5:3900"
+const BASE_URL = "http://localhost:3900" 
+//const BASE_URL = "http://40.124.120.87:3900" //Azure API endpoint
 
 
 export const createJob = (formData) => async (dispatch) => {
@@ -140,7 +140,7 @@ export const GetAllHRJobs = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: GET_ALL_HR_JOB_FAIL,
-            payload: error?.response?.data.message,
+            payload: error?.response?.data?.message,
         });
       console.log("error", error);
     }
@@ -231,7 +231,7 @@ export const GetAllPublicJobs = (page, filters, searchQuery) => async (dispatch)
     } catch (error) {
         dispatch({
             type: GET_ALL_PUBLIC_JOB_FAIL,
-            payload: error?.response?.data.message,
+            payload: error?.response?.data?.message,
         });
       console.log("error", error);
     }

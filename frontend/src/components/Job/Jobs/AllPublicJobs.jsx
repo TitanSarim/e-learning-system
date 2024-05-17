@@ -19,8 +19,8 @@ const selectDateFilter = [
   { value: '', label: 'None' },
 ];
 
-const BASE_URL = "http://localhost:3900"
-// const BASE_URL = "http://20.6.81.5:3900"
+const BASE_URL = "http://localhost:3900" 
+//const BASE_URL = "http://40.124.120.87:3900" //Azure API endpoint
 
 const AllPublicJobs = () => {
   
@@ -152,6 +152,8 @@ const AllPublicJobs = () => {
         dispatch(GetAllPublicJobs(nextPage));
       }
     };
+
+    console.log("allJobs", allJobs?.AllJobs)
   
     const startPage = Math.max(1, pagination.currentPage - 2);
     const endPage = Math.min(pagination.totalPages, pagination.currentPage + 2);
@@ -245,42 +247,42 @@ const AllPublicJobs = () => {
               </div>
               
               {/*  */}
-
-              <div className='public-all-Jobs-jobs-job-detail-container'>
-                <div className='public-all-Jobs-jobs-job-detail'>
-                  <p>{selectedJob?.jobTitle}</p>
-                  <div className='public-all-Jobs-jobs-job-detail-company'>
-                    <p>{selectedJob?.company}</p>
-                    <span>{selectedJob?.country.name}, {selectedJob?.city.name}</span>
-                  </div>
-                  <div className='public-all-Jobs-jobs-job-detail-general'>
-                    <p>Education: <span>{selectedJob?.education}</span></p>
-                    <p>Level: <span>{selectedJob?.skillLevel}</span></p>
-                    <p>Duration:<span>{selectedJob?.duration}</span></p>
-                    <p>Type: <span>{selectedJob?.type}</span></p>
-                    <p>Salary: <span>{selectedJob?.salary}</span></p>
-                  </div>
-                  <div className='public-all-Jobs-jobs-job-detail-desc' dangerouslySetInnerHTML={{__html: selectedJob?.jobDesc}}/>
-                  <div className='public-all-Jobs-jobs-job-detail-hr'>
-                    <img src={selectedJob?.userProfile.avatar.url} alt='abc'/>
-                    <span>{selectedJob?.userProfile.firstname} {selectedJob?.userProfile.lastname}</span>
-                  </div>
-                  <div className='public-all-Jobs-jobs-job-detail-button'>
-                    {isAuthenticated === false ? (
-                      <Link to="/login">Login</Link>
-                    ) : (
-                      (user?.role === 'admin' || user?.role === 'Student' || user?.role === 'Teacher' || user?.role === 'HR Manager') ? "" : (
-                        isUserApplied ? (
-                          <button disabled>Applied</button>
-                        ) : (
-                          <button onClick={() => handleApply(selectedJob?.slug)}>Apply</button>
+              {allJobs?.AllJobs?.length > 0 && (
+                <div className='public-all-Jobs-jobs-job-detail-container'>
+                  <div className='public-all-Jobs-jobs-job-detail'>
+                    <p>{selectedJob?.jobTitle}</p>
+                    <div className='public-all-Jobs-jobs-job-detail-company'>
+                      <p>{selectedJob?.company}</p>
+                      <span>{selectedJob?.country.name}, {selectedJob?.city.name}</span>
+                    </div>
+                    <div className='public-all-Jobs-jobs-job-detail-general'>
+                      <p>Education: <span>{selectedJob?.education}</span></p>
+                      <p>Level: <span>{selectedJob?.skillLevel}</span></p>
+                      <p>Duration:<span>{selectedJob?.duration}</span></p>
+                      <p>Type: <span>{selectedJob?.type}</span></p>
+                      <p>Salary: <span>{selectedJob?.salary}</span></p>
+                    </div>
+                    <div className='public-all-Jobs-jobs-job-detail-desc' dangerouslySetInnerHTML={{__html: selectedJob?.jobDesc}}/>
+                    <div className='public-all-Jobs-jobs-job-detail-hr'>
+                      <img src={selectedJob?.userProfile.avatar.url} alt='abc'/>
+                      <span>{selectedJob?.userProfile.firstname} {selectedJob?.userProfile.lastname}</span>
+                    </div>
+                    <div className='public-all-Jobs-jobs-job-detail-button'>
+                      {isAuthenticated === false ? (
+                        <Link to="/login">Login</Link>
+                      ) : (
+                        (user?.role === 'admin' || user?.role === 'Student' || user?.role === 'Teacher' || user?.role === 'HR Manager') ? "" : (
+                          isUserApplied ? (
+                            <button disabled>Applied</button>
+                          ) : (
+                            <button onClick={() => handleApply(selectedJob?.slug)}>Apply</button>
+                          )
                         )
-                      )
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-
+              )}
               
 
             </div>

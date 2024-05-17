@@ -12,9 +12,9 @@ import { BsSendFill } from "react-icons/bs";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 
 
-const host = "http://localhost:3900"
-// const host = "http://20.6.81.5:3900"
 
+const host = "http://localhost:3900" 
+//const host = "http://40.124.120.87:3900" //Azure API endpoint
 
 const Message = () => {
 

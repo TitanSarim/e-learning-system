@@ -47,7 +47,7 @@
 
 .home-hero-search{
     position: relative;
-    background-color: white;
+    /* background-color: white; */
     border-radius: 50px;
     position: relative;
     display: flex;
@@ -58,30 +58,17 @@
     padding: 5px 12px;
 }
 
-.home-hero-search svg{
-    color: rgb(136, 136, 136);
-    width: 40px;
-    height: 40px;
-}
 
-.home-hero-search input{
-    width: 400px;
-    outline: none;
-    height: 50px;
-    border: none;
-    font-size: 19px;
-    padding: 0px 8px;
-}
-
-.home-hero-search button{
+.home-hero-search a{
     background-color: #7F56D9;
     color: white;
     outline: none;
     font-size: 18px;
     border-radius: 30px;
-    padding: 20px 25px;
+    padding: 16px 40px;
     border: none;
     cursor: pointer;
+    text-decoration: none;
 }
 
 

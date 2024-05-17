@@ -36,8 +36,8 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 
 
-const BASE_URL = "http://localhost:3900"
-// const BASE_URL = "http://20.6.81.5:3900"
+const BASE_URL = "http://localhost:3900" 
+//const BASE_URL = "http://40.124.120.87:3900" //Azure API endpoint
 
 // USER ACTIONS
 export const register = (formData, setIsRegistsred, setRegisterMessage) => async (dispatch) => {
@@ -62,9 +62,9 @@ export const register = (formData, setIsRegistsred, setRegisterMessage) => async
       setRegisterMessage("Successfully registered, Now Login")
     }
 
-    dispatch({ type: REGISTER_SUCCESS, payload: data.user });
+    dispatch({ type: REGISTER_SUCCESS, payload: data?.user });
   } catch (error) {
-    dispatch({ type: REGISTER_FAIL, payload: error.response.data.message });
+    dispatch({ type: REGISTER_FAIL, payload: error?.response?.data?.message });
   }
 };
 
@@ -90,10 +90,10 @@ export const login = (formData) => async (dispatch) => {
       Cookies.set('token', data.token, { expires: 365 });
     }
 
-    dispatch({ type: LOGIN_SUCCESS, payload: data.user });
+    dispatch({ type: LOGIN_SUCCESS, payload: data?.user });
 
   } catch (error) {
-    dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
+    dispatch({ type: LOGIN_FAIL, payload: error?.response?.data?.message });
   }
 };
 
@@ -157,7 +157,7 @@ export const userLogOut = () => async (dispatch) => {
     Cookies.remove('token')
 
   } catch (error) {
-    dispatch({ type: LOGOUT_USER_FAIL, payload: error.response.data.message });
+    dispatch({ type: LOGOUT_USER_FAIL, payload: error?.response?.data?.message });
   }
 };
 
@@ -180,7 +180,7 @@ export const UpdateUser = (formData) => async (dispatch) => {
       config
     );
 
-    dispatch({ type: UPDATE_USER_SUCCESS, payload: data.user });
+    dispatch({ type: UPDATE_USER_SUCCESS, payload: data?.user });
   } catch (error) {
     dispatch({
       type: UPDATE_USER_FAILED,
@@ -220,7 +220,7 @@ export const AdminGetUsers = () => async (dispatch) => {
 
     const { data } = await axios.get(`${BASE_URL}/api/v1/getAll/users`, config);
 
-    dispatch({ type: GET_ALL_USERS_ADMIN_SUCCESS, payload: data.users });
+    dispatch({ type: GET_ALL_USERS_ADMIN_SUCCESS, payload: data?.users });
   } catch (error) {
     dispatch({
       type: GET_ALL_USERS_ADMIN_FAIL,
@@ -307,7 +307,7 @@ export const adminDeleteUser = (userId) => async (dispatch) => {
     console.log(error);
     dispatch({
       type: DELETE_USER_ADMIN_FAIL,
-      payload: error.response?.data?.message,
+      payload: error?.response?.data?.message,
     });
   }
 };

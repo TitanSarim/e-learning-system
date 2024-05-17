@@ -1,7 +1,9 @@
 {
-  "name": "frontend",
+  "name": "Mtimes",
   "version": "0.1.0",
   "private": true,
+  "main": "index.js",
+  "homepage": "./",
   "dependencies": {
     "@azure/storage-blob": "^12.17.0",
     "@redux-devtools/extension": "^3.3.0",

@@ -4,9 +4,8 @@ import Cookies from 'js-cookie';
 import './PorfileChangePassword.css'
 import { GiTireIronCross } from "react-icons/gi";
 
-
-const BASE_URL = "http://localhost:3900"
-// const BASE_URL = "http://20.6.81.5:3900"
+const BASE_URL = "http://localhost:3900" 
+//const BASE_URL = "http://40.124.120.87:3900" //Azure API endpoint
 
 const PorfileChangePassword = ({setChangePassPopUp}) => {
   const id = 3;

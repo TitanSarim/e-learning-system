@@ -7,7 +7,7 @@ import NavBar from '../../NavBar/NavBar'
 import './MakeOrder.css'
 
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe('pk_test_51KrorBEDBUkc29iPaqQKeDZjyM2O7RF82uEN81racjCgoKtPMI4gwrp1lXnQxt0OtTVAdrp9xoGH3ckQ1kE6TqE500vbHq5Zwx');
 
 const MakeOrder = () => {
 

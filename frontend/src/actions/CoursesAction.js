@@ -31,8 +31,8 @@ import {deleteVideosFromAzure, deleteImageFromAzure} from '../middlewares/Delete
 import Cookies from 'js-cookie';
 
 
-const BASE_URL = "http://localhost:3900"
-// const BASE_URL = "http://20.6.81.5:3900"
+const BASE_URL = "http://localhost:3900" 
+//const BASE_URL = "http://40.124.120.87:3900" //Azure API endpoint
 
 // CREATE COURSES ACTIONS
 export const adminCreateCourse = (formData, onProgress) => async (dispatch) => {
@@ -276,7 +276,7 @@ export const PublicGetHomeCourses = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_ALL_PUBLIC_COURSES_FAIL,
-      payload: error.response.data.message,
+      payload: error?.response?.data?.message,
     });
   }
 };
@@ -310,7 +310,7 @@ export const PublicGetCourses = (page, filters, searchQuery) => async (dispatch)
   } catch (error) {
     dispatch({
       type: GET_ALL_PUBLIC_COURSES_FAIL,
-      payload: error.response.data.message,
+      payload: error?.response?.data?.message,
     });
   }
 };

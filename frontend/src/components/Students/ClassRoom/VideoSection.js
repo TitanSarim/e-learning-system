@@ -4,8 +4,9 @@ import { Player, ControlBar, LoadingSpinner, BigPlayButton} from 'video-react';
 import 'video-react/dist/video-react.css';
 import axios from 'axios';
 import { ConfigApplicationJson } from '../../../actions/Config';
-const BASE_URL = "http://localhost:3900"
-// const BASE_URL = "http://20.6.81.5:3900"
+
+const BASE_URL = "http://localhost:3900" 
+//const BASE_URL = "http://40.124.120.87:3900" //Azure API endpoint
 
 
 const VideoSection = ({selectVideToPlay, courseDetails, setVideoPercentage, videoPercentage, selectWeekIndex, setCouseCompletion}) => {

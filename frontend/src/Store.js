@@ -57,7 +57,7 @@ const store = configureStore({
         serializableCheck: false, // Ignore serializability for now
     }).concat(thunk),
 
-    devTools: process.env.NODE_ENV !== 'production',
+    // devTools: process.env.NODE_ENV !== 'production',
 
 
 })

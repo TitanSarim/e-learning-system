@@ -14,8 +14,8 @@ import Cookies from 'js-cookie';
 import axios from 'axios'
 
 
-const BASE_URL = "http://localhost:3900"
-// const BASE_URL = "http://20.6.81.5:3900"
+const BASE_URL = "http://localhost:3900" 
+//const BASE_URL = "http://40.124.120.87:3900" //Azure API endpoint
 
 
 export const getMyProfile = () => async (dispatch) => {

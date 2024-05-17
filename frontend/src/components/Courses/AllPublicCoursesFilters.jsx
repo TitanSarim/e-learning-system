@@ -130,7 +130,7 @@ const AllPublicCoursesFilters = ({applyFilters, courses }) => {
         </div>
       </div>
 
-      <div className='pubic-all-courses-filters-wrapper'>
+      {/* <div className='pubic-all-courses-filters-wrapper'>
         <p>Rating</p>
         <div>
           <input type='radio' name='rating' onChange={() => handleRatingChange(4)} />
@@ -148,7 +148,8 @@ const AllPublicCoursesFilters = ({applyFilters, courses }) => {
           <input type='radio' name='rating' onChange={() => handleRatingChange(1)} />
           <StarRatings rating={1} starDimension='20px' starSpacing='2px' numberOfStars={5} starRatedColor='#FFFF00' />
         </div>
-      </div>
+      </div> */}
+
     </div>
   );
 

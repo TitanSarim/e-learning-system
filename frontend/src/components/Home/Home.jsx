@@ -76,9 +76,7 @@ const Home = () => {
                 <span>Provides you with the latest online learning system and material <br/>that help your knowledge growing.</span>
 
                 <div className='home-hero-search'>
-                    <IoSearchOutline/>
-                    <input type='text' placeholder='Explore'/>
-                    <button>Explore</button>
+                    <Link to="/courses">Explore</Link>
                 </div>
             
             </div>
