@@ -33,9 +33,9 @@ const AllPublicCourses = () => {
   const searchParams = new URLSearchParams(location.search);
   const searchQuery = searchParams.get('search');
 
+   const [hasShownToast, setHasShownToast] = useState(false);
   const {Publiccourses, error, loading} = useSelector((state)=>state.PublicCourse);
-  const {user} = useSelector((state)=>state.user);
-
+  const {isAuthenticated, user} = useSelector((state)=>state.user);
   const [courses, setCourses] = useState([])
   const [pagination, setPagination] = useState([])
   const [showDiv, setShowDiv] = useState('tbCategoryMinus');
@@ -155,6 +155,26 @@ const AllPublicCourses = () => {
       }),
   };
 
+  
+  const getEnrollLink = (user, isAuthenticated, course) => {
+    
+    if (
+      user?.role === "admin" || 
+      user?.role === "Teacher" || 
+      user?.role === "HR Manager" || 
+      user?.role === "Job Seeker"
+    ) {
+      // toast.error("This is for Students")
+      return <Link to="">For Student</Link>;
+    }else if(isAuthenticated === false){
+      localStorage.setItem('redirectPath', `/courses`);
+      return <Link to="/login">Login</Link>;
+    }else {
+      return <Link to={`/courses/course/${course.slug}`}>Enroll Now</Link>;
+    }
+  };
+  
+  
   return (
     <div className='pubic-all-courses'>
       
@@ -231,11 +251,7 @@ const AllPublicCourses = () => {
                       <p className='pubic-single-course-box-view-title'>{course.course_title}</p>
                       <p className='pubic-single-course-box-view-teacher'><span>By </span> {course.teacher_name}</p>
                     <div className='pubic-single-course-box-view-price'>
-                      {user?.role === "admin" || user?.role === "Teacher" || user?.role === "HR Manager" || user?.role === "Job Seeker" ? 
-                        <Link to="">Enroll Now</Link>
-                      :
-                        <Link to={`/courses/course/${course.slug}`}>Enroll Now</Link>
-                      }
+                      {getEnrollLink(user, isAuthenticated, course)}
                       <p>${course.price}.00</p>
                     </div>
                   </div>

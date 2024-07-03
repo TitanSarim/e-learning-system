@@ -6,13 +6,15 @@ import { getCart } from '../../../actions/cartAction';
 import { useDispatch, useSelector } from 'react-redux'
 import {toast} from 'react-toastify'
 import axios from 'axios';
-import { ConfigApplicationJson } from '../../../actions/Config';
 import ButtonLoader from '../../Utils/ButtonLoader'
 import visaImg from '../../../assets/icons8-visa-200.png'
 import masterImg from '../../../assets/icons8-mastercard-200.png'
 import amixe from '../../../assets/icons8-american-express-200.png'
 import cryptoImg from '../../../assets/icons8-crypto-200.png'
 import ethImg from '../../../assets/icons8-ethereum-200.png'
+import Cookies from 'js-cookie';
+const token = Cookies.get('token');
+
 
 const BASE_URL = "http://localhost:3900" 
 //const BASE_URL = "http://40.124.120.87:3900" //Azure API endpoint
@@ -80,6 +82,13 @@ const StripeOrderForm = ({user}) => {
                 total_amount: totalPrice,
                 fullName: fullName,
                 payment_method: paymentMethod,
+            }
+
+            const ConfigApplicationJson = { headers: 
+                { 
+                "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}` 
+                }
             }
 
             const data = await axios.post(`${BASE_URL}/api/v1/stripe-key`, formData, ConfigApplicationJson)

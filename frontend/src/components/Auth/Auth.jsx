@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { RxEyeNone } from "react-icons/rx";
 import { RxEyeClosed } from "react-icons/rx";
@@ -128,10 +128,14 @@ const Auth = () => {
     }
 
     const token = Cookies.get('token')
+    const redirectpath = localStorage.getItem('redirectPath');
 
     if(token) {
-      if (isAuthenticated === true && user?.role === "Student") {
-        naviagte("/Student/Profile");
+      if(isAuthenticated === true && redirectpath){
+        naviagte(redirectpath)
+        localStorage.removeItem('redirectPath')
+      }else if (isAuthenticated === true && user?.role === "Student") {
+        naviagte("/courses");
         toast.success("Welcome to M-Time");
         
       } else if (isAuthenticated === true && user?.role === "admin") {
@@ -146,7 +150,7 @@ const Auth = () => {
         toast.success("Welcome to M-Time");
       }
       else if(isAuthenticated === true && user?.role === "Job Seeker"){
-        naviagte("/JobSeeker/JobSeeker-profile")
+        naviagte("/all-jobs")
         toast.success("Welcome to M-Time");
       }
     }
