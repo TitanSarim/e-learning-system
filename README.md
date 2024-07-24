@@ -12,13 +12,13 @@
     <img src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white" alt="nativewind" />
      <img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" alt="nativewind" />
      <img src="https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white" alt="nativewind" />
-     <img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" alt="nativewind" />
+     <img src="https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white" alt="nativewind" />
   </div>
 
   <h3 align="center">Decentralized Storage App</h3>
 
    <div align="center">
-     Building a React native app with Web3 Authentication and Decentralized Storge leveraging the blockchain core concepts. 
+    MTimes is an advanced Maritime E-Learning Platform and Job Portal designed to revolutionize the maritime industry. Built using modern technologies such as React, Node.js, Azure, MySQL, Sequelize, Redux, and the MD5 algorithm.
     </div>
 </div>
 
@@ -37,41 +37,40 @@ If You want help regarding this project or a similar one contact me.
 
 ## <a name="introduction">🤖 Introduction</a>
 
-Building with React Native for seamless user experiences, Animatable for captivating animations, and integrated with the dependable backend systems with node.js, 
-this app showcases impressive design and functionality, enabling the seamless sharing of user personal Data on the secure blockchain network.
+MTimes is an advanced Maritime E-Learning Platform and Job Portal designed to revolutionize the maritime industry. Built using modern technologies such as React, Node.js, Azure, MySQL, Sequelize, Redux, and the MD5 algorithm, it offers robust, secure, and scalable solutions for maritime education and employment. MTimes provides comprehensive e-learning modules, industry certifications, and a dynamic job portal to connect maritime professionals with global opportunities. The platform ensures data integrity and security with MD5 encryption, while Redux enhances state management for a seamless user experience. Azure's cloud infrastructure guarantees reliability and performance, making MTimes a leading solution in maritime education and recruitment.
 
 If you're getting started and need assistance or face any bugs, contact me we will solve this.
 
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
-- React Native
+- React
 - Node.js
-- Expo
-- Nativewind
-- Animatable
+- Express.js
+- Sequalize
+- Azure
 
 ## <a name="features">🔋 Features</a>
 
-👉 **Onboarding Screen**: Engaging graphics and clear instructions welcome users to the app.
+👉 **Authentication**:
 
-👉 **Robust Authentication & Authorization System**: Secure Web3 Authtentication with Ether.js
+👉 **Dashboard for student, Teacher , Admin**: 
 
-👉 **Dynamic Home Screen with Animated Flat List**: Smoothly animated flat list showcases the latest uploaded content for seamless browsing and user old memories.
+👉 **Job Portal**:
 
-👉 **Pull-to-Refresh Functionality**: Users can refresh content with a simple pull gesture for up-to-date information.
+👉 **Video Streaming**:
 
-👉 **Full-Text Search Capability**: Efficiently search through content with real-time suggestions and instant results.
+👉 **Courses**:
 
-👉 **Tab Navigation**: Navigate between sections like Home, Memories, Library and Profiles with ease using tab navigation.
+👉 **Azure**:
 
-👉 **Post Creation Screen for Uploading Media**: Uploading image posts directly from the app with integrated media selection.
+👉 **Redis for Management**:
 
-👉 **Profile Screen with Detailed Insights**: View account details and activity, including upload Content, for a personalized experience.
+👉 **Profile Screen with Detailed Insights**:
 
-👉 **Responsiveness**: Smooth performance and adaptability across various devices and screen sizes for a consistent user experience.
+👉 **Responsiveness**: 
 
-👉 **Animations**: Dynamic animations using the Animatable library to enhance user interaction and engagement throughout the app's UI.
+👉 **Animations**: 
 
 and many more, including code architecture and reusability 
 
@@ -90,14 +89,24 @@ Make sure you have the following installed on your machine:
 **Cloning the Repository**
 
 ```bash
-git clone https://github.com/adrianhajdin/aora.git
-cd PixelChain
+git clone --https link
 ```
-**Installation**
+
+**For Backend Installation**
+```bash
+cd e-learning-platform
+cd backend
+
+npm install
+```
+**For Frontend Installation**
 
 Install the project dependencies using npm:
 
 ```bash
+cd e-learning-platform
+cd frontend
+
 npm install
 ```
 
@@ -107,83 +116,86 @@ npm install
 npm start
 ```
 
-**Expo Go**
 
-Download the [Expo Go](https://expo.dev/go) app onto your device, then use it to scan the QR code from Terminal and run. you can also run on emulator if you have one
 
 ## <a name="snippets">🕸️ Snippets</a>
 
 <details>
-<summary><code>tailwind.config.js</code></summary>
+<summary><code>Frontend dependencies</code></summary>
 
 ```javascript
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
-  theme: {
-    extend: {
-      colors: {
-        primary: "#161622",
-        secondary: {
-          DEFAULT: "#FF9C01",
-          100: "#FF9001",
-          200: "#FF8E01",
-        },
-        black: {
-          DEFAULT: "#000",
-          100: "#1E1E2D",
-          200: "#232533",
-        },
-        gray: {
-          100: "#CDCDE0",
-        },
-      },
-      fontFamily: {
-        pthin: ["Poppins-Thin", "sans-serif"],
-        pextralight: ["Poppins-ExtraLight", "sans-serif"],
-        plight: ["Poppins-Light", "sans-serif"],
-        pregular: ["Poppins-Regular", "sans-serif"],
-        pmedium: ["Poppins-Medium", "sans-serif"],
-        psemibold: ["Poppins-SemiBold", "sans-serif"],
-        pbold: ["Poppins-Bold", "sans-serif"],
-        pextrabold: ["Poppins-ExtraBold", "sans-serif"],
-        pblack: ["Poppins-Black", "sans-serif"],
-      },
-    },
-  },
-  plugins: [],
-};
+/**   "@azure/storage-blob": "^12.17.0",
+    "@redux-devtools/extension": "^3.3.0",
+    "@reduxjs/toolkit": "^2.0.1",
+    "@stripe/react-stripe-js": "^2.6.2",
+    "@stripe/stripe-js": "^3.2.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@vidstack/react": "^1.11.3",
+    "apexcharts": "^3.46.0",
+    "axios": "^1.6.5",
+    "cropperjs": "^1.6.1",
+    "dotenv": "^16.4.5",
+    "install": "^0.13.0",
+    "js-cookie": "^3.0.5",
+    "js-md5": "^0.8.3",
+    "jwt-decode": "^4.0.0",
+    "moment": "^2.30.1",
+    "npm": "^10.5.0",
+    "p-limit": "^5.0.0",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
+    "react-country-state-city": "^1.1.0",
+    "react-date-picker": "^10.6.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1",
+    "react-lazy-load-image-component": "^1.6.0",
+    "react-phone-number-input": "^3.3.9",
+    "react-quill": "^2.0.0",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.21.3",
+    "react-scripts": "5.0.1",
+    "react-select": "^5.8.0",
+    "react-star-ratings": "^2.3.0",
+    "react-toastify": "^10.0.4",
+    "reactjs-popup": "^2.0.6",
+    "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^3.1.0",
+    "socket.io-client": "^4.7.5",
+    "uuid": "^9.0.1",
+    "video-react": "^0.16.0",
+    "web-vitals": "^2.1.4"
+   
 ```
 
 </details>
 
 <details>
-<summary><code>Font Loaded</code></summary>
+<summary><code>Backend dependencies</code></summary>
 
 ```javascript
-const [fontsLoaded, error] = useFonts({
-  "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
-  "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
-  "Poppins-ExtraBold": require("../assets/fonts/Poppins-ExtraBold.ttf"),
-  "Poppins-ExtraLight": require("../assets/fonts/Poppins-ExtraLight.ttf"),
-  "Poppins-Light": require("../assets/fonts/Poppins-Light.ttf"),
-  "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-  "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
-  "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
-  "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
-});
-
-useEffect(() => {
-  if (error) throw error;
-
-  if (fontsLoaded) {
-    SplashScreen.hideAsync();
-  }
-}, [fontsLoaded, error]);
-
-if (!fontsLoaded && !error) {
-  return null;
-}
+  "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
+    "multer": "^1.4.5-lts.1",
+    "multer-azure-blob-storage": "^1.2.0",
+    "multer-s3": "^3.0.1",
+    "mysql2": "^3.9.2",
+    "nodemailer": "^6.9.8",
+    "nodemon": "^3.0.2",
+    "sequelize": "^6.37.1",
+    "slugify": "^1.6.6",
+    "socket.io": "^4.7.5",
+    "stripe": "^14.23.0"
 ```
 
 </details>
@@ -191,13 +203,13 @@ if (!fontsLoaded && !error) {
 
 ## <a name="links">🔗 Links</a>
 
-Download Link will be available here soon.....
+Live Link Expires - not allowed
 
 ## <a name="more">🚀 More</a>
 
-👉**You can also check my FULL_STACK e-Learning Platform leveraging Azure, Nodejs and React**
+👉**You can also check my Decentralized Storage App with React Native, Nodejs**
 
-<img src="https://github.com/TitanSarim/e-learning-system" alt="Project Banner">
+<img src="https://github.com/MuhammadAzeem-1/pixelChain" alt="Project Banner">
 </a>
 
 <br />
